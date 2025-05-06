@@ -45,6 +45,11 @@ const employeesSchema = new Schema(
         type: Boolean,
         require: true,
     },
+    address: {
+      type: String,
+      require: true,
+      maxLength: 200,
+    },
   },
   {
     timestamps: true,
