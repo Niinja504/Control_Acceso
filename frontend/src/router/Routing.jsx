@@ -3,7 +3,7 @@ import React from 'react'
 const Routing = () => {
   return (
     <BrowserRouter>
-    <AuthProvider>
+      <AuthProvider>
 
         <Routes>
 
