@@ -1,35 +1,86 @@
-import { useState } from 'react';
-import './LoginPage.css'; // Import the CSS file
+import React, { useState } from "react";
+import { Global } from "../../helpers/Global";
+import Swal from "sweetalert2";
+import './LoginPage.css';
+import LogoRedondo from '../../img/logo_redondo.png';
+import { useForm } from "../../hooks/useForm";
 
-export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+export const LoginPage = () => {
+  const { form, changed } = useForm({});
+  const [saved, setSaved] = useState("not_sended");
 
-  const handleSubmit = () => {
-    console.log('Login attempt with:', { email, password });
-    // Here you would handle authentication
+  const loginUser = async (e) => {
+    e.preventDefault();
+    let userToLogin = form;
+
+    try {
+      const request = await fetch(Global.url + "login", {
+        method: "POST",
+        body: JSON.stringify(userToLogin),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: 'include'
+      });
+
+      const data = await request.json();
+
+      if (data.status === "success") {
+        setSaved("login");
+        setAuth({
+          userId: data.user.userId,
+          userType: data.user.userType,
+          email: data.user.email
+        });
+
+        Swal.fire({
+          title: "¡Inicio de Sesión exitoso!",
+          text: "Serás redirigido en breve",
+          icon: "success",
+          confirmButtonText: "Aceptar",
+        }).then(() => {
+          navigate("/home");
+        });
+      } else {
+        setSaved("error");
+        Swal.fire({
+          title: "Error",
+          text: data.message || "Credenciales incorrectas",
+          icon: "error",
+          confirmButtonText: "Aceptar",
+        });
+      }
+    } catch (error) {
+      setSaved("error");
+      Swal.fire({
+        title: "Error",
+        text: "Ocurrió un error al intentar iniciar sesión",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+      });
+    }
   };
 
   return (
     <div className="login-container">
       <div className="login-card">
         <div className="logo-container">
-          <img 
-            src="/path-to-your-logo.png" 
-            alt="Instituto Técnico Ricaldone Logo" 
-            className="logo" 
+          <img
+            src={LogoRedondo}
+            alt="Instituto Técnico Ricaldone Logo"
+            className="logo"
           />
           <h1 className="title">
             Bienvenido al<br />
             Portal Estudiantil ITR
           </h1>
         </div>
-        
+
         <p className="subtitle">
           Ingresa tus credenciales para acceder al sistema
         </p>
-        
-        <div>
+
+        <form className="login-form" onSubmit={loginUser}>
           <div className="input-group">
             <label htmlFor="email" className="input-label">
               Correo electrónico institucional
@@ -37,12 +88,14 @@ export default function LoginPage() {
             <input
               id="email"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              name="email"
+              placeholder="Email"
+              onChange={changed}
               className="input-field"
+              required
             />
           </div>
-          
+
           <div className="input-group">
             <label htmlFor="password" className="input-label">
               Contraseña
@@ -50,25 +103,35 @@ export default function LoginPage() {
             <input
               id="password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              name="password"
+              placeholder="Contraseña"
+              onChange={changed}
               className="input-field"
+              required
             />
           </div>
-          
-          <button
-            onClick={handleSubmit}
-            className="login-button"
-          >
-            Iniciar sesión
+
+          <button type="submit" className="login-button">
+            <b>Iniciar sesión</b>
           </button>
-        </div>
-        
+        </form>
+
         <div className="footer">
-          <p>Desarrollado por el departamento de Desarrollo de Software</p>
-          <p>del <span className="highlight">Instituto Técnico Ricaldone</span></p>
+          <b>
+            <p>Desarrollado por el departamento de Desarrollo de Software</p>
+          </b>
+          <b>
+            <p>
+              del{" "}
+              <a href="https://www.ricaldone.edu.sv/" className="highlight">
+                Instituto Técnico Ricaldone
+              </a>
+            </p>
+          </b>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default LoginPage;

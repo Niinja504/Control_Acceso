@@ -13,7 +13,7 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #f9fafb;
+  background-image: url('../../img/loginFondo.png');
   padding: 1rem;
   font-family: 'Poppins', Helvetica, sans-serif;
 }
@@ -114,4 +114,5 @@ body {
 
 .highlight {
   color: #3b82f6;
+  text-decoration: none;
 }
