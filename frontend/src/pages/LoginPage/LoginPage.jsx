@@ -1,66 +1,7 @@
-import React, { useState } from "react";
-import { Global } from "../../helpers/Global";
-import Swal from "sweetalert2";
-import './LoginPage.css';
-import LogoRedondo from '../../img/logo_redondo.png';
-import { useForm } from "../../hooks/useForm";
+import './LoginPage.css'
+import LogoRedondo from '../../img/logo_redondo.png'
 
 export const LoginPage = () => {
-  const { form, changed } = useForm({});
-  const [saved, setSaved] = useState("not_sended");
-
-  const loginUser = async (e) => {
-    e.preventDefault();
-    let userToLogin = form;
-
-    try {
-      const request = await fetch(Global.url + "login", {
-        method: "POST",
-        body: JSON.stringify(userToLogin),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: 'include'
-      });
-
-      const data = await request.json();
-
-      if (data.status === "success") {
-        setSaved("login");
-        setAuth({
-          userId: data.user.userId,
-          userType: data.user.userType,
-          email: data.user.email
-        });
-
-        Swal.fire({
-          title: "¡Inicio de Sesión exitoso!",
-          text: "Serás redirigido en breve",
-          icon: "success",
-          confirmButtonText: "Aceptar",
-        }).then(() => {
-          navigate("/home");
-        });
-      } else {
-        setSaved("error");
-        Swal.fire({
-          title: "Error",
-          text: data.message || "Credenciales incorrectas",
-          icon: "error",
-          confirmButtonText: "Aceptar",
-        });
-      }
-    } catch (error) {
-      setSaved("error");
-      Swal.fire({
-        title: "Error",
-        text: "Ocurrió un error al intentar iniciar sesión",
-        icon: "error",
-        confirmButtonText: "Aceptar",
-      });
-    }
-  };
-
   return (
     <div className="login-container">
       <div className="login-card">
@@ -80,7 +21,7 @@ export const LoginPage = () => {
           Ingresa tus credenciales para acceder al sistema
         </p>
 
-        <form className="login-form" onSubmit={loginUser}>
+        <form className="login-form">
           <div className="input-group">
             <label htmlFor="email" className="input-label">
               Correo electrónico institucional
@@ -90,7 +31,6 @@ export const LoginPage = () => {
               type="email"
               name="email"
               placeholder="Email"
-              onChange={changed}
               className="input-field"
               required
             />
@@ -105,7 +45,6 @@ export const LoginPage = () => {
               type="password"
               name="password"
               placeholder="Contraseña"
-              onChange={changed}
               className="input-field"
               required
             />

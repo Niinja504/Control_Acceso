@@ -27,9 +27,10 @@ const employeesSchema = new Schema(
         min: 0,
     },
     email: {
-        type: String,
-        require: true,
-        maxLength: 100,
+    type: String,
+    required: true,
+    maxLength: 100,
+    match: /^[a-zA-Z0-9._%+-]+@ricaldone\.edu\.sv$/
     },
     password: {
         type: String,
