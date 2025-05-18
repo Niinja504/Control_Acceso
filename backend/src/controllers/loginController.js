@@ -5,6 +5,7 @@ import bcryptjs from "bcryptjs"
 import jsonwebtoken from "jsonwebtoken"
 import { config } from "../config.js";
 
+
 // I N S E R T
 loginController.login = async (req, res) => {
   const { email, password} = req.body;
@@ -15,43 +16,47 @@ loginController.login = async (req, res) => {
     let userType;
 
     //1. Admin
-    if(email == config.emailAdmin.email && password == config.emailAdmin.password){
-        userType = "Admin";
-        userFound = {_id: "Admin"};
-    }else{
-        //2. Empleado
-        userFound = await EmployeesModel.findOne({email});
-        userType = "Employee";
+    if (email === config.emailAdmin.email && password === config.emailAdmin.password) {
+      userType = "Admin";
+      userFound = { _id: "Admin" };
+    } else {
+      
+      userFound = await EmployeesModel.findOne({ email });
+      userType = "Employee";
+
+      if (!userFound) {
+        return res.status(401).json({ message: "user not found" });
+      }
+
+      // Validar contraseña
+      const isMatch = await bcryptjs.compare(password, userFound.password);
+      console.log("¿Contraseña coincide?", isMatch);
+      if (!isMatch) {
+          return res.status(401).json({ message: "invalid password" });
+      }
     }
-    // por si no encontramos un usuario
-    if(!userFound){
-        return res.json({message: "user not found"})
-    }
-    // si no es administrador, validamos la contraseña
-    if(userType !== "Admin"){
-        const isMatch = bcryptjs.compare(password, userFound.password);
-        if(!isMatch){
-            return res.json({message: "invalid password"});
-        }
-    }
+
+    // Generar token
     jsonwebtoken.sign(
-        //1- que voy a guardar
-        {id: userFound._id, userType},
-        //2- clave secreta
-        config.JWT.secret,
-        //3- cuando expira
-        {expiresIn: config.JWT.expiresIn},
-        //4- funcion flecha
-        (error, token) => {
-            if(error) console.log (error);
-            res.cookie("authToken", token);
-            res.json({message: "login sucessful"});
+      { id: userFound._id, userType }, // Datos a guardar
+      config.JWT.secret, // Clave secreta
+      { expiresIn: config.JWT.expiresIn }, // Tiempo de expiración
+      (error, token) => {
+        if (error) {
+          console.log(error);
+          return res.status(500).json({ message: "Error generating token" });
         }
+        res.cookie("authToken", token, {
+        });
+        res.json({ message: "login successful" });
+      }
     );
     }
   catch (error) {
      console.log(error);
+     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 export default loginController;

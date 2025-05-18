@@ -1,5 +1,6 @@
 const employeesController = {};
 import employeesModel from "../models/Employees.js";
+import bcryptjs from "bcryptjs";
 
 // S E L E C T
 employeesController.getEmployees = async (req, res) => {
@@ -11,7 +12,10 @@ employeesController.getEmployees = async (req, res) => {
 employeesController.insertEmployees = async (req, res) => {
   const { numEmpleado, names, surnames, DUI, birthday, telephone, email, password, department, status, address} = req.body;
 
-  const newEmployee = new employeesModel({ numEmpleado, names, surnames, DUI, birthday, telephone, email, password, department, status, address});
+  const salt = await bcryptjs.genSalt(10);
+  const hashedPassword = await bcryptjs.hash(password, salt);
+
+  const newEmployee = new employeesModel({ numEmpleado, names, surnames, DUI, birthday, telephone, email, password: hashedPassword, department, status, address});
   await newEmployee.save();
   res.json({ message: "employee saved" });
 };
