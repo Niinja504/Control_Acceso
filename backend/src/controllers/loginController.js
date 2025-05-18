@@ -1,8 +1,9 @@
 const loginController = {};
 
 import EmployeesModel from "../models/Employees.js";
-import bcryptjs from "bcryptjs"
-import jsonwebtoken from "jsonwebtoken"
+import CoordinatorsModel from "../models/Coordinators.js"; // Modelo para coordinadores
+import bcryptjs from "bcryptjs";
+import jsonwebtoken from "jsonwebtoken";
 import { config } from "../config.js";
 
 
@@ -20,9 +21,15 @@ loginController.login = async (req, res) => {
       userType = "Admin";
       userFound = { _id: "Admin" };
     } else {
-      
-      userFound = await EmployeesModel.findOne({ email });
-      userType = "Employee";
+      // 2. Coordinador
+      userFound = await CoordinatorsModel.findOne({ email });
+      if (userFound) {
+        userType = "Coordinator";
+      } else {
+        // 3. Empleado
+        userFound = await EmployeesModel.findOne({ email });
+        userType = "Employee";
+      }
 
       if (!userFound) {
         return res.status(401).json({ message: "user not found" });
@@ -30,7 +37,6 @@ loginController.login = async (req, res) => {
 
       // Validar contraseña
       const isMatch = await bcryptjs.compare(password, userFound.password);
-      console.log("¿Contraseña coincide?", isMatch);
       if (!isMatch) {
           return res.status(401).json({ message: "invalid password" });
       }
@@ -47,8 +53,11 @@ loginController.login = async (req, res) => {
           return res.status(500).json({ message: "Error generating token" });
         }
         res.cookie("authToken", token, {
+          httpOnly: true,
+          secure: false, // Cambiar a true si usas HTTPS
+          sameSite: "lax",
         });
-        res.json({ message: "login successful" });
+        res.json({ message: "login successful", userType });
       }
     );
     }

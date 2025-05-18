@@ -1,31 +1,29 @@
 import './LoginPage.css';
+import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import LogoRedondo from '../../img/logo_redondo.png';
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false); // Estado para manejar la carga
-  const navigate = useNavigate(); // Hook para redirección
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Mostrar indicador de carga
+    setLoading(true);
     try {
-      console.log("Datos recibidos:", { email, password });
       const response = await fetch(`http://localhost:4000/api/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
-        credentials: 'include'
+        credentials: 'include',
       });
 
       if (!response.ok) {
-        // Manejo de errores HTTP
         throw new Error('Error en la solicitud. Verifica tus credenciales.');
       }
 
@@ -35,12 +33,19 @@ export const LoginPage = () => {
         Swal.fire({
           icon: 'success',
           title: '¡Inicio de sesión exitoso!',
-          text: 'Redirigiendo al portal...',
+          text: `Bienvenido, ${data.userType}`,
           timer: 1500,
           showConfirmButton: false,
         });
 
-        setTimeout(() => navigate('/home'), 2000); // Redirigir después de 1.5 segundos
+        // Redirigir según el rol
+        if (data.userType === 'Admin') {
+          navigate('/admin-dashboard');
+        } else if (data.userType === 'Coordinator') {
+          navigate('/coordinator-dashboard');
+        } else if (data.userType === 'Employee') {
+          navigate('/employee-dashboard');
+        }
       } else {
         Swal.fire({
           icon: 'error',
@@ -56,7 +61,7 @@ export const LoginPage = () => {
         text: 'Ocurrió un error. Inténtalo de nuevo más tarde.',
       });
     } finally {
-      setLoading(false); // Ocultar indicador de carga
+      setLoading(false);
     }
   };
 

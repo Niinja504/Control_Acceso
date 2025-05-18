@@ -1,36 +1,37 @@
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
-const ProtectedRoute = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
+const ProtectedRoute = ({ children, allowedRoles }) => {
+  const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const response = await fetch('http://localhost:4000/api/check-auth', {
           method: 'GET',
-          credentials: 'include', // Incluir cookies en la solicitud
+          credentials: 'include',
         });
 
         if (response.ok) {
-          setIsAuthenticated(true);
+          const data = await response.json();
+          setUserRole(data.user.userType);
         } else {
-          setIsAuthenticated(false);
+          setUserRole(null);
         }
       } catch (error) {
         console.error('Error verificando autenticación:', error);
-        setIsAuthenticated(false);
+        setUserRole(null);
       }
     };
 
     checkAuth();
   }, []);
 
-  if (isAuthenticated === null) {
-    return <div>Cargando...</div>; // Mostrar un indicador de carga mientras se verifica
+  if (userRole === null) {
+    return <div>Cargando...</div>;
   }
 
-  if (!isAuthenticated) {
+  if (!allowedRoles.includes(userRole)) {
     return <Navigate to="/login" replace />;
   }
 

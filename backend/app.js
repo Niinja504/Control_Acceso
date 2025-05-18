@@ -7,6 +7,7 @@ import logoutRoutes from "./src/routes/logout.js"
 import registerEmployeesRoutes from "./src/routes/registerEmployees.js";
 import cors from 'cors';
 import authRoutes from "./src/routes/authRoutes.js";
+import coordinatorsRoutes from "./src/routes/coordinatorsRoutes.js";
 
 
 const app = express();
@@ -28,6 +29,7 @@ app.use("/api/login", loginRoutes)
 app.use("/api/logout", logoutRoutes)
 app.use("/api/registerEmployees", registerEmployeesRoutes)
 app.use("/api", authRoutes); // Agregar las rutas de autenticación
+app.use("/api/coordinators", coordinatorsRoutes); // Ruta para coordinadores
 
 // Exporto la constante para poder usar express en otros archivos
 export default app;
