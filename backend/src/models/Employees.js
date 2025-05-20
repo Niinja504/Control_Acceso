@@ -2,6 +2,11 @@ import { Schema, model } from "mongoose";
 
 const employeesSchema = new Schema(
   {
+    numEmpleado: {
+      type: String,
+      require: true,
+      maxLength: 100,
+    },
     names: {
       type: String,
       require: true,
@@ -36,6 +41,10 @@ const employeesSchema = new Schema(
         type: String,
         require: true,
         maxLength: 100,
+    },
+    hireDate: {
+      type: Date,
+      require: true,
     },
     department: {
         type: String,

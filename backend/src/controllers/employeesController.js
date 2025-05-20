@@ -10,12 +10,12 @@ employeesController.getEmployees = async (req, res) => {
 
 // I N S E R T
 employeesController.insertEmployees = async (req, res) => {
-  const { numEmpleado, names, surnames, DUI, birthday, telephone, email, password, department, status, address} = req.body;
+  const { numEmpleado, names, surnames, DUI, birthday, telephone, email, password, hireDate, department, status, address} = req.body;
 
   const salt = await bcryptjs.genSalt(10);
   const hashedPassword = await bcryptjs.hash(password, salt);
 
-  const newEmployee = new employeesModel({ numEmpleado, names, surnames, DUI, birthday, telephone, email, password: hashedPassword, department, status, address});
+  const newEmployee = new employeesModel({ numEmpleado, names, surnames, DUI, birthday, telephone, email, password: hashedPassword, hireDate, department, status, address});
   await newEmployee.save();
   res.json({ message: "employee saved" });
 };
@@ -28,10 +28,10 @@ employeesController.deleteEmployees = async (req, res) => {
 
 // U P D A T E
 employeesController.updateEmployees = async (req, res) => {
-  const { numEmpleado, names, surnames, DUI, birthday, telephone, email, password, department, status, address  } = req.body;
+  const { numEmpleado, names, surnames, DUI, birthday, telephone, email, password, hireDate, department, status, address} = req.body;
   const updateEmployee = await employeesModel.findByIdAndUpdate(
     req.params.id,
-    {   numEmpleado, names, surnames, DUI, birthday, telephone, email, password, department, status, address},
+    {numEmpleado, names, surnames, DUI, birthday, telephone, email, password, hireDate, department, status, address},
     { new: true }
   );
 

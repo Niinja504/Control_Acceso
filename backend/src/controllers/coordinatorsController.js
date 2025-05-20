@@ -10,17 +10,13 @@ coordinatorsController.getCoordinators = async (req, res) => {
 
 // I N S E R T
 coordinatorsController.insertCoordinator = async (req, res) => {
-  const { names, surnames, email, password, department } = req.body;
+  const { numEmpleado, names, surnames, DUI, birthday, telephone, email, password, department, status, address} = req.body;
 
   const salt = await bcryptjs.genSalt(10);
   const hashedPassword = await bcryptjs.hash(password, salt);
 
   const newCoordinator = new coordinatorsModel({
-    names,
-    surnames,
-    email,
-    password: hashedPassword,
-    department,
+    numEmpleado, names, surnames, DUI, birthday, telephone, email, password: hashedPassword, department, status, address
   });
   await newCoordinator.save();
   res.json({ message: "coordinator saved" });
@@ -34,11 +30,11 @@ coordinatorsController.deleteCoordinator = async (req, res) => {
 
 // U P D A T E
 coordinatorsController.updateCoordinator = async (req, res) => {
-  const { names, surnames, email, password, department } = req.body;
+  const {numEmpleado, names, surnames, DUI, birthday, telephone, email, password, department, status, address} = req.body;
 
   const updateCoordinator = await coordinatorsModel.findByIdAndUpdate(
     req.params.id,
-    { names, surnames, email, password, department },
+    {numEmpleado, names, surnames, DUI, birthday, telephone, email, password, department, status, address},
     { new: true }
   );
 
