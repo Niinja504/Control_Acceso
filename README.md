@@ -37,7 +37,7 @@ El sistema está desarrollado con el stack **MERN**, el cual permite una integra
 - **OriginUI**
 ---
 
-#Comandos para el proyecto
+### Comandos para el proyecto
 - **Instalar dependencias**: El comando `pip install -r requirements.txt` instala todas las dependencias listadas en el archivo `requirements.txt`.
 
 > Proyecto desarrollado con fines académicos para el Instituto Ricaldone.
