@@ -38,7 +38,7 @@ El sistema está desarrollado con el stack **MERN**, el cual permite una integra
 ---
 
 
-### Comandos para el proyecto
+## Comandos para el proyecto
 Este proyecto se divide en dos partes principales: el **backend (Python)** y backend **frontend (MERN Stack)**. A continuación se detallan los pasos para instalar y ejecutar cada parte.
 ---
 ### 1. **Backend (Python)**
