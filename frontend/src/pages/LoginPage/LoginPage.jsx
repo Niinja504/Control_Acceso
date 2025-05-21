@@ -76,7 +76,7 @@ export const LoginPage = () => {
           />
           <h1 className="title">
             Bienvenido al<br />
-            Portal Estudiantil ITR
+            marcador de acceso ITR
           </h1>
         </div>
 
