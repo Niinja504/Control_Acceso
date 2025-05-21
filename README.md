@@ -51,7 +51,6 @@ pip install -r requirements.txt
 
 ### 2. **Backend (MERN)**:
    **Instalar depedencias:**
-   Para
    ```bash
    npm i
    ````
