@@ -38,6 +38,12 @@ El sistema está desarrollado con el stack **MERN**, el cual permite una integra
 ---
 
 ### Comandos para el proyecto
-- **Instalar dependencias**: El comando `pip install -r requirements.txt` instala todas las dependencias listadas en el archivo `requirements.txt`.
+ 1. **Instalar dependencias:**
+   Para instalar todas las dependencias del backend, asegúrate de estar en el directorio donde se encuentra el archivo `requirements.txt`, y luego ejecuta el siguiente comando en tu terminal:
+   ```bash
+
+   pip install -r requirements.txt 
+````
+ 
 
 > Proyecto desarrollado con fines académicos para el Instituto Ricaldone.
