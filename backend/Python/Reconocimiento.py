@@ -1,90 +1,116 @@
 import cv2
 import os
+import base64
+import numpy as np
 from flask import Flask, jsonify, request
+from flask_cors import CORS
+import threading
+import time
+from datetime import datetime
+from dotenv import load_dotenv
 
 app = Flask(__name__)
+CORS(app)  
 
-# Ruta de la carpeta que contiene los clasificadores Haar
-haarcascade_dir = './Clasificadores/'
+dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+load_dotenv(dotenv_path)
 
-# Archivos de clasificadores que vamos a cargar
-classifier_files = [
-    'haarcascade_frontalface_default.xml',
-    'haarcascade_frontalface_alt2.xml',
-    'haarcascade_frontalface_alt.xml',
-    'haarcascade_profileface.xml',
-    'haarcascade_eye.xml',
-    'haarcascade_smile.xml'
-]
+haarcascade_dir = os.path.join(os.path.dirname(__file__), 'Clasificadores')
+face_cascade_path = os.path.join(haarcascade_dir, 'haarcascade_frontalface_default.xml')
 
-# Cargamos los clasificadores Haar en un diccionario
-classifiers = {}
+if not os.path.exists(face_cascade_path):
+    print(f"Error: archivo {face_cascade_path} no encontrado. Por favor, verifica la ruta.")
+    exit(1)
 
-# Verificamos si los archivos existen y los cargamos
-for classifier_file in classifier_files:
-    classifier_path = os.path.join(haarcascade_dir, classifier_file)
-    if os.path.exists(classifier_path):
-        classifiers[classifier_file] = cv2.CascadeClassifier(classifier_path)
-    else:
-        print(f"Advertencia: El archivo {classifier_file} no se encuentra en la ruta: {classifier_path}")
+face_cascade = cv2.CascadeClassifier(face_cascade_path)
 
-# Función para detectar rostros y otras características en una imagen usando los clasificadores Haar
+if face_cascade.empty():
+    print(f"Error: el clasificador no cargo correctamente desde {face_cascade_path}")
+    exit(1)
+else:
+    print(f"Clasificador cargado correctamente desde {face_cascade_path}")
+
+ultimo_estado = {
+    'rostros_detectados': False,
+    'hora': None,
+    'ultima_imagen': None 
+}
+
+def log():
+    while True:
+        time.sleep(2)
+        ahora = datetime.now()
+        estado = ultimo_estado['rostros_detectados']
+        hora = ultimo_estado['hora']
+        ultima_imagen = ultimo_estado['ultima_imagen']
+
+        if ultima_imagen is None or (ahora - ultima_imagen).total_seconds() > 5:
+            if estado:
+                print(f"[{ahora.strftime('%Y-%m-%d %H:%M:%S')}] No se detectaron rostros (timeout de imagen).")
+            ultimo_estado['rostros_detectados'] = False
+            ultimo_estado['hora'] = None
+            ultimo_estado['ultima_imagen'] = None
+        else:
+            hora_str = hora.strftime("%Y-%m-%d %H:%M:%S") if hora else "Nunca"
+            if estado:
+                print(f"[{hora_str}] Rostros detectados.")
+            else:
+                print(f"[{hora_str}] No se detectaron rostros.")
+
+threading.Thread(target=log, daemon=True).start()
+
 def detect_faces(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    detections = {}
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=3)
+    return faces
 
-    # Detectar rostros frontales
-    faces = classifiers['haarcascade_frontalface_default.xml'].detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
-    detections['frontal_faces'] = faces
-
-    # Detectar otros tipos de rostros (frontal con variaciones)
-    alt_faces = classifiers['haarcascade_frontalface_alt2.xml'].detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
-    detections['alt_faces'] = alt_faces
-
-    alt_faces_2 = classifiers['haarcascade_frontalface_alt.xml'].detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
-    detections['alt_faces_2'] = alt_faces_2
-
-    # Detectar rostros de perfil
-    profile_faces = classifiers['haarcascade_profileface.xml'].detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
-    detections['profile_faces'] = profile_faces
-
-    # Detectar ojos
-    eyes = classifiers['haarcascade_eye.xml'].detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
-    detections['eyes'] = eyes
-
-    # Detectar sonrisas
-    smiles = classifiers['haarcascade_smile.xml'].detectMultiScale(gray, scaleFactor=1.8, minNeighbors=20, minSize=(25, 25))
-    detections['smiles'] = smiles
-
-    return detections
-
-# Ruta para capturar la imagen desde la webcam
-@app.route('/capture', methods=['GET'])
+@app.route('/capture', methods=['POST'])
 def capture():
-    cap = cv2.VideoCapture(0)
-    ret, frame = cap.read()
-    cap.release()
+    data = request.get_json()
+    image_data = data.get('image', '')
 
-    if not ret:
-        return jsonify({"error": "No se pudo acceder a la cámara"}), 500
-    
-    detections = detect_faces(frame)
+    if not image_data:
+        return jsonify({"error": "No se recibio imagen"}), 400
+    try:
+        img_bytes = base64.b64decode(image_data)
+        np_img = np.frombuffer(img_bytes, np.uint8)
+        frame = cv2.imdecode(np_img, cv2.IMREAD_COLOR)
+        if frame is None:
+            return jsonify({"error": "No se pudo decodificar la imagen correctamente."}), 400
+        print(f"Imagen recibida con tamaño: {frame.shape}")
+    except Exception as e:
+        return jsonify({"error": f"Error al decodificar imagen: {e}"}), 400
 
-    # Dibujar los resultados sobre la imagen (si se detectan rostros, ojos, etc.)
-    for label, objects in detections.items():
-        for (x1, y1, w, h) in objects:
-            if label in ['frontal_faces', 'alt_faces', 'alt_faces_2', 'profile_faces']:  # Para rostros, dibujamos un rectángulo verde
-                cv2.rectangle(frame, (x1, y1), (x1 + w, y1 + h), (0, 255, 0), 2)
-            elif label == 'eyes':  # Para ojos, dibujamos un rectángulo azul
-                cv2.rectangle(frame, (x1, y1), (x1 + w, y1 + h), (255, 0, 0), 2)
-            elif label == 'smiles':  # Para sonrisas, dibujamos un rectángulo rojo
-                cv2.rectangle(frame, (x1, y1), (x1 + w, y1 + h), (0, 0, 255), 2)
+    faces = detect_faces(frame)
+    rostros_totales = len(faces)
 
-    # Convertimos la imagen en un formato adecuado para enviar por HTTP (base64)
+    if rostros_totales > 0:
+        print("Se detectó un rostro exitosamente en la fotografia.")
+    else:
+        print("No se detectaron rostros en la fotografia.")
+
+    ultimo_estado['rostros_detectados'] = rostros_totales > 0
+    ultimo_estado['hora'] = datetime.now()
+    ultimo_estado['ultima_imagen'] = datetime.now()
+
+    for (x, y, w, h) in faces:
+        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+    print(f"Rostros detectados: {rostros_totales}")
+
     _, buffer = cv2.imencode('.jpg', frame)
-    frame_b64 = buffer.tobytes()
+    frame_b64 = base64.b64encode(buffer).decode('utf-8')
 
-    return jsonify({"message": "Características detectadas", "detections": detections, "image": frame_b64.hex()})
+    detections = [[int(x), int(y), int(w), int(h)] for (x, y, w, h) in faces]
+
+    return jsonify({
+        "image": frame_b64,
+        "detections": detections
+    })
+
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    port = int(os.getenv('PORT_PYTHON'))
+    print("La API funciona correctamente.")
+    print(f"La API esta corriendo en el puerto {port}.")
+    app.run(debug=True, host='0.0.0.0', port=port)
