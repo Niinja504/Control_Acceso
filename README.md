@@ -37,13 +37,23 @@ El sistema está desarrollado con el stack **MERN**, el cual permite una integra
 - **OriginUI**
 ---
 
-### Comandos para el proyecto
- 1. **Instalar dependencias:**
-   Para instalar todas las dependencias del backend, asegúrate de estar en el directorio donde se encuentra el archivo `requirements.txt`, y luego ejecuta el siguiente comando en tu terminal:
-   ```bash
 
-   pip install -r requirements.txt 
+# Comandos para el proyecto
+Este proyecto se divide en dos partes principales: el **backend (Python)** y el **frontend (MERN Stack)**. A continuación se detallan los pasos para instalar y ejecutar cada parte.
+---
+### 1. **Backend (Python)**
+#### Instalar dependencias
+Para instalar todas las dependencias del **backend** en Python, asegúrate de estar en el directorio donde se encuentra el archivo `requirements.txt`, y luego ejecuta el siguiente comando en tu terminal:
+
+```bash
+pip install -r requirements.txt
 ````
- 
+
+### 2. **Backend (MERN)**:
+   **Instalar depedencias:**
+   Para
+   ```bash
+   npm i
+   ````
 
 > Proyecto desarrollado con fines académicos para el Instituto Ricaldone.
