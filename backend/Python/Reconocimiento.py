@@ -8,6 +8,7 @@ import threading
 import time
 from datetime import datetime
 from dotenv import load_dotenv
+import dlib
 
 app = Flask(__name__)
 CORS(app)  
@@ -24,6 +25,16 @@ if not os.path.exists(face_cascade_path):
 
 face_cascade = cv2.CascadeClassifier(face_cascade_path)
 
+#Aca se carga el clasificador el cual no servira para colocar la malla facial
+landmark_predictor_path = os.path.join(haarcascade_dir, 'shape_predictor_68_face_landmarks.dat')
+if not os.path.exists(landmark_predictor_path):
+    print(f"Error: archivo {landmark_predictor_path} no encontrado. Por favor, verifica la ruta.")
+    exit(1)
+
+landmark_predictor = dlib.shape_predictor(landmark_predictor_path)
+face_detector = dlib.get_frontal_face_detector()
+
+#Validacion para ver que se haya inicializado correctamente el clasificador
 if face_cascade.empty():
     print(f"Error: el clasificador no cargo correctamente desde {face_cascade_path}")
     exit(1)
@@ -36,6 +47,7 @@ ultimo_estado = {
     'ultima_imagen': None 
 }
 
+#Lo que se imprimira en consola para tener detalles de la ejecucion
 def log():
     while True:
         time.sleep(2)
@@ -59,10 +71,28 @@ def log():
 
 threading.Thread(target=log, daemon=True).start()
 
-def detect_faces(image):
+
+def deteccion_rostros(image):
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=3)
+    faces = face_detector(gray)
     return faces
+
+
+def malla_facial(image, faces):
+    for face in faces:
+        landmarks = landmark_predictor(image, face)
+        
+        for n in range(0, 68):
+            x = landmarks.part(n).x
+            y = landmarks.part(n).y
+            cv2.circle(image, (x, y), 1, (255, 0, 39), -1)
+
+        for i in range(1, 17):
+            x1, y1 = landmarks.part(i-1).x, landmarks.part(i-1).y
+            x2, y2 = landmarks.part(i).x, landmarks.part(i).y
+            cv2.line(image, (x1, y1), (x2, y2), (2, 64, 150), 1)
+
+    return image
 
 @app.route('/capture', methods=['POST'])
 def capture():
@@ -77,11 +107,11 @@ def capture():
         frame = cv2.imdecode(np_img, cv2.IMREAD_COLOR)
         if frame is None:
             return jsonify({"error": "No se pudo decodificar la imagen correctamente."}), 400
-        print(f"Imagen recibida con tamaño: {frame.shape}")
+        print(f"Imagen recibida con dimensiones: {frame.shape}")
     except Exception as e:
         return jsonify({"error": f"Error al decodificar imagen: {e}"}), 400
 
-    faces = detect_faces(frame)
+    faces = deteccion_rostros(frame)
     rostros_totales = len(faces)
 
     if rostros_totales > 0:
@@ -93,21 +123,22 @@ def capture():
     ultimo_estado['hora'] = datetime.now()
     ultimo_estado['ultima_imagen'] = datetime.now()
 
-    for (x, y, w, h) in faces:
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    for face in faces:
+        cv2.rectangle(frame, (face.left(), face.top()), (face.right(), face.bottom()), (0, 255, 0), 2)
+
+    frame_with_landmarks = malla_facial(frame, faces)
 
     print(f"Rostros detectados: {rostros_totales}")
 
-    _, buffer = cv2.imencode('.jpg', frame)
+    _, buffer = cv2.imencode('.jpg', frame_with_landmarks)
     frame_b64 = base64.b64encode(buffer).decode('utf-8')
 
-    detections = [[int(x), int(y), int(w), int(h)] for (x, y, w, h) in faces]
+    detections = [[int(face.left()), int(face.top()), int(face.width()), int(face.height())] for face in faces]
 
     return jsonify({
         "image": frame_b64,
         "detections": detections
     })
-
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT_PYTHON'))
