@@ -1,0 +1,29 @@
+* Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:4500
+ * Running on http://100.127.255.253:4500
+2025-05-21 21:27:59,578 INFO: [33mPress CTRL+C to quit[0m
+2025-05-21 21:29:04,852 INFO: 127.0.0.1 - - [21/May/2025 21:29:04] "OPTIONS /capture HTTP/1.1" 200 -
+2025-05-21 21:29:04,865 INFO: Imagen recibida con dimensiones: (480, 640, 3)
+2025-05-21 21:29:05,003 INFO: Se detectó un rostro exitosamente en la fotografía.
+2025-05-21 21:29:05,625 INFO: Rostros detectados en 2025-05-21 21:29:05.
+2025-05-21 21:29:05,685 INFO: Acceso denegado: rostro desconocido.
+2025-05-21 21:29:05,690 INFO: 127.0.0.1 - - [21/May/2025 21:29:05] "POST /capture HTTP/1.1" 200 -
+2025-05-21 21:29:07,627 INFO: Rostros detectados en 2025-05-21 21:29:05.
+2025-05-21 21:29:09,627 INFO: Rostros detectados en 2025-05-21 21:29:05.
+2025-05-21 21:29:11,629 INFO: No se detectaron rostros (timeout de imagen).
+2025-05-21 21:36:32,385 INFO: Clasificador cargado correctamente desde c:\Users\MTF\Desktop\Control_Acceso\backend\Python\Clasificadores\haarcascade_frontalface_default.xml
+2025-05-21 21:36:32,387 INFO: La API está corriendo en el puerto 4500.
+2025-05-21 21:36:32,404 INFO: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:4500
+ * Running on http://100.127.255.253:4500
+2025-05-21 21:36:32,404 INFO: [33mPress CTRL+C to quit[0m
+2025-05-21 21:36:32,405 INFO:  * Restarting with stat
+2025-05-21 21:36:34,964 INFO: Clasificador cargado correctamente desde c:\Users\MTF\Desktop\Control_Acceso\backend\Python\Clasificadores\haarcascade_frontalface_default.xml
+2025-05-21 21:36:34,965 INFO: La API está corriendo en el puerto 4500.
+2025-05-21 21:36:34,972 WARNING:  * Debugger is active!
+2025-05-21 21:36:34,975 INFO:  * Debugger PIN: 143-593-578
+2025-05-21 21:36:44,291 INFO:  * Detected change in 'c:\\Users\\MTF\\Desktop\\Control_Acceso\\backend\\Python\\Reconocimiento.py', reloading
+2025-05-21 21:36:44,831 INFO:  * Restarting with stat
+2025-05-21 21:36:47,416 INFO: Clasificador cargado correctamente desde c:\Users\MTF\Desktop\Control_Acceso\backend\Python\Clasificadores\haarcascade_frontalface_default.xml
+2025-05-21 21:36:47,417 INFO: La API está corriendo en el puerto 4500.
