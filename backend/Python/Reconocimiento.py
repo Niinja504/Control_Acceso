@@ -15,8 +15,12 @@ from pymongo import MongoClient
 app = Flask(__name__)
 CORS(app)
 
-dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+dotenv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env')
 load_dotenv(dotenv_path)
+
+RECONOCIMIENTO_API_KEY = os.getenv("RECONOCIMIENTO_API_KEY")
+mongo_uri = os.getenv("DB_URI")
+port = int(os.getenv('PORT_RECONOCIMIENTO'))
 
 webcam_en_uso = False
 webcam_lock = threading.Lock()
@@ -26,18 +30,27 @@ face_cascade_path = os.path.join(haarcascade_dir, 'haarcascade_frontalface_defau
 landmark_predictor_path = os.path.join(haarcascade_dir, 'shape_predictor_68_face_landmarks.dat')
 
 if not os.path.exists(face_cascade_path) or not os.path.exists(landmark_predictor_path):
-    print("Error: Archivos de clasificadores no encontrados.")
     exit(1)
 
 face_cascade = cv2.CascadeClassifier(face_cascade_path)
 landmark_predictor = dlib.shape_predictor(landmark_predictor_path)
 face_detector = dlib.get_frontal_face_detector()
 
-ultimo_estado = {
-    'rostros_detectados': False,
-    'hora': None,
-    'ultima_imagen': None
-}
+ultimo_estado = {'rostros_detectados': False, 'hora': None, 'ultima_imagen': None}
+
+def require_api_key(expected_key):
+    def decorator(f):
+        def wrapper(*args, **kwargs):
+            auth = request.headers.get('Authorization')
+            if not auth or not auth.startswith("Bearer "):
+                return jsonify({"error": "API Key faltante o inválida"}), 401
+            token = auth.split(" ")[1]
+            if token != expected_key:
+                return jsonify({"error": "API Key inválida"}), 403
+            return f(*args, **kwargs)
+        wrapper.__name__ = f.__name__
+        return wrapper
+    return decorator
 
 def log():
     while True:
@@ -71,8 +84,8 @@ def malla_facial(image, faces, padding=10):
             cv2.line(image, (x1, y1), (x2, y2), (2, 64, 150), 1)
     return image
 
-
 @app.route('/capture', methods=['POST'])
+@require_api_key(RECONOCIMIENTO_API_KEY)
 def capture():
     global webcam_en_uso
     with webcam_lock:
@@ -107,19 +120,15 @@ def capture():
         frame_b64 = base64.b64encode(buffer).decode('utf-8')
         detections = [[int(face.left()), int(face.top()), int(face.width()), int(face.height())] for face in faces]
 
-        return jsonify({
-            "image": frame_b64,
-            "detections": detections
-        })
+        return jsonify({"image": frame_b64, "detections": detections})
     finally:
         webcam_en_uso = False
 
-#Prueba######################################
-mongo_uri = os.getenv("DB_URI")
+
 mongo_client = MongoClient(mongo_uri)
 db = mongo_client["PTC_2025"]
 collection = db["Faces"]
-####################################
+
 
 known_encodings_global = []
 known_ids_global = []
@@ -153,7 +162,6 @@ def generar_frames():
     cap.set(cv2.CAP_PROP_FPS, 30)
 
     if not cap.isOpened():
-        print("No se pudo abrir la webcam.")
         webcam_en_uso = False
         return
 
@@ -183,12 +191,10 @@ def generar_frames():
 
             for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
                 cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 1)
-
                 if known_encodings:
                     distances = np.linalg.norm(np.array(known_encodings) - face_encoding, axis=1)
                     min_distance = np.min(distances)
                     best_match_index = np.argmin(distances)
-
                     if min_distance < 0.5:
                         person_id = known_ids[best_match_index]
                         cv2.putText(frame, f"ID: {person_id}", (left, top - 10),
@@ -215,16 +221,12 @@ def generar_frames():
     finally:
         cap.release()
         webcam_en_uso = False
-        print("Webcam liberada tras streaming.")
 
 @app.route('/video-capture')
 def realtime_face_recognition():
     return Response(generar_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-
-if __name__ == '__main__':
-    port = int(os.getenv('PORT_PYTHON'))
+def iniciar_api_reconocimiento():
     cargar_encodings_en_memoria()
-    print("La API funciona correctamente.")
-    print(f"La API esta corriendo en el puerto {port}.")
-    app.run(debug=True, host='0.0.0.0', port=port)
+    print("La API de reconocimiento facial está activa.")
+    app.run(debug=True, use_reloader=False, host='0.0.0.0', port=port)
