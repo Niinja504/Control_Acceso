@@ -97,7 +97,7 @@ def capture():
         data = request.get_json()
         image_data = data.get('image', '')
         if not image_data:
-            return jsonify({"error": "No se recibió imagen"}), 400
+            return jsonify({"error": "No se recibio imagen"}), 400
 
         img_bytes = base64.b64decode(image_data)
         np_img = np.frombuffer(img_bytes, np.uint8)
@@ -127,7 +127,7 @@ def capture():
 
 mongo_client = MongoClient(mongo_uri)
 db = mongo_client["PTC_2025"]
-collection = db["Faces"]
+collection = db["faces"]
 
 
 known_encodings_global = []
@@ -226,7 +226,11 @@ def generar_frames():
 def realtime_face_recognition():
     return Response(generar_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@app.route('/health', methods=['GET'])
+def health_check():
+    return jsonify({'status': 'ok'}), 200
+
 def iniciar_api_reconocimiento():
     cargar_encodings_en_memoria()
-    print("La API de reconocimiento facial está activa.")
+    print("La API de reconocimiento facial esta activa.")
     app.run(debug=True, use_reloader=False, host='0.0.0.0', port=port)

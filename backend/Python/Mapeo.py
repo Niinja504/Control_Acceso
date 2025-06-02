@@ -11,7 +11,7 @@ DB_URI = os.getenv('DB_URI')
 MAPEO_API_KEY = os.getenv("MAPEO_API_KEY")
 cliente = MongoClient(DB_URI)
 base_de_datos = cliente['PTC_2025']
-coleccion_de_caras = base_de_datos['Faces']
+coleccion_de_caras = base_de_datos['faces']
 
 app = Flask(__name__)
 UPLOAD_FOLDER = './uploads'
@@ -36,6 +36,7 @@ def Mapeo_cara(ruta_imagen):
         print(f"Error al procesar la imagen {ruta_imagen}: {e}")
         return None
 
+
 def require_api_key(expected_key):
     def decorator(f):
         def wrapper(*args, **kwargs):
@@ -50,6 +51,7 @@ def require_api_key(expected_key):
         return wrapper
     return decorator
 
+
 @app.route('/mapeo', methods=['POST'])
 @require_api_key(MAPEO_API_KEY)
 def mapeo():
@@ -59,7 +61,7 @@ def mapeo():
     file = request.files['file']
     
     if file.filename == '':
-        return jsonify({'error': 'No se seleccionó un archivo'}), 400
+        return jsonify({'error': 'No se selecciono un archivo'}), 400
     
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
@@ -85,6 +87,10 @@ def mapeo():
             return jsonify({'error': 'No se pudo extraer el vector de la cara'}), 400
 
     return jsonify({'error': 'Archivo no permitido'}), 400
+
+@app.route('/health', methods=['GET'])
+def health_check():
+    return jsonify({'status': 'ok'}), 200
 
 def iniciar_api_mapeo():
     port = int(os.getenv('PORT_MAPEO'))

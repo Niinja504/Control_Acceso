@@ -3,15 +3,15 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage/LoginPage';
 import ProtectedRoute from './components/ProtectedRoute';
-import AdminDashboard from './pages/AdminDashboard.jsx';
-import CoordinatorDashboard from './pages/CoordinatorDashboard.jsx';
-import EmployeeDashboard from './pages/EmployeeDashboard.jsx';
+import AdminDashboard from './pages/admin/AdminDashboard.jsx';
+import CoordinatorDashboard from './pages/coordinator/CoordinatorDashboard.jsx';
+import EmployeeDashboard from './pages/employee/EmployeeDashboard.jsx';
 
 function App() {
   return (
       <Router>
         <Routes>
-          {/* Redirigir a /login si se accede a la raíz */}
+          {}
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<LoginPage />} />
           <Route

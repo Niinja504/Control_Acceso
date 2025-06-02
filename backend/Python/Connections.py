@@ -1,10 +1,10 @@
 import requests
-from Config import MAPEO_API_URL, RECONOCIMIENTO_API_URL, MAPEO_API_KEY, RECONOCIMIENTO_API_KEY
+from Config import MAPEO_API_KEY, RECONOCIMIENTO_API_KEY, ENDPOINT_URL_TEST
 
 def conectar_api_mapeo():
     try:
         headers = {"Authorization": f"Bearer {MAPEO_API_KEY}"}
-        response = requests.get(MAPEO_API_URL, headers=headers)
+        response = requests.get(ENDPOINT_URL_TEST, headers=headers)
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
@@ -14,7 +14,7 @@ def conectar_api_mapeo():
 def conectar_api_reconocimiento():
     try:
         headers = {"Authorization": f"Bearer {RECONOCIMIENTO_API_KEY}"}
-        response = requests.get(RECONOCIMIENTO_API_URL, headers=headers)
+        response = requests.get(ENDPOINT_URL_TEST, headers=headers)
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:

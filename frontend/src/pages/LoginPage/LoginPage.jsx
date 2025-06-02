@@ -1,4 +1,4 @@
-import './LoginPage.css';
+import '../../styles/LoginPage.css';
 import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
