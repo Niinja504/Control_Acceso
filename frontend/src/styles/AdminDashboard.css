@@ -2,17 +2,69 @@
   min-height: 100vh;
   background-color: #f3f4f6;
   display: flex;
+  position: relative;
 }
 
+/* Hamburger Menu - Solo visible en móvil */
+.admin-hamburger-menu {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: linear-gradient(to right, #475569, #334155);
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hamburger-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.hamburger-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.hamburger-icon {
+  width: 24px;
+  height: 24px;
+  color: white;
+}
+
+/* Overlay para móvil */
+.admin-mobile-overlay {
+  display: none;
+  position: fixed;
+  top: 4rem; /* Comenzar desde donde termina el header */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999; /* Por debajo del sidebar */
+}
+
+/* Sidebar Principal */
 .admin-sidebar {
   width: 80px;
   background: linear-gradient(to bottom, #475569, #334155, #1e293b);
-  transition: width 0.3s;
+  transition: width 0.3s ease;
   overflow: hidden;
   border-top-right-radius: 2rem;
   border-bottom-right-radius: 2rem;
+  position: relative;
+  z-index: 1000;
 }
 
+/* Hover effect en desktop */
 .admin-sidebar:hover {
   width: 320px;
 }
@@ -32,7 +84,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
 }
 
 .admin-logo-img {
@@ -41,12 +93,18 @@
   object-fit: contain;
 }
 
+.admin-header-text {
+  flex: 1;
+  min-width: 0;
+}
+
 .admin-institute-title {
   color: white;
   font-weight: bold;
   font-size: 1.125rem;
   line-height: 1.25;
   margin: 0;
+  white-space: nowrap;
 }
 
 .admin-institute-subtitle {
@@ -55,6 +113,7 @@
   font-size: 1.25rem;
   letter-spacing: 0.05em;
   margin: 0;
+  white-space: nowrap;
 }
 
 .admin-navigation {
@@ -65,6 +124,7 @@
 }
 
 .admin-nav-item {
+  text-decoration: none; /* Elimina el subrayado */
   width: 100%;
   display: flex;
   align-items: center;
@@ -76,31 +136,28 @@
   cursor: pointer;
   transition: all 0.3s ease;
   background: transparent;
+  color: #cbd5e1;
 }
 
 .admin-nav-item:hover {
   background-color: #334155;
   color: white;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  text-decoration: none; /* Asegura que no se subraye al pasar el mouse */
 }
 
 .admin-nav-item.active {
   background-color: #475569;
   color: white;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-.admin-nav-item:not(.active) {
-  color: #cbd5e1;
+  text-decoration: none; /* Asegura que no se subraye cuando está activo */
 }
 
 .admin-nav-icon {
   width: 20px;
   height: 20px;
+  flex-shrink: 0;
   transition: color 0.3s ease;
-}
-
-.admin-nav-item:not(.active) .admin-nav-icon {
   color: #94a3b8;
 }
 
@@ -112,13 +169,16 @@
 .admin-nav-text {
   font-weight: 500;
   font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
-/* --- COLAPSADO: OCULTAR TEXTOS Y TITULOS --- */
+/* Efectos de colapso en desktop */
 .admin-sidebar:not(:hover) .admin-institute-title,
 .admin-sidebar:not(:hover) .admin-institute-subtitle,
 .admin-sidebar:not(:hover) .admin-nav-text {
-  display: none;
+  opacity: 0;
+  width: 0;
 }
 
 .admin-sidebar:not(:hover) .admin-header-content {
@@ -130,71 +190,66 @@
   padding-right: 0.75rem;
 }
 
-/* --- MAIN CONTENT --- */
+/* Main Content */
 .admin-main-content {
   flex: 1;
   background-color: #f3f4f6;
+  transition: margin-left 0.3s ease;
 }
 
-.admin-content-wrapper {
-  padding: 2rem;
-}
-
-.admin-content-card {
-  background-color: white;
-  border-radius: 0.75rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
-}
-
-.admin-content-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #1f2937;
-  margin-bottom: 1rem;
-}
-
-.admin-content-description {
-  color: #6b7280;
-}
-
-/* --- RESPONSIVE --- */
+/* RESPONSIVE - Tablet y móvil */
 @media (max-width: 768px) {
+  .admin-hamburger-menu {
+    display: flex;
+  }
+  
+  .admin-mobile-overlay {
+    display: block;
+  }
+  
   .admin-sidebar {
-    width: 60px;
+    position: fixed;
+    top: 4rem; /* Comenzar desde donde termina el header hamburguesa */
+    left: -320px;
+    width: 320px;
+    height: calc(100vh - 4rem); /* Altura menos la del header */
+    border-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    transition: left 0.3s ease;
+    z-index: 1000; /* Por debajo del header hamburguesa */
   }
-  .admin-sidebar:hover {
-    width: 280px;
+  
+  .admin-sidebar.mobile-open {
+    left: 0;
   }
-  .admin-content-wrapper {
-    padding: 1rem;
+  
+  /* En móvil siempre mostrar textos */
+  .admin-sidebar .admin-institute-title,
+  .admin-sidebar .admin-institute-subtitle,
+  .admin-sidebar .admin-nav-text {
+    opacity: 1 !important;
+    width: auto !important;
+    display: block !important;
   }
-  .admin-content-card {
-    padding: 1.5rem;
+  
+  .admin-sidebar .admin-header-content {
+    justify-content: flex-start;
   }
-}
-
-@media (max-width: 640px) {
-  .admin-dashboard-container {
-    flex-direction: column;
+  
+  .admin-sidebar .admin-sidebar-header {
+    display: none; /* Ocultar el header del logo en móvil */
   }
-  .admin-sidebar {
+  
+  .admin-sidebar .admin-navigation {
+    padding-top: 1rem; /* Padding normal ya que no hay superposición */
+    padding-bottom: 2rem;
+    height: 100%; /* Usar toda la altura disponible del sidebar */
+    overflow-y: auto; /* Scroll si es necesario */
+  }
+  
+  .admin-main-content {
+    margin-top: 4rem; /* Espacio para el header hamburguesa */
     width: 100%;
-    height: auto;
-  }
-  .admin-sidebar:hover {
-    width: 100%;
-  }
-  .admin-header-content {
-    justify-content: center;
-  }
-  .admin-navigation {
-    flex-direction: row;
-    overflow-x: auto;
-    padding: 1rem 0.5rem;
-  }
-  .admin-nav-item {
-    min-width: 200px;
-    flex-shrink: 0;
   }
 }
