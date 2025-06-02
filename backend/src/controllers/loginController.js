@@ -12,7 +12,7 @@ loginController.login = async (req, res) => {
   const { email, password} = req.body;
   try{
     //Validamos los 2 posibles niveles
-    //1. Admin, 2. Empleado
+    //1. Admin, 2. Coordinador, 3. Empleado
     let userFound;
     let userType;
 
