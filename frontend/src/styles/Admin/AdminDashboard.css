@@ -1,0 +1,21 @@
+.admin-dashboard-container {
+  min-height: 100vh;
+  background-color: #f3f4f6;
+  display: flex;
+  position: relative;
+}
+
+
+.admin-main-content {
+  flex: 1;
+  background-color: #f3f4f6;
+  transition: margin-left 0.3s ease;
+}
+
+
+@media (max-width: 768px) {
+  .admin-main-content {
+    margin-top: 4rem; 
+    width: 100%;
+  }
+}

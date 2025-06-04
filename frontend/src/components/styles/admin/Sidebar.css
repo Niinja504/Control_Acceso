@@ -1,11 +1,3 @@
-.admin-dashboard-container {
-  min-height: 100vh;
-  background-color: #f3f4f6;
-  display: flex;
-  position: relative;
-}
-
-/* Hamburger Menu - Solo visible en móvil */
 .admin-hamburger-menu {
   display: none;
   align-items: center;
@@ -190,13 +182,6 @@
   padding-right: 0.75rem;
 }
 
-/* Main Content */
-.admin-main-content {
-  flex: 1;
-  background-color: #f3f4f6;
-  transition: margin-left 0.3s ease;
-}
-
 /* RESPONSIVE - Tablet y móvil */
 @media (max-width: 768px) {
   .admin-hamburger-menu {
@@ -246,10 +231,5 @@
     padding-bottom: 2rem;
     height: 100%; /* Usar toda la altura disponible del sidebar */
     overflow-y: auto; /* Scroll si es necesario */
-  }
-  
-  .admin-main-content {
-    margin-top: 4rem; /* Espacio para el header hamburguesa */
-    width: 100%;
   }
 }
