@@ -11,7 +11,7 @@ import {
   Menu,
   X
 } from 'lucide-react';
-import '../../components/styles/admin/Sidebar.css'; 
+import '../../components/styles/Sidebar.css'; 
 import logoRical from '../../img/logo_rical.png';
 
 export default function Sidebar() {
