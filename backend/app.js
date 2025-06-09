@@ -2,6 +2,7 @@
 import express from "express";
 import employeeRoutes from "./src/routes/employees.js"
 import coordinatorsRoutes from "./src/routes/coordinatorsRoutes.js"
+import administratorsRoutes from "./src/routes/administratorsRoutes.js";
 import loginRoutes from "./src/routes/login.js"
 import cookieParser from "cookie-parser"
 import logoutRoutes from "./src/routes/logout.js"
@@ -31,6 +32,7 @@ app.use("/api/registerEmployees", registerEmployeesRoutes)
 app.use("/api", authRoutes); // Agregar las rutas de autenticación
 app.use("/api/coordinators", coordinatorsRoutes); // Ruta para coordinadores
 app.use("/api/registerCoordinators", registerCoordinatorsRoutes); // Ruta para registrar coordinadores
+app.use("/api/administrators", administratorsRoutes); // Ruta para administradores
 
 // Exporto la constante para poder usar express en otros archivos
 export default app;

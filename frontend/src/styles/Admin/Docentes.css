@@ -1,0 +1,159 @@
+.gestion-de-docentes {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.gestion-de-docentes .overlap-group {
+  border: 1px solid;
+  border-color: #00000030;
+  border-radius: 30px;
+  box-shadow: 0px 4px 4px #00000040;
+  height: 43px;
+  left: 154px;
+  position: absolute;
+  top: 110px;
+  width: 562px;
+}
+
+.gestion-de-docentes .busqueda {
+  height: 19px;
+  left: 15px;
+  object-fit: cover;
+  position: absolute;
+  top: 11px;
+  width: 19px;
+}
+
+.gestion-de-docentes .text-wrapper {
+  color: #00000033;
+  font-family: "Riveruta-Regular", Helvetica;
+  font-size: 17px;
+  font-weight: 400;
+  left: 42px;
+  position: absolute;
+  text-align: center;
+  top: 11px;
+}
+
+.gestion-de-docentes .text-wrapper-2 {
+  color: #000000;
+  font-family: "Riveruta-Regular", Helvetica;
+  font-size: 40px;
+  font-weight: 400;
+  left: 103px;
+  position: absolute;
+  text-align: center;
+  top: 38px;
+  width: 559px;
+}
+
+.gestion-de-docentes .overlap-group-2 {
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px #00000040;
+  height: 594px;
+  left: 154px;
+  position: absolute;
+  top: 190px;
+  width: 1051px;
+}
+
+.gestion-de-docentes .overlap-2 {
+  height: 544px;
+  left: 50px;
+  position: absolute;
+  top: 50px;
+  width: 892px;
+}
+
+.gestion-de-docentes .rectangle {
+  background-color: #d9d9d954;
+  border-radius: 10px;
+  height: 70px;
+  left: 11px;
+  position: absolute;
+  top: 461px;
+  width: 881px;
+}
+
+.gestion-de-docentes .nombre-ruth {
+  color: transparent;
+  font-family: "Riveruta-Regular", Helvetica;
+  font-size: 17px;
+  font-weight: 400;
+  left: 122px;
+  position: absolute;
+  text-align: center;
+  top: 62px;
+}
+
+.gestion-de-docentes .span {
+  color: #00000085;
+}
+
+.gestion-de-docentes .text-wrapper-6 {
+  color: #000000;
+}
+
+.gestion-de-docentes .text-wrapper-7 {
+  color: #000000ab;
+}
+
+.gestion-de-docentes .nombre-emilia {
+  color: transparent;
+  font-family: "Riveruta-Regular", Helvetica;
+  font-size: 17px;
+  font-weight: 400;
+  left: 117px;
+  position: absolute;
+  text-align: center;
+  top: 144px;
+}
+
+.gestion-de-docentes .text-wrapper-11 {
+  color: #0000004f;
+  font-family: "Riveruta-Regular", Helvetica;
+  font-size: 15px;
+  font-weight: 400;
+  left: 35px;
+  position: absolute;
+  text-align: center;
+  top: 29px;
+  white-space: nowrap;
+}
+
+.gestion-de-docentes .overlap-3 {
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #2a2f4330;
+  border-radius: 30px;
+  height: 41px;
+  left: 730px;
+  position: absolute;
+  top: 112px;
+  width: 251px;
+}
+
+.gestion-de-docentes .agregar {
+  height: 24px;
+  left: 14px;
+  object-fit: cover;
+  position: absolute;
+  top: 7px;
+  width: 24px;
+}
+
+.gestion-de-docentes .text-wrapper-12 {
+  color: #0000009e;
+  font-family: "Riveruta-Regular", Helvetica;
+  font-size: 16px;
+  font-weight: 400;
+  left: 45px;
+  position: absolute;
+  text-align: center;
+  top: 9px;
+  white-space: nowrap;
+}

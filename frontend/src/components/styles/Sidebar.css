@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
-  background: linear-gradient(to right, #475569, #334155);
+  background: linear-gradient(to right, #2A2F43);
   color: white;
   position: fixed;
   top: 0;
@@ -47,7 +47,7 @@
 /* Sidebar Principal */
 .admin-sidebar {
   width: 80px;
-  background: linear-gradient(to bottom, #475569, #334155, #1e293b);
+  background: linear-gradient(to bottom, #2A2F43);
   transition: width 0.3s ease;
   overflow: hidden;
   border-top-right-radius: 2rem;
@@ -63,7 +63,6 @@
 
 .admin-sidebar-header {
   padding: 1.5rem;
-  border-bottom: 1px solid #475569;
 }
 
 .admin-header-content {

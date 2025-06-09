@@ -6,6 +6,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AdminDashboard from './pages/admin/AdminDashboard.jsx';
 import CoordinatorDashboard from './pages/coordinator/CoordinatorDashboard.jsx';
 import EmployeeDashboard from './pages/employee/EmployeeDashboard.jsx';
+import Docentes from './pages/admin/Docentes.jsx'; // Importa el componente de gestión de docentes
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
           <Route path="" element={<Navigate to="dashboard" />} />
           {/* Todas las Routes del AdminDashboard */}
           <Route path="dashboard" element={<h1>Dashboard</h1>} />
-          <Route path="docentes" element={<h1>Gestión de Docentes</h1>} />
+          <Route path="docentes" element={<Docentes />} />
           <Route path="personal" element={<h1>Gestión de Personal</h1>} />
           <Route path="usuarios" element={<h1>Administración de Usuarios</h1>} />
           <Route path="permisos" element={<h1>Gestión de Permisos</h1>} />
