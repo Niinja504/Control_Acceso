@@ -8,10 +8,8 @@ def main():
 
     p1 = Process(target=iniciar_api_mapeo)
     p2 = Process(target=iniciar_api_reconocimiento)
-
     p1.start()
     p2.start()
-
     print("Conectando a las APIs...")
 
     mapeo_resultado = conectar_api_mapeo()

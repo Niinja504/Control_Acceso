@@ -10,6 +10,7 @@ import registerEmployeesRoutes from "./src/routes/registerEmployees.js";
 import cors from 'cors';
 import authRoutes from "./src/routes/authRoutes.js";
 import registerCoordinatorsRoutes from "./src/routes/registerCoordinators.js";
+import teamsRoutes from "./src/routes/teamsRoutes.js";
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use("/api", authRoutes); // Agregar las rutas de autenticación
 app.use("/api/coordinators", coordinatorsRoutes); // Ruta para coordinadores
 app.use("/api/registerCoordinators", registerCoordinatorsRoutes); // Ruta para registrar coordinadores
 app.use("/api/administrators", administratorsRoutes); // Ruta para administradores
+app.use("/api/teams", teamsRoutes); // Ruta para las areas o departamentos
 
 // Exporto la constante para poder usar express en otros archivos
 export default app;

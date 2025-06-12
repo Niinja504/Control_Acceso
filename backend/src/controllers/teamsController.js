@@ -1,0 +1,61 @@
+import { model } from "mongoose";
+import TeamsModel from "../models/Teams.js";
+
+const teamsController = {};
+
+// Obtener todos los equipos
+teamsController.getTeam = async (req, res) => {
+  try {
+    const teams = await TeamsModel.find();
+    res.json(teams);
+  } catch (error) {
+    res.status(500).json({ message: "Error al obtener los equipos", error });
+  }
+};
+
+// Insertar nuevo equipo
+teamsController.insertTeam = async (req, res) => {
+  try {
+    const { name } = req.body;
+
+    const newTeam = new TeamsModel({ name });
+    await newTeam.save();
+
+    res.json({ message: "Equipo guardado correctamente" });
+  } catch (error) {
+    res.status(500).json({ message: "Error al guardar el equipo", error });
+  }
+};
+
+// Eliminar equipo por ID
+teamsController.deleteTeam = async (req, res) => {
+  try {
+    await TeamsModel.findByIdAndDelete(req.params.id);
+    res.json({ message: "Equipo eliminado correctamente" });
+  } catch (error) {
+    res.status(500).json({ message: "Error al eliminar el equipo", error });
+  }
+};
+
+// Actualizar nombre de equipo por ID
+teamsController.updateTeam = async (req, res) => {
+  try {
+    const { name } = req.body;
+
+    const updatedTeam = await TeamsModel.findByIdAndUpdate(
+      req.params.id,
+      { name },
+      { new: true }
+    );
+
+    if (!updatedTeam) {
+      return res.status(404).json({ message: "Equipo no encontrado" });
+    }
+
+    res.json({ message: "Equipo actualizado correctamente", updatedTeam });
+  } catch (error) {
+    res.status(500).json({ message: "Error al actualizar el equipo", error });
+  }
+};
+
+export default teamsController;
