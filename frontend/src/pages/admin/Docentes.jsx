@@ -2,9 +2,11 @@ import React, { useState, useMemo } from "react";
 import "../../styles/Admin/Docentes.css";
 import DocenteCard from "../../components/admin/DocenteCard.jsx";
 import { Search, CirclePlus } from "lucide-react";
+import NewPersonalCard from "../../components/admin/NewPersonalCard.jsx"; // Importación corregida
 
-const GestionDeDocentes = () => {
+const Docentes = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [showNewDocente, setShowNewDocente] = useState(false); // Estado para mostrar el modal
 
   const docentes = [
     { status: true, name: "Ruth Geraldine", surnames: "Fuentes Ramirez" },
@@ -42,12 +44,64 @@ const GestionDeDocentes = () => {
             />
           </div>
 
-          <button className="nuevo-docente-btn">
+          <button
+            className="nuevo-docente-btn"
+            onClick={() => setShowNewDocente(true)}
+          >
             <CirclePlus size={20} />
             Nuevo docente
           </button>
         </div>
       </div>
+
+      {/* Modal para Nuevo Docente */}
+      {showNewDocente && (
+        <div
+          className="modal-overlay"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(0,0,0,0.3)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+          }}
+          onClick={() => setShowNewDocente(false)}
+        >
+          <div
+            className="modal-content"
+            style={{
+              background: "#fff",
+              padding: "30px",
+              borderRadius: "10px",
+              position: "relative",
+              minWidth: "300px",
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              className="close-modal"
+              style={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                background: "transparent",
+                border: "none",
+                fontSize: "18px",
+                cursor: "pointer",
+              }}
+              onClick={() => setShowNewDocente(false)}
+            >
+              ×
+            </button>
+            <NewPersonalCard />
+          </div>
+        </div>
+      )}
 
       <div className="gestion-de-docentes">
         <div className="docentes-list">
@@ -72,4 +126,4 @@ const GestionDeDocentes = () => {
   );
 };
 
-export default GestionDeDocentes;
+export default Docentes;
