@@ -17,7 +17,7 @@ registerCoordinatorsController.register = async (req, res) => {
     email,
     password,
     hireDate,
-    department,
+    IdTeam,
     status,
     address
   } = req.body;
@@ -41,7 +41,7 @@ registerCoordinatorsController.register = async (req, res) => {
       email,
       password: passwordHash,
       hireDate,
-      department,
+      IdTeam,
       status,
       address
     });

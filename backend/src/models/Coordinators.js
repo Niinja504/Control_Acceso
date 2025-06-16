@@ -46,11 +46,11 @@ const coordinatorsSchema = new Schema(
       type: Date,
       require: true,
     },
-    department: {
-        type: String,
-        require: true,
-        maxLength: 100,
-    },
+    IdTeam: {
+      type: Schema.Types.ObjectId,
+      ref: "teams",
+      require: true,
+  },
     status: {
         type: Boolean,
         require: true,

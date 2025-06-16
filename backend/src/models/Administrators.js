@@ -41,9 +41,10 @@ const AdministratorSchema = new Schema(
             type: Date,
             required: true
         },
-        department: {
-            type: String,
-            required: true
+        IdTeam: {
+            type: Schema.Types.ObjectId,
+            ref: "teams",
+            require: true,
         },
         status: {
             type: Boolean,

@@ -51,7 +51,7 @@
   transition: width 0.3s ease;
   overflow: hidden;
   border-top-right-radius: 2rem;
-  border-bottom-right-radius: 2rem;
+  border-bottom-right-radius: 2rem; /* Esta línea redondea el borde inferior derecho */
   position: relative;
   z-index: 1000;
 }

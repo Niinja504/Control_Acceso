@@ -86,7 +86,6 @@
 
 /* Gráfico de líneas */
 .widget-line-chart {
-  width: 100%;
   min-height: 250px;
   text-align: center;
   padding: 1rem;

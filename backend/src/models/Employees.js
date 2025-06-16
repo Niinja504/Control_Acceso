@@ -46,10 +46,10 @@ const employeesSchema = new Schema(
       type: Date,
       require: true,
     },
-    department: {
-        type: String,
+    IdTeam: {
+        type: Schema.Types.ObjectId,
+        ref: "teams",
         require: true,
-        maxLength: 100,
     },
     status: {
         type: Boolean,

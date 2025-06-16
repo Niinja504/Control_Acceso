@@ -10,7 +10,7 @@ administratorsController.getAdministrators = async (req, res) => {
 
 // I N S E R T
 administratorsController.insertAdministrator = async (req, res) => {
-  const { numEmpleado, names, surnames, DUI, birthday, telephone, email, password, hireDate, department, status, address } = req.body;
+  const { numEmpleado, names, surnames, DUI, birthday, telephone, email, password, hireDate, IdTeam, status, address } = req.body;
 
   const salt = await bcryptjs.genSalt(10);
   const hashedPassword = await bcryptjs.hash(password, salt);
@@ -25,7 +25,7 @@ administratorsController.insertAdministrator = async (req, res) => {
     email,
     password: hashedPassword,
     hireDate,
-    department,
+    IdTeam,
     status,
     address
   });
@@ -41,11 +41,11 @@ administratorsController.deleteAdministrator = async (req, res) => {
 
 // U P D A T E
 administratorsController.updateAdministrator = async (req, res) => {
-  const { numEmpleado, names, surnames, DUI, birthday, telephone, email, password, hireDate, department, status, address } = req.body;
+  const { numEmpleado, names, surnames, DUI, birthday, telephone, email, password, hireDate, IdTeam, status, address } = req.body;
 
   const updateAdministrator = await administratorsModel.findByIdAndUpdate(
     req.params.id,
-    { numEmpleado, names, surnames, DUI, birthday, telephone, email, password, hireDate, department, status, address },
+    { numEmpleado, names, surnames, DUI, birthday, telephone, email, password, hireDate, IdTeam, status, address },
     { new: true }
   );
 
