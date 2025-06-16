@@ -3,11 +3,12 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage/LoginPage';
 import ProtectedRoute from './components/ProtectedRoute';
-import AdminDashboard from './pages/admin/AdminDashboard.jsx';
+import AdminDashboard from './pages/admin/Dashboard.jsx';
 import CoordinatorDashboard from './pages/coordinator/CoordinatorDashboard.jsx';
 import EmployeeDashboard from './pages/employee/EmployeeDashboard.jsx';
 import Docentes from './pages/admin/Docentes.jsx'; 
 import Accesos from './pages/admin/Accesos.jsx';  
+import Home from './components/admin/home.jsx'; // Importa el componente Home
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
           {/* Redirecciona al Dashboard */}
           <Route path="" element={<Navigate to="dashboard" />} />
           {/* Todas las Routes del AdminDashboard */}
-          <Route path="dashboard" element={<h1>Dashboard</h1>} />
+          <Route path="dashboard" element={<Home/>} />
           <Route path="docentes" element={<Docentes />} />
           <Route path="personal" element={<h1>Gestión de Personal</h1>} />
           <Route path="usuarios" element={<h1>Administración de Usuarios</h1>} />

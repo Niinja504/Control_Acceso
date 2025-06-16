@@ -1,8 +1,18 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+
 .access-history-container {
   padding: 2rem;
   background: #fff;
   border-radius: 10px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .access-history-container h1 {
@@ -57,12 +67,12 @@
 
 /* Botón más ancho para Docentes */
 .filter-button.docentes {
-  width: 220px;
+  width: 320px;
 }
 
 /* Botón más estrecho para Entrada/Salida */
 .filter-button.salidas {
-  width: 120px;
+  width: 110px;
 }
 
 /* Posicionamiento del dropdown */
@@ -87,7 +97,7 @@
 
 /* Anchos específicos */
 .dropdown-menu.docentes {
-  width: 220px;
+  width: 210px;
 }
 .dropdown-menu.salidas {
   width: 120px;
@@ -114,12 +124,17 @@
   background: #f0f0f0;
 }
 
+/* Scroll solo dentro de access-list */
 .access-list {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  max-height: 60vh; /* Puedes ajustar este valor */
+  overflow-y: auto;
+  padding-right: 0.5rem;
 }
 
+/* Estilo para tarjetas de acceso */
 .access-card {
   display: flex;
   justify-content: space-between;

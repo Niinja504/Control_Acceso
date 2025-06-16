@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../../components/admin/Sidebar';
-import '../../styles/Admin/AdminDashboard.css';
+import '../../styles/Admin/Dashboard.css';
 
 export default function RicaldoneNavigation() {
   return (

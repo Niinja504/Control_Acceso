@@ -17,6 +17,27 @@ const accessData = [
     time: '5:21',
     avatar: 'https://i.pravatar.cc/150?img=2',
   },
+  {
+    name: 'Emilia Fernanda Fuentes Ramirez',
+    time: '5:21',
+    avatar: 'https://i.pravatar.cc/150?img=2',
+  },
+  {
+    name: 'Emilia Fernanda Fuentes Ramirez',
+    time: '5:21',
+    avatar: 'https://i.pravatar.cc/150?img=2',
+  },
+  {
+    name: 'Emilia Fernanda Fuentes Ramirez',
+    time: '5:21',
+    avatar: 'https://i.pravatar.cc/150?img=2',
+  },
+  {
+    name: 'Emilia Fernanda Fuentes Ramirez',
+    time: '5:21',
+    avatar: 'https://i.pravatar.cc/150?img=2',
+  },
+  
 ];
 
 export default function Accesos() {

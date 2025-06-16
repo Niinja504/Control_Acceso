@@ -7,7 +7,7 @@ const useDataTeams = () => {
   const [teams, setTeams] = useState([]);
   const [teamEdit, setTeamEdit] = useState(null);
 
-  // Obtener todos los equipos
+  // Obtener todos las areas
   const fetchTeams = async () => {
     try {
       const res = await axios.get("http://localhost:4000/api/teams");
@@ -18,18 +18,18 @@ const useDataTeams = () => {
     }
   };
 
-  // Insertar o actualizar equipo
+  // Insertar o actualizar area
   const saveTeam = async (teamData) => {
     try {
       if (teamEdit) {
-        // Actualizar equipo
+        //actualizar area
         await axios.put(
           `http://localhost:4000/api/teams/${teamEdit._id}`,
           teamData
         );
         Swal.fire("¡Actualizado!", "El equipo ha sido actualizado.", "success");
       } else {
-        // Insertar equipo nuevo
+        // Insertar equipo area
         await axios.post("http://localhost:4000/api/teams", teamData);
         Swal.fire("¡Guardado!", "El equipo ha sido guardado.", "success");
       }
@@ -41,7 +41,7 @@ const useDataTeams = () => {
     }
   };
 
-  // Eliminar equipo con confirmación
+  // Eliminar area con confirmación
   const eliminarTeam = async (id) => {
     const result = await Swal.fire({
       title: "¿Estás seguro?",
