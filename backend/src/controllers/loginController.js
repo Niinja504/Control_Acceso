@@ -48,25 +48,6 @@ if (email === config.emailAdmin.email && password === config.emailAdmin.password
   }
 }
 
-// Generar token
-jsonwebtoken.sign(
-  { id: userFound._id, userType }, // Datos a guardar
-  config.JWT.secret, // Clave secreta
-  { expiresIn: config.JWT.expiresIn }, // Tiempo de expiración
-  (error, token) => {
-    if (error) {
-      console.log(error);
-      return res.status(500).json({ message: "Error generating token" });
-    }
-    res.cookie("authToken", token, {
-      httpOnly: true,
-      secure: false, // Cambiar a true si usas HTTPS
-      sameSite: "lax",
-    });
-    res.json({ message: "login successful", userType });
-  }
-);
-
     // Generar token
     jsonwebtoken.sign(
       { id: userFound._id, userType }, // Datos a guardar
