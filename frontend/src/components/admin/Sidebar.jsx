@@ -7,7 +7,8 @@ import {
   Settings, 
   Shield, 
   Clock, 
-  Scan, 
+  Scan,
+  LayoutGrid,
   Menu,
   X
 } from 'lucide-react';
@@ -25,6 +26,7 @@ export default function Sidebar() {
     { name: 'Gestión de permisos', path: '/admin-dashboard/permisos', icon: Shield },
     { name: 'Historial de accesos', path: '/admin-dashboard/historial', icon: Clock },
     { name: 'Registros faciales', path: '/admin-dashboard/registros', icon: Scan },
+    { name: 'Gestión de áreas', path: '/admin-dashboard/areas', icon: LayoutGrid }
   ];
 
   return (

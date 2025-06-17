@@ -4,11 +4,11 @@ import DocenteCard from "../../components/admin/DocenteCard.jsx";
 import { Search, CirclePlus } from "lucide-react";
 import NewPersonalCard from "../../components/admin/NewPersonalCard.jsx";
 import useEmployees from "../../hookS/admin/useDataEmployee.jsx";
-import useTeams from "../../hookS/admin/useDataTeams.jsx"; 
+import useTeams from "../../hookS/admin/useDataTeams.jsx";
 
 const AREAS_FILTRADAS = [
-  "684c55f1f9250ad01c4d5ee9", 
-  "684c55f1f9250ad01c4d5ee8", 
+  "684c55f1f9250ad01c4d5ee9",
+  "684c55f1f9250ad01c4d5ee8",
   "684c55f1f9250ad01c4d5ee6",
   "684c55f1f9250ad01c4d5ee7",
 ];
@@ -34,16 +34,31 @@ const Docentes = () => {
     return employees.filter((docente) => {
       const fullName = `${docente.names} ${docente.surnames}`.toLowerCase();
       const matchesSearch = fullName.includes(searchTerm.toLowerCase());
-      const matchesArea = selectedArea ? docente.departamento === selectedArea : true;
+      let matchesArea = true;
+      if (selectedArea === "") {
+        matchesArea =
+          AREAS_FILTRADAS.includes(docente.IdTeam) ||
+          AREAS_FILTRADAS.includes(docente.IdTeam?._id);
+      } else {
+        matchesArea =
+          docente.IdTeam === selectedArea ||
+          docente.IdTeam?._id === selectedArea;
+      }
       return matchesSearch && matchesArea;
     });
   }, [searchTerm, selectedArea, employees]);
 
   return (
     <>
-      <div className="encabezado" style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+      <div
+        className="encabezado"
+        style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+      >
         <h1 className="titulo">Gestión de docentes</h1>
-        <div className="busqueda-bar" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+        <div
+          className="busqueda-bar"
+          style={{ display: "flex", gap: "10px", alignItems: "center" }}
+        >
           <div className="buscador" style={{ flexGrow: 1 }}>
             <Search className="search-icon" size={18} />
             <input
@@ -124,10 +139,7 @@ const Docentes = () => {
 
       {}
       {showNewDocente && (
-        <div
-          className="modal-overlay"
-          onClick={() => setShowNewDocente(false)}
-        >
+        <div className="modal-overlay" onClick={() => setShowNewDocente(false)}>
           <div
             className="modal-content"
             onClick={(e) => e.stopPropagation()}
