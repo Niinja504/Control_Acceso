@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 import "../styles/CardNewclient.css";
 
-export default function NewPersonalCard() {
+// Convertir fechas a formato YYYY-MM-DD
+const toInputDateFormat = (date) => {
+  if (!date) return "";
+  const d = new Date(date);
+  const offset = d.getTimezoneOffset();
+  const localDate = new Date(d.getTime() - offset * 60 * 1000);
+  return localDate.toISOString().split("T")[0];
+};
+
+export default function NewPersonalCard({ onSaved, onClose }) {
   const [form, setForm] = useState({
     numEmpleado: "",
     names: "",
@@ -21,13 +31,24 @@ export default function NewPersonalCard() {
   const [teams, setTeams] = useState([]);
   const [loadingTeams, setLoadingTeams] = useState(true);
 
-  // Cargar equipos desde el backend
   useEffect(() => {
     const fetchTeams = async () => {
       try {
-        const res = await axios.get("http://localhost:3001/api/teams"); // Ajusta la URL si es necesario
-        setTeams(res.data);
+        const res = await axios.get("http://localhost:4000/api/teams");
+        const targetAreas = [
+          "Área Académica",
+          "Área Técnica",
+          "Área de CFP",
+          "Área de Escuela de Idiomas",
+        ];
+
+        const filteredTeams = res.data.filter((team) =>
+          targetAreas.includes(team.name)
+        );
+
+        setTeams(filteredTeams);
       } catch (error) {
+        console.error("Error al cargar equipos:", error);
         setTeams([]);
       } finally {
         setLoadingTeams(false);
@@ -47,10 +68,30 @@ export default function NewPersonalCard() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validación extra opcional (correo termina en @ricaldone.edu.sv)
+    if (!form.email.toLowerCase().endsWith("@ricaldone.edu.sv")) {
+      return Swal.fire(
+        "Correo inválido",
+        "El correo debe terminar en @ricaldone.edu.sv",
+        "warning"
+      );
+    }
+
+    const dataToSend = {
+      ...form,
+      birthday: toInputDateFormat(form.birthday),
+      hireDate: toInputDateFormat(form.hireDate),
+    };
+
     try {
-      await axios.post("http://localhost:3001/api/employees", form); // Ajusta la URL si es necesario
-      alert("Docente guardado correctamente");
-      // Limpia el formulario si lo deseas
+      // CORRECCIÓN: URL singular /api/employee
+      await axios.post("http://localhost:4000/api/employee", dataToSend);
+      await Swal.fire(
+        "¡Guardado!",
+        "El docente ha sido registrado exitosamente.",
+        "success"
+      );
       setForm({
         numEmpleado: "",
         names: "",
@@ -65,13 +106,32 @@ export default function NewPersonalCard() {
         status: true,
         address: "",
       });
+      onSaved(); // Notificar al padre que se guardó
+      if (onClose) onClose();
     } catch (error) {
-      alert("Error al guardar el docente");
+      console.error(
+        "Error al guardar el docente:",
+        error.response?.data || error.message
+      );
+      await Swal.fire(
+        "Error al guardar",
+        error.response?.data?.message ||
+          "Verifica que los campos estén correctos.",
+        "error"
+      );
     }
   };
 
   return (
     <form className="new-docente-form" onSubmit={handleSubmit}>
+      <button
+        type="button"
+        className="close-modal"
+        onClick={onClose}
+        aria-label="Cerrar"
+      >
+        ×
+      </button>
       <h2>Crea un nuevo docente</h2>
 
       <div className="form-field">
@@ -128,7 +188,7 @@ export default function NewPersonalCard() {
           id="birthday"
           name="birthday"
           type="date"
-          value={form.birthday}
+          value={toInputDateFormat(form.birthday)}
           onChange={handleChange}
           required
         />
@@ -177,7 +237,7 @@ export default function NewPersonalCard() {
           id="hireDate"
           name="hireDate"
           type="date"
-          value={form.hireDate}
+          value={toInputDateFormat(form.hireDate)}
           onChange={handleChange}
           required
         />

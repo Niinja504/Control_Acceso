@@ -74,7 +74,7 @@ export default function Home() {
           <div className="progress-circle">
             <div className="progress-fill">{progress}%</div>
           </div>
-          <p>Progreso de año lectivo {currentYear}</p>
+          <p>Progreso de año electivo {currentYear}</p>
         </div>
       </div>
 

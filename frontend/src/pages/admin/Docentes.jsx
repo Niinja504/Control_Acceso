@@ -1,52 +1,64 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import "../../styles/Admin/Docentes.css";
 import DocenteCard from "../../components/admin/DocenteCard.jsx";
 import { Search, CirclePlus } from "lucide-react";
-import NewPersonalCard from "../../components/admin/NewPersonalCard.jsx"; // Importación corregida
+import NewPersonalCard from "../../components/admin/NewPersonalCard.jsx";
+import useEmployees from "../../hookS/admin/useDataEmployee.jsx";
+import useTeams from "../../hookS/admin/useDataTeams.jsx"; 
+
+const AREAS_FILTRADAS = [
+  "684c55f1f9250ad01c4d5ee9", 
+  "684c55f1f9250ad01c4d5ee8", 
+  "684c55f1f9250ad01c4d5ee6",
+  "684c55f1f9250ad01c4d5ee7",
+];
 
 const Docentes = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [showNewDocente, setShowNewDocente] = useState(false); // Estado para mostrar el modal
+  const [showNewDocente, setShowNewDocente] = useState(false);
+  const [selectedArea, setSelectedArea] = useState("");
 
-  const docentes = [
-    { status: true, name: "Ruth Geraldine", surnames: "Fuentes Ramirez" },
-    { status: false, name: "Emilia Fernanda", surnames: "Fuentes Ramirez" },
-    { status: true, name: "Juan Carlos", surnames: "Martínez López" },
-    { status: false, name: "Laura Vanessa", surnames: "González Chávez" },
-    { status: true, name: "Pedro Andrés", surnames: "Zapata Mendoza" },
-    { status: false, name: "María José", surnames: "Serrano Rivera" },
-    { status: true, name: "César Augusto", surnames: "Torres León" },
-    { status: false, name: "Diana Carolina", surnames: "Rivas Salazar" },
-    { status: true, name: "Andrés Felipe", surnames: "Cortés Moreno" },
-    { status: false, name: "Valeria Sofía", surnames: "Ramírez Delgado" },
-  ];
+  const { employees, fetchEmployees } = useEmployees();
+  const { teams, fetchTeams } = useTeams();
+
+  useEffect(() => {
+    fetchEmployees();
+    fetchTeams();
+  }, []);
+
+  const filteredAreas = useMemo(() => {
+    return teams.filter((team) => AREAS_FILTRADAS.includes(team._id));
+  }, [teams]);
 
   const filteredDocentes = useMemo(() => {
-    return docentes.filter((docente) =>
-      `${docente.name} ${docente.surnames}`
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    );
-  }, [searchTerm, docentes]);
+    return employees.filter((docente) => {
+      const fullName = `${docente.names} ${docente.surnames}`.toLowerCase();
+      const matchesSearch = fullName.includes(searchTerm.toLowerCase());
+      const matchesArea = selectedArea ? docente.departamento === selectedArea : true;
+      return matchesSearch && matchesArea;
+    });
+  }, [searchTerm, selectedArea, employees]);
 
   return (
     <>
-      <div className="encabezado">
+      <div className="encabezado" style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
         <h1 className="titulo">Gestión de docentes</h1>
-        <div className="busqueda-bar">
-          <div className="buscador">
+        <div className="busqueda-bar" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <div className="buscador" style={{ flexGrow: 1 }}>
             <Search className="search-icon" size={18} />
             <input
               type="text"
               placeholder="Buscar por nombres y apellidos"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              style={{ width: "100%" }}
             />
           </div>
 
           <button
             className="nuevo-docente-btn"
             onClick={() => setShowNewDocente(true)}
+            style={{ display: "flex", alignItems: "center", gap: "5px" }}
           >
             <CirclePlus size={20} />
             Nuevo docente
@@ -54,64 +66,51 @@ const Docentes = () => {
         </div>
       </div>
 
-      {/* Modal para Nuevo Docente */}
-      {showNewDocente && (
-        <div
-          className="modal-overlay"
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            background: "rgba(0,0,0,0.3)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 1000,
-          }}
-          onClick={() => setShowNewDocente(false)}
-        >
-          <div
-            className="modal-content"
-            style={{
-              background: "#fff",
-              padding: "30px",
-              borderRadius: "10px",
-              position: "relative",
-              minWidth: "300px",
-            }}
-            onClick={e => e.stopPropagation()}
-          >
-            <button
-              className="close-modal"
-              style={{
-                position: "absolute",
-                top: "10px",
-                right: "10px",
-                background: "transparent",
-                border: "none",
-                fontSize: "18px",
-                cursor: "pointer",
-              }}
-              onClick={() => setShowNewDocente(false)}
-            >
-              ×
-            </button>
-            <NewPersonalCard />
-          </div>
-        </div>
-      )}
-
       <div className="gestion-de-docentes">
-        <div className="docentes-list">
-          <p className="Texto">Docentes académicos</p>
+        <div
+          className="docentes-list"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+            marginBottom: "10px",
+            justifyContent: "flex-start",
+            boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+            padding: "20px",
+            borderRadius: "10px",
+            maxHeight: "630px",
+            overflowY: "auto",
+            backgroundColor: "#ffffff",
+          }}
+        >
+          <select
+            value={selectedArea}
+            onChange={(e) => setSelectedArea(e.target.value)}
+            style={{
+              padding: "6px 10px",
+              borderRadius: "5px",
+              border: "1px solid #ccc",
+              cursor: "pointer",
+              fontSize: "16px",
+              minWidth: "180px",
+              alignSelf: "flex-start",
+              marginBottom: "10px",
+            }}
+          >
+            <option value="">Todas las áreas</option>
+            {filteredAreas.map((area) => (
+              <option key={area._id} value={area._id}>
+                {area.name}
+              </option>
+            ))}
+          </select>
+
           {filteredDocentes.length > 0 ? (
-            filteredDocentes.map((docente, index) => (
+            filteredDocentes.map((docente) => (
               <DocenteCard
-                key={index}
+                key={docente._id}
                 status={docente.status}
-                name={docente.name}
+                name={docente.names}
                 surnames={docente.surnames}
               />
             ))
@@ -122,6 +121,28 @@ const Docentes = () => {
           )}
         </div>
       </div>
+
+      {}
+      {showNewDocente && (
+        <div
+          className="modal-overlay"
+          onClick={() => setShowNewDocente(false)}
+        >
+          <div
+            className="modal-content"
+            onClick={(e) => e.stopPropagation()}
+            style={{ background: "none", boxShadow: "none", padding: 0 }}
+          >
+            <NewPersonalCard
+              onSaved={() => {
+                fetchEmployees();
+                setShowNewDocente(false);
+              }}
+              onClose={() => setShowNewDocente(false)}
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 };
