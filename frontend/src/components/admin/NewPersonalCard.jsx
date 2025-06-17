@@ -37,9 +37,7 @@ export default function NewPersonalCard({ onSaved, onClose }) {
         const res = await axios.get("http://localhost:4000/api/teams");
         const targetAreas = [
           "Área Académica",
-          "Área Técnica",
-          "Área de CFP",
-          "Área de Escuela de Idiomas",
+          "Área Técnica"
         ];
 
         const filteredTeams = res.data.filter((team) =>
@@ -64,6 +62,25 @@ export default function NewPersonalCard({ onSaved, onClose }) {
     } else {
       setForm({ ...form, [name]: value });
     }
+  };
+
+  const handleDUIChange = (e) => {
+  let value = e.target.value.replace(/\D/g, ""); // Solo números
+  if (value.length > 9) value = value.slice(0, 9); // Máximo 9 dígitos
+  if (value.length > 8) {
+    value = value.slice(0, 8) + "-" + value.slice(8);
+  }
+  setForm({ ...form, DUI: value });
+};
+
+  // Nuevo handler para el teléfono
+  const handleTelephoneChange = (e) => {
+    let value = e.target.value.replace(/\D/g, ""); // Solo números
+    if (value.length > 8) value = value.slice(0, 8); // Máximo 8 dígitos
+    if (value.length > 4) {
+      value = value.slice(0, 4) + "-" + value.slice(4);
+    }
+    setForm({ ...form, telephone: value });
   };
 
   const handleSubmit = async (e) => {
@@ -171,15 +188,19 @@ export default function NewPersonalCard({ onSaved, onClose }) {
       </div>
 
       <div className="form-field">
-        <label htmlFor="DUI">DUI:</label>
-        <input
-          id="DUI"
-          name="DUI"
-          type="text"
-          value={form.DUI}
-          onChange={handleChange}
-          required
-        />
+      <label htmlFor="DUI">DUI:</label>
+      <input
+        id="DUI"
+        name="DUI"
+        type="text"
+        value={form.DUI}
+        onChange={handleDUIChange}
+        required
+        maxLength={10} // 8 números + 1 guion + 1 número
+        pattern="\d{8}-\d{1}"
+        title="El formato debe ser 12345678-9"
+        placeholder="12345678-9"
+      />
       </div>
 
       <div className="form-field">
@@ -201,8 +222,12 @@ export default function NewPersonalCard({ onSaved, onClose }) {
           name="telephone"
           type="text"
           value={form.telephone}
-          onChange={handleChange}
+          onChange={handleTelephoneChange}
           required
+          maxLength={9}
+          pattern="\d{4}-\d{4}"
+          title="El formato debe ser 1234-5678"
+          placeholder="1234-5678"
         />
       </div>
 
