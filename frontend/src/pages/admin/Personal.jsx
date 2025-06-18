@@ -7,14 +7,17 @@ import useEmployees from "../../hookS/admin/useDataEmployee.jsx";
 import useTeams from "../../hookS/admin/useDataTeams.jsx";
 
 const AREAS_FILTRADAS = [
-  "684c55f1f9250ad01c4d5ee9", 
-  "684c55f1f9250ad01c4d5ee8", 
-  "684c55f1f9250ad01c4d5ee6",
-  "684c55f1f9250ad01c4d5ee7",
-  "684c55f1f9250ad01c4d5eea",
+  "684c55f1f9250ad01c4d5ee3",
+  "684c55f1f9250ad01c4d5ee4",
+  "684c55f1f9250ad01c4d5eed",
+  "684c55f1f9250ad01c4d5ee5",
+  "684c55f1f9250ad01c4d5eeb",
+  "684c55f1f9250ad01c4d5ee2",
+  "684c55f1f9250ad01c4d5eec",
+  "684c55f1f9250ad01c4d5eee",
 ];
 
-const Docentes = () => {
+const Personal = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showNewDocente, setShowNewDocente] = useState(false);
   const [selectedArea, setSelectedArea] = useState("");
@@ -55,7 +58,7 @@ const Docentes = () => {
         className="encabezado"
         style={{ display: "flex", flexDirection: "column", gap: "15px" }}
       >
-        <h1 className="titulo">Gestión de docentes</h1>
+        <h1 className="titulo">Gestión de empleados</h1>
         <div
           className="busqueda-bar"
           style={{ display: "flex", gap: "10px", alignItems: "center" }}
@@ -77,7 +80,7 @@ const Docentes = () => {
             style={{ display: "flex", alignItems: "center", gap: "5px" }}
           >
             <CirclePlus size={20} />
-            Nuevo docente
+            Nuevo empleado
           </button>
         </div>
       </div>
@@ -132,7 +135,7 @@ const Docentes = () => {
             ))
           ) : (
             <p style={{ padding: "20px", color: "#888" }}>
-              No se encontraron docentes.
+              No se encontraron empleados.
             </p>
           )}
         </div>
@@ -160,4 +163,4 @@ const Docentes = () => {
   );
 };
 
-export default Docentes;
+export default Personal;

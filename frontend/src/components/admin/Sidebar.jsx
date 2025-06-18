@@ -31,7 +31,7 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Hamburger Menu Button - Solo visible en móvil */}
+      {}
       <div className="admin-hamburger-menu">
         <img src={logoRical} alt="Logo Ricaldone" className="admin-logo-img" />
         <button
@@ -42,7 +42,7 @@ export default function Sidebar() {
         </button>
       </div>
 
-      {/* Overlay para cerrar menú en móvil */}
+      {}
       {isMenuOpen && (
         <div 
           className="admin-mobile-overlay"
@@ -50,9 +50,9 @@ export default function Sidebar() {
         />
       )}
 
-      {/* Sidebar Unificado */}
+      {}
       <div className={`admin-sidebar ${isMenuOpen ? 'mobile-open' : ''}`}>
-        {/* Header */}
+        {}
         <div className="admin-sidebar-header">
           <div className="admin-header-content">
             <div className="admin-logo-container">
@@ -69,7 +69,7 @@ export default function Sidebar() {
           </div>
         </div>
 
-        {/* Navigation Menu */}
+        {}
         <nav className="admin-navigation">
           {navigationItems.map((item, index) => {
             const Icon = item.icon;

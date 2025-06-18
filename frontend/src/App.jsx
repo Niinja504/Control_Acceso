@@ -7,8 +7,9 @@ import AdminDashboard from './pages/admin/Dashboard.jsx';
 import CoordinatorDashboard from './pages/coordinator/CoordinatorDashboard.jsx';
 import EmployeeDashboard from './pages/employee/EmployeeDashboard.jsx';
 import Docentes from './pages/admin/Docentes.jsx'; 
+import Empleados from './pages/admin/Personal.jsx';
 import Accesos from './pages/admin/Accesos.jsx';  
-import Home from './components/admin/home.jsx'; // Importa el componente Home
+import Home from './components/admin/home.jsx'; 
 
 function App() {
   return (
@@ -29,7 +30,7 @@ function App() {
           {/* Todas las Routes del AdminDashboard */}
           <Route path="dashboard" element={<Home/>} />
           <Route path="docentes" element={<Docentes />} />
-          <Route path="personal" element={<h1>Gestión de Personal</h1>} />
+          <Route path="personal" element={<Empleados/>} />
           <Route path="usuarios" element={<h1>Administración de Usuarios</h1>} />
           <Route path="permisos" element={<h1>Gestión de Permisos</h1>} />
           <Route path="historial" element={<Accesos/>} />
