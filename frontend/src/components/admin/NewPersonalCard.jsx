@@ -37,7 +37,9 @@ export default function NewPersonalCard({ onSaved, onClose }) {
         const res = await axios.get("http://localhost:4000/api/teams");
         const targetAreas = [
           "Área Académica",
-          "Área Técnica"
+          "Área Técnica",
+          "Área de Escuela de Idiomas",
+          "Área de CFP"
         ];
 
         const filteredTeams = res.data.filter((team) =>

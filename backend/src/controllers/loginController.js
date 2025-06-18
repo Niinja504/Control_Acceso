@@ -2,6 +2,7 @@ const loginController = {};
 
 import EmployeesModel from "../models/Employees.js";
 import CoordinatorsModel from "../models/Coordinators.js"; // Modelo para coordinadores
+import AdministratorsModel from "../models/Administrators.js";
 import bcryptjs from "bcryptjs";
 import jsonwebtoken from "jsonwebtoken";
 import { config } from "../config.js";
@@ -48,6 +49,9 @@ if (email === config.emailAdmin.email && password === config.emailAdmin.password
   }
 }
 
+console.log("si coinciden")
+console.log("si coinciden use"+userType)
+
     // Generar token
     jsonwebtoken.sign(
       { id: userFound._id, userType }, // Datos a guardar
@@ -69,7 +73,7 @@ if (email === config.emailAdmin.email && password === config.emailAdmin.password
     }
   catch (error) {
      console.log(error);
-     res.status(500).json({ message: "Internal server error" });
+     res.status(500).json({ message: "Internal server error aqui" });
   }
 };
 
