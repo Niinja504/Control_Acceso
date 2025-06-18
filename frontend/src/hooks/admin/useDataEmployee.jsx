@@ -10,7 +10,7 @@ const useDataEmployee = () => {
   // Obtener todos los empleados
   const fetchEmployees = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/api/employee"); // ← Corregido (singular)
+      const res = await axios.get("http://localhost:4000/api/employee");
       setEmployees(res.data);
     } catch (error) {
       console.error("Error al obtener empleados:", error);

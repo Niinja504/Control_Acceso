@@ -6,6 +6,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AdminDashboard from './pages/admin/Dashboard.jsx';
 import CoordinatorDashboard from './pages/coordinator/CoordinatorDashboard.jsx';
 import EmployeeDashboard from './pages/employee/EmployeeDashboard.jsx';
+import Admins from './pages/admin/Admins.jsx';
+import Coordinators from './pages/admin/Coordinadores.jsx';
 import Docentes from './pages/admin/Docentes.jsx'; 
 import Empleados from './pages/admin/Personal.jsx';
 import Accesos from './pages/admin/Accesos.jsx';  
@@ -31,7 +33,8 @@ function App() {
           <Route path="dashboard" element={<Home/>} />
           <Route path="docentes" element={<Docentes />} />
           <Route path="personal" element={<Empleados/>} />
-          <Route path="usuarios" element={<h1>Administración de Usuarios</h1>} />
+          <Route path="coordinadores" element={<Coordinators />} />
+          <Route path="usuarios" element={<Admins/>} />
           <Route path="permisos" element={<h1>Gestión de Permisos</h1>} />
           <Route path="historial" element={<Accesos/>} />
           <Route path="registros" element={<h1>Registros Faciales</h1>} />
