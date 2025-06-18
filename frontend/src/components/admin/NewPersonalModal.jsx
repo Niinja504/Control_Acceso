@@ -12,7 +12,11 @@ const toInputDateFormat = (date) => {
   return localDate.toISOString().split("T")[0];
 };
 
-export default function NewPersonalCard({ onSaved, onClose, tipo = "docente" }) {
+export default function NewPersonalCard({
+  onSaved,
+  onClose,
+  tipo = "docente",
+}) {
   const [form, setForm] = useState({
     numEmpleado: "",
     names: "",
@@ -39,12 +43,19 @@ export default function NewPersonalCard({ onSaved, onClose, tipo = "docente" }) 
           "Área Académica",
           "Área Técnica",
           "Área de Escuela de Idiomas",
-          "Área de CFP"
+          "Área de CFP",
         ];
 
-        const filteredTeams = res.data.filter((team) =>
-          targetAreas.includes(team.name)
-        );
+        let filteredTeams;
+        if (tipo === "docente") {
+          filteredTeams = res.data.filter((team) =>
+            targetAreas.includes(team.name)
+          );
+        } else {
+          filteredTeams = res.data.filter(
+            (team) => !targetAreas.includes(team.name)
+          );
+        }
 
         setTeams(filteredTeams);
       } catch (error) {
@@ -55,7 +66,7 @@ export default function NewPersonalCard({ onSaved, onClose, tipo = "docente" }) 
       }
     };
     fetchTeams();
-  }, []);
+  }, [tipo]);
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -130,10 +141,7 @@ export default function NewPersonalCard({ onSaved, onClose, tipo = "docente" }) 
       onSaved(); // Notificar al padre que se guardó
       if (onClose) onClose();
     } catch (error) {
-      console.error(
-        "Error al guardar:",
-        error.response?.data || error.message
-      );
+      console.error("Error al guardar:", error.response?.data || error.message);
       await Swal.fire(
         "Error al guardar",
         error.response?.data?.message ||
@@ -154,7 +162,9 @@ export default function NewPersonalCard({ onSaved, onClose, tipo = "docente" }) 
         ×
       </button>
       <h2>
-        {tipo === "docente" ? "Crear un nuevo docente" : "Crear un nuevo empleado"}
+        {tipo === "docente"
+          ? "Crear un nuevo docente"
+          : "Crear un nuevo empleado"}
       </h2>
 
       <div className="form-field">
