@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import "../styles/ModalNewPersonal.css";
+import "../styles/Modal.css";
 
 // Convertir fechas a formato YYYY-MM-DD
 const toInputDateFormat = (date) => {
@@ -12,7 +12,7 @@ const toInputDateFormat = (date) => {
   return localDate.toISOString().split("T")[0];
 };
 
-export default function NewPersonalCard({ onSaved, onClose, tipo = "docente" }) {
+export default function NewCoordinatorsModal({ onSaved, onClose }) {
   const [form, setForm] = useState({
     numEmpleado: "",
     names: "",
@@ -35,18 +35,7 @@ export default function NewPersonalCard({ onSaved, onClose, tipo = "docente" }) 
     const fetchTeams = async () => {
       try {
         const res = await axios.get("http://localhost:4000/api/teams");
-        const targetAreas = [
-          "Área Académica",
-          "Área Técnica",
-          "Área de Escuela de Idiomas",
-          "Área de CFP"
-        ];
-
-        const filteredTeams = res.data.filter((team) =>
-          targetAreas.includes(team.name)
-        );
-
-        setTeams(filteredTeams);
+        setTeams(res.data); // Mostrar todas las áreas sin filtro
       } catch (error) {
         console.error("Error al cargar equipos:", error);
         setTeams([]);
@@ -104,13 +93,10 @@ export default function NewPersonalCard({ onSaved, onClose, tipo = "docente" }) 
     };
 
     try {
-      // CORRECCIÓN: URL singular /api/employee
       await axios.post("http://localhost:4000/api/employee", dataToSend);
       await Swal.fire(
         "¡Guardado!",
-        tipo === "docente"
-          ? "El docente ha sido registrado exitosamente."
-          : "El empleado ha sido registrado exitosamente.",
+        "El coordinador ha sido registrado exitosamente.",
         "success"
       );
       setForm({
@@ -127,7 +113,7 @@ export default function NewPersonalCard({ onSaved, onClose, tipo = "docente" }) 
         status: true,
         address: "",
       });
-      onSaved(); // Notificar al padre que se guardó
+      onSaved(); 
       if (onClose) onClose();
     } catch (error) {
       console.error(
@@ -144,7 +130,7 @@ export default function NewPersonalCard({ onSaved, onClose, tipo = "docente" }) 
   };
 
   return (
-    <form className="new-docente-form" onSubmit={handleSubmit}>
+    <form className="new-coordinador-form" onSubmit={handleSubmit}>
       <button
         type="button"
         className="close-modal"
@@ -154,7 +140,7 @@ export default function NewPersonalCard({ onSaved, onClose, tipo = "docente" }) 
         ×
       </button>
       <h2>
-        {tipo === "docente" ? "Crear un nuevo docente" : "Crear un nuevo empleado"}
+        Crear un nuevo coordinador
       </h2>
 
       <div className="form-field">

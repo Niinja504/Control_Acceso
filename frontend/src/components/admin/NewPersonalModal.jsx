@@ -48,6 +48,7 @@ export default function NewPersonalCard({
 
         let filteredTeams;
         if (tipo === "docente") {
+
           filteredTeams = res.data.filter((team) =>
             targetAreas.includes(team.name)
           );

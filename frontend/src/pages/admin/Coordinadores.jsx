@@ -1,8 +1,8 @@
 import React, { useState, useMemo, useEffect } from "react";
-import "../../styles/Admin/Docentes.css";
+import "../../styles/Admin/Coordinators.css";
 import DocenteCard from "../../components/admin/DocenteCard.jsx";
 import { Search, CirclePlus } from "lucide-react";
-import NewPersonalCard from "../../components/admin/NewPersonalModal.jsx";
+import ModalCoordinators from "../../components/admin/NewCoordinatorsModal.jsx";
 import useCoordinators from "../../hookS/admin/useDataCoordinators.jsx";
 
 const Coordinadores = () => {
@@ -45,7 +45,7 @@ const Coordinadores = () => {
           </div>
 
           <button
-            className="nuevo-docente-btn"
+            className="nuevo-coordinador-btn"
             onClick={() => setShowNewCoordinador(true)}
             style={{ display: "flex", alignItems: "center", gap: "5px" }}
           >
@@ -55,9 +55,9 @@ const Coordinadores = () => {
         </div>
       </div>
 
-      <div className="gestion-de-docentes">
+      <div className="gestion-de-coordinadores">
         <div
-          className="docentes-list"
+          className="coordinadores-list"
           style={{
             display: "flex",
             flexDirection: "column",
@@ -96,8 +96,7 @@ const Coordinadores = () => {
             onClick={(e) => e.stopPropagation()}
             style={{ background: "none", boxShadow: "none", padding: 0 }}
           >
-            <NewPersonalCard
-              tipo="coordinador"
+            <ModalCoordinators
               onSaved={() => {
                 fetchCoordinators();
                 setShowNewCoordinador(false);

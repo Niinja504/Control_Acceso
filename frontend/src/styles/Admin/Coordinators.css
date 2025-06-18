@@ -50,8 +50,7 @@
   pointer-events: none;
 }
 
-
-.nuevo-docente-btn {
+.nuevo-coordinador-btn {
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -69,7 +68,7 @@
   transition: background-color 0.2s ease;
 }
 
-.gestion-de-docentes {
+.gestion-de-coordinadores {
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -80,7 +79,7 @@
   box-sizing: border-box;
 }
 
-.docentes-list {
+.coordinadores-list {
   width: 100%;
   max-width: 1500px;
   background-color: #ffffff;
@@ -96,11 +95,11 @@
   margin-top: 15px;
 }
 
-.docentes-list::-webkit-scrollbar {
+.coordinadores-list::-webkit-scrollbar {
   width: 12px;
 }
 
-.docentes-list::-webkit-scrollbar-thumb {
+.coordinadores-list::-webkit-scrollbar-thumb {
   background-color: #cccccc;
   border-radius: 10px;
   border: 3px solid white;
@@ -172,7 +171,7 @@
     align-items: stretch;
   }
 
-  .nuevo-docente-btn {
+  .nuevo-coordinador-btn {
     width: 100%;
     justify-content: center;
   }
@@ -181,7 +180,7 @@
     width: 100%;
   }
 
-  .docentes-list {
+  .coordinadores-list {
     padding: 15px;
   }
 
