@@ -150,6 +150,7 @@ const Personal = () => {
             style={{ background: "none", boxShadow: "none", padding: 0 }}
           >
             <NewPersonalCard
+              tipo="empleado"
               onSaved={() => {
                 fetchEmployees();
                 setShowNewDocente(false);

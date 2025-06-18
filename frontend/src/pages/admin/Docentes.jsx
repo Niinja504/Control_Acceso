@@ -7,8 +7,8 @@ import useEmployees from "../../hookS/admin/useDataEmployee.jsx";
 import useTeams from "../../hookS/admin/useDataTeams.jsx";
 
 const AREAS_FILTRADAS = [
-  "684c55f1f9250ad01c4d5ee9", 
-  "684c55f1f9250ad01c4d5ee8", 
+  "684c55f1f9250ad01c4d5ee9",
+  "684c55f1f9250ad01c4d5ee8",
   "684c55f1f9250ad01c4d5ee6",
   "684c55f1f9250ad01c4d5ee7",
   "684c55f1f9250ad01c4d5eea",
@@ -147,6 +147,7 @@ const Docentes = () => {
             style={{ background: "none", boxShadow: "none", padding: 0 }}
           >
             <NewPersonalCard
+              tipo="docente"
               onSaved={() => {
                 fetchEmployees();
                 setShowNewDocente(false);

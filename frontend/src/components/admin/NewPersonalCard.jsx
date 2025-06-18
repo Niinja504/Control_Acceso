@@ -12,7 +12,7 @@ const toInputDateFormat = (date) => {
   return localDate.toISOString().split("T")[0];
 };
 
-export default function NewPersonalCard({ onSaved, onClose }) {
+export default function NewPersonalCard({ onSaved, onClose, tipo = "docente" }) {
   const [form, setForm] = useState({
     numEmpleado: "",
     names: "",
@@ -67,13 +67,13 @@ export default function NewPersonalCard({ onSaved, onClose }) {
   };
 
   const handleDUIChange = (e) => {
-  let value = e.target.value.replace(/\D/g, ""); // Solo números
-  if (value.length > 9) value = value.slice(0, 9); // Máximo 9 dígitos
-  if (value.length > 8) {
-    value = value.slice(0, 8) + "-" + value.slice(8);
-  }
-  setForm({ ...form, DUI: value });
-};
+    let value = e.target.value.replace(/\D/g, ""); // Solo números
+    if (value.length > 9) value = value.slice(0, 9); // Máximo 9 dígitos
+    if (value.length > 8) {
+      value = value.slice(0, 8) + "-" + value.slice(8);
+    }
+    setForm({ ...form, DUI: value });
+  };
 
   // Nuevo handler para el teléfono
   const handleTelephoneChange = (e) => {
@@ -108,7 +108,9 @@ export default function NewPersonalCard({ onSaved, onClose }) {
       await axios.post("http://localhost:4000/api/employee", dataToSend);
       await Swal.fire(
         "¡Guardado!",
-        "El docente ha sido registrado exitosamente.",
+        tipo === "docente"
+          ? "El docente ha sido registrado exitosamente."
+          : "El empleado ha sido registrado exitosamente.",
         "success"
       );
       setForm({
@@ -129,7 +131,7 @@ export default function NewPersonalCard({ onSaved, onClose }) {
       if (onClose) onClose();
     } catch (error) {
       console.error(
-        "Error al guardar el docente:",
+        "Error al guardar:",
         error.response?.data || error.message
       );
       await Swal.fire(
@@ -151,7 +153,9 @@ export default function NewPersonalCard({ onSaved, onClose }) {
       >
         ×
       </button>
-      <h2>Crea un nuevo docente</h2>
+      <h2>
+        {tipo === "docente" ? "Crear un nuevo docente" : "Crear un nuevo empleado"}
+      </h2>
 
       <div className="form-field">
         <label htmlFor="numEmpleado">Código de empleado:</label>
@@ -190,19 +194,19 @@ export default function NewPersonalCard({ onSaved, onClose }) {
       </div>
 
       <div className="form-field">
-      <label htmlFor="DUI">DUI:</label>
-      <input
-        id="DUI"
-        name="DUI"
-        type="text"
-        value={form.DUI}
-        onChange={handleDUIChange}
-        required
-        maxLength={10} // 8 números + 1 guion + 1 número
-        pattern="\d{8}-\d{1}"
-        title="El formato debe ser 12345678-9"
-        placeholder="12345678-9"
-      />
+        <label htmlFor="DUI">DUI:</label>
+        <input
+          id="DUI"
+          name="DUI"
+          type="text"
+          value={form.DUI}
+          onChange={handleDUIChange}
+          required
+          maxLength={10}
+          pattern="\d{8}-\d{1}"
+          title="El formato debe ser 12345678-9"
+          placeholder="12345678-9"
+        />
       </div>
 
       <div className="form-field">
