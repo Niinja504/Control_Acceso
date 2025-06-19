@@ -9,7 +9,7 @@ import EmployeeDashboard from './pages/employee/EmployeeDashboard.jsx';
 import Admins from './pages/admin/Admins.jsx';
 import Coordinators from './pages/admin/Coordinadores.jsx';
 import Docentes from './pages/admin/Docentes.jsx'; 
-import Empleados from './pages/admin/Personal.jsx';
+import Empleados from './pages/admin/Empleados.jsx';
 import Accesos from './pages/admin/Accesos.jsx';  
 import Home from './components/admin/home.jsx'; 
 

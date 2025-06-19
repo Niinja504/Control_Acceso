@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useEffect } from "react";
 import "../../styles/Admin/Empleados.css";
-import DocenteCard from "../../components/admin/DocenteCard.jsx";
+import EmpleadoCard from "../../components/admin/DocenteCard.jsx";
 import { Search, CirclePlus } from "lucide-react";
-import ModalPersonal from "../../components/admin/NewPersonalModal.jsx";
-import useEmployees from "../../hookS/admin/useDataEmployee.jsx";
-import useTeams from "../../hookS/admin/useDataTeams.jsx";
+import ModalEmpleado from "../../components/admin/NewEmpleadosModal.jsx";
+import useEmployees from "../../hooks/admin/useDataEmployee.jsx";
+import useTeams from "../../hooks/admin/useDataTeams.jsx";
 
 const AREAS_FILTRADAS = [
   "684c55f1f9250ad01c4d5ee3",
@@ -17,7 +17,7 @@ const AREAS_FILTRADAS = [
   "684c55f1f9250ad01c4d5eee",
 ];
 
-const Personal = () => {
+const Empleados = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showNewEmpleado, setShowNewEmpleado] = useState(false);
   const [selectedArea, setSelectedArea] = useState("");
@@ -126,7 +126,7 @@ const Personal = () => {
 
           {filteredEmpleados.length > 0 ? (
             filteredEmpleados.map((empleado) => (
-              <DocenteCard
+              <EmpleadoCard
                 key={empleado._id}
                 status={empleado.status}
                 name={empleado.names}
@@ -142,13 +142,16 @@ const Personal = () => {
       </div>
 
       {showNewEmpleado && (
-        <div className="employee-modal-overlay active" onClick={() => setShowNewEmpleado(false)}>
+        <div
+          className={`employee-modal-overlay ${showNewEmpleado ? "active" : ""}`}
+          onClick={() => setShowNewEmpleado(false)}
+        >
           <div
             className="modal-content"
             onClick={(e) => e.stopPropagation()}
             style={{ background: "none", boxShadow: "none", padding: 0 }}
           >
-            <ModalPersonal
+            <ModalEmpleado
               tipo="empleado"
               onSaved={() => {
                 fetchEmployees();
@@ -163,4 +166,4 @@ const Personal = () => {
   );
 };
 
-export default Personal;
+export default Empleados;
