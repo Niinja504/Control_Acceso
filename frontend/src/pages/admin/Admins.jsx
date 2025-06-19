@@ -90,7 +90,7 @@ const Admins = () => {
       </div>
 
       {showNewAdmin && (
-        <div className="modal-overlay" onClick={() => setShowNewAdmin(false)}>
+        <div className="modal-overlay active" onClick={() => setShowNewAdmin(false)}>
           <div
             className="modal-content"
             onClick={(e) => e.stopPropagation()}

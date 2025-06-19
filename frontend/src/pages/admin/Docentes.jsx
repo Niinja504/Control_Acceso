@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import "../../styles/Admin/Docentes.css";
 import DocenteCard from "../../components/admin/DocenteCard.jsx";
 import { Search, CirclePlus } from "lucide-react";
-import NewPersonalCard from "../../components/admin/NewPersonalModal.jsx";
+import NewPersonalCard from "../../components/admin/NewTeachersModal.jsx";
 import useEmployees from "../../hookS/admin/useDataEmployee.jsx";
 import useTeams from "../../hookS/admin/useDataTeams.jsx";
 
@@ -140,7 +140,7 @@ const Docentes = () => {
 
       {}
       {showNewDocente && (
-        <div className="modal-overlay" onClick={() => setShowNewDocente(false)}>
+        <div className="modal-overlay active" onClick={() => setShowNewDocente(false)}>
           <div
             className="modal-content"
             onClick={(e) => e.stopPropagation()}

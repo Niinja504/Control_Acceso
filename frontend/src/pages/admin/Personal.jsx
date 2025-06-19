@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
-import "../../styles/Admin/Docentes.css";
+import "../../styles/Admin/Empleados.css";
 import DocenteCard from "../../components/admin/DocenteCard.jsx";
 import { Search, CirclePlus } from "lucide-react";
 import ModalPersonal from "../../components/admin/NewPersonalModal.jsx";
@@ -19,7 +19,7 @@ const AREAS_FILTRADAS = [
 
 const Personal = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [showNewDocente, setShowNewDocente] = useState(false);
+  const [showNewEmpleado, setShowNewEmpleado] = useState(false);
   const [selectedArea, setSelectedArea] = useState("");
 
   const { employees, fetchEmployees } = useEmployees();
@@ -34,19 +34,19 @@ const Personal = () => {
     return teams.filter((team) => AREAS_FILTRADAS.includes(team._id));
   }, [teams]);
 
-  const filteredDocentes = useMemo(() => {
-    return employees.filter((docente) => {
-      const fullName = `${docente.names} ${docente.surnames}`.toLowerCase();
+  const filteredEmpleados = useMemo(() => {
+    return employees.filter((empleado) => {
+      const fullName = `${empleado.names} ${empleado.surnames}`.toLowerCase();
       const matchesSearch = fullName.includes(searchTerm.toLowerCase());
       let matchesArea = true;
       if (selectedArea === "") {
         matchesArea =
-          AREAS_FILTRADAS.includes(docente.IdTeam) ||
-          AREAS_FILTRADAS.includes(docente.IdTeam?._id);
+          AREAS_FILTRADAS.includes(empleado.IdTeam) ||
+          AREAS_FILTRADAS.includes(empleado.IdTeam?._id);
       } else {
         matchesArea =
-          docente.IdTeam === selectedArea ||
-          docente.IdTeam?._id === selectedArea;
+          empleado.IdTeam === selectedArea ||
+          empleado.IdTeam?._id === selectedArea;
       }
       return matchesSearch && matchesArea;
     });
@@ -75,8 +75,8 @@ const Personal = () => {
           </div>
 
           <button
-            className="nuevo-docente-btn"
-            onClick={() => setShowNewDocente(true)}
+            className="nuevo-empleado-btn"
+            onClick={() => setShowNewEmpleado(true)}
             style={{ display: "flex", alignItems: "center", gap: "5px" }}
           >
             <CirclePlus size={20} />
@@ -85,9 +85,9 @@ const Personal = () => {
         </div>
       </div>
 
-      <div className="gestion-de-docentes">
+      <div className="gestion-de-empleados">
         <div
-          className="docentes-list"
+          className="empleados-list"
           style={{
             display: "flex",
             flexDirection: "column",
@@ -124,13 +124,13 @@ const Personal = () => {
             ))}
           </select>
 
-          {filteredDocentes.length > 0 ? (
-            filteredDocentes.map((docente) => (
+          {filteredEmpleados.length > 0 ? (
+            filteredEmpleados.map((empleado) => (
               <DocenteCard
-                key={docente._id}
-                status={docente.status}
-                name={docente.names}
-                surnames={docente.surnames}
+                key={empleado._id}
+                status={empleado.status}
+                name={empleado.names}
+                surnames={empleado.surnames}
               />
             ))
           ) : (
@@ -141,8 +141,8 @@ const Personal = () => {
         </div>
       </div>
 
-      {showNewDocente && (
-        <div className="modal-overlay" onClick={() => setShowNewDocente(false)}>
+      {showNewEmpleado && (
+        <div className="employee-modal-overlay active" onClick={() => setShowNewEmpleado(false)}>
           <div
             className="modal-content"
             onClick={(e) => e.stopPropagation()}
@@ -152,9 +152,9 @@ const Personal = () => {
               tipo="empleado"
               onSaved={() => {
                 fetchEmployees();
-                setShowNewDocente(false);
+                setShowNewEmpleado(false);
               }}
-              onClose={() => setShowNewDocente(false)}
+              onClose={() => setShowNewEmpleado(false)}
             />
           </div>
         </div>

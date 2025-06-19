@@ -90,7 +90,7 @@ const Coordinadores = () => {
       </div>
 
       {showNewCoordinador && (
-        <div className="modal-overlay" onClick={() => setShowNewCoordinador(false)}>
+        <div className="modal-overlay active" onClick={() => setShowNewCoordinador(false)}>
           <div
             className="modal-content"
             onClick={(e) => e.stopPropagation()}
