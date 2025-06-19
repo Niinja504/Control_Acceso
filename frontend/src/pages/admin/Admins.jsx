@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import "../../styles/Admin/Admins.css";
 import DocenteCard from "../../components/admin/DocenteCard.jsx";
 import { Search, CirclePlus } from "lucide-react";
-import NewPersonalCard from "../../components/admin/NewPersonalModal.jsx";
+import ModalAdmin from "../../components/admin/NewAdminModal.jsx";
 import useAdmins from "../../hookS/admin/useDataAdmin.jsx";
 
 const Admins = () => {
@@ -96,7 +96,7 @@ const Admins = () => {
             onClick={(e) => e.stopPropagation()}
             style={{ background: "none", boxShadow: "none", padding: 0 }}
           >
-            <NewPersonalCard
+            <ModalAdmin
               tipo="admin"
               onSaved={() => {
                 fetchAdmins();

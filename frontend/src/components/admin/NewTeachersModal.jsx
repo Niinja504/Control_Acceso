@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import "../styles/Modal.css";
+import "../styles/ModalNewTeacher.css";
 
 // Convertir fechas a formato YYYY-MM-DD
 const toInputDateFormat = (date) => {
@@ -12,7 +12,7 @@ const toInputDateFormat = (date) => {
   return localDate.toISOString().split("T")[0];
 };
 
-export default function NewCoordinatorsModal({ onSaved, onClose }) {
+export default function NewTeacherModal({ onSaved, onClose }) {
   const [form, setForm] = useState({
     numEmpleado: "",
     names: "",
@@ -35,7 +35,16 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
     const fetchTeams = async () => {
       try {
         const res = await axios.get("http://localhost:4000/api/teams");
-        setTeams(res.data); // Mostrar todas las áreas sin filtro
+        const targetAreas = [
+          "Área Académica",
+          "Área Técnica",
+          "Área de Escuela de Idiomas",
+          "Área de CFP",
+        ];
+        const filteredTeams = res.data.filter((team) =>
+          targetAreas.includes(team.name)
+        );
+        setTeams(filteredTeams);
       } catch (error) {
         console.error("Error al cargar equipos:", error);
         setTeams([]);
@@ -64,7 +73,6 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
     setForm({ ...form, DUI: value });
   };
 
-  // Nuevo handler para el teléfono
   const handleTelephoneChange = (e) => {
     let value = e.target.value.replace(/\D/g, ""); // Solo números
     if (value.length > 8) value = value.slice(0, 8); // Máximo 8 dígitos
@@ -93,10 +101,10 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
     };
 
     try {
-      await axios.post("http://localhost:4000/api/coordinators", dataToSend);
+      await axios.post("http://localhost:4000/api/employee", dataToSend);
       await Swal.fire(
         "¡Guardado!",
-        "El coordinador ha sido registrado exitosamente.",
+        "El docente ha sido registrado exitosamente.",
         "success"
       );
       setForm({
@@ -113,13 +121,10 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
         status: true,
         address: "",
       });
-      onSaved(); 
+      onSaved();
       if (onClose) onClose();
     } catch (error) {
-      console.error(
-        "Error al guardar:",
-        error.response?.data || error.message
-      );
+      console.error("Error al guardar:", error.response?.data || error.message);
       await Swal.fire(
         "Error al guardar",
         error.response?.data?.message ||
@@ -130,7 +135,7 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
   };
 
   return (
-    <form className="new-coordinador-form" onSubmit={handleSubmit}>
+    <form className="new-docente-form" onSubmit={handleSubmit}>
       <button
         type="button"
         className="close-modal"
@@ -139,9 +144,7 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
       >
         ×
       </button>
-      <h2>
-        Crear un nuevo coordinador
-      </h2>
+      <h2>Crear un nuevo docente</h2>
 
       <div className="form-field">
         <label htmlFor="numEmpleado">Código de empleado:</label>

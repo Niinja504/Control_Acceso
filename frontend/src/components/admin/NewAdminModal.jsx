@@ -35,7 +35,7 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
     const fetchTeams = async () => {
       try {
         const res = await axios.get("http://localhost:4000/api/teams");
-        setTeams(res.data); // Mostrar todas las áreas sin filtro
+        setTeams(res.data); 
       } catch (error) {
         console.error("Error al cargar equipos:", error);
         setTeams([]);
@@ -93,10 +93,10 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
     };
 
     try {
-      await axios.post("http://localhost:4000/api/coordinators", dataToSend);
+      await axios.post("http://localhost:4000/api/administrators", dataToSend);
       await Swal.fire(
         "¡Guardado!",
-        "El coordinador ha sido registrado exitosamente.",
+        "El Administrador ha sido registrado exitosamente.",
         "success"
       );
       setForm({
@@ -140,7 +140,7 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
         ×
       </button>
       <h2>
-        Crear un nuevo coordinador
+        Crear un nuevo administrador
       </h2>
 
       <div className="form-field">
