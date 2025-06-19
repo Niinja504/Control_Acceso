@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import "../../styles/Modal.css";
+import "../../components/styles/ModalNewTeams.css";
 
 export default function ModalNuevaArea({ onSaved, onClose }) {
   const [name, setName] = useState("");

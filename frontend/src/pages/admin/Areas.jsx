@@ -29,7 +29,7 @@ const AgruparEnFilas = ({ items, porFila, renderItem }) => {
   );
 };
 
-const Teams = () => {
+const Areas = () => {
   const [showModal, setShowModal] = useState(false);
   const { teams, fetchTeams } = useDataTeams();
 
@@ -95,4 +95,4 @@ const Teams = () => {
   );
 };
 
-export default Teams;
+export default Areas;

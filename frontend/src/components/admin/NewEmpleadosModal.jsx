@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import "../styles/ModalNewTeams.css";
+import "../../components/styles/ModalNewEmployee.css";
 
 // Convertir fechas a formato YYYY-MM-DD
 const toInputDateFormat = (date) => {
@@ -11,6 +11,13 @@ const toInputDateFormat = (date) => {
   const localDate = new Date(d.getTime() - offset * 60 * 1000);
   return localDate.toISOString().split("T")[0];
 };
+
+const targetAreas = [
+  "Área Académica",
+  "Área Técnica",
+  "Área de Escuela de Idiomas",
+  "Área de CFP",
+];
 
 export default function NewEmployeesModal({ onSaved, onClose }) {
   const [form, setForm] = useState({
@@ -50,6 +57,8 @@ export default function NewEmployeesModal({ onSaved, onClose }) {
     const { name, value, type } = e.target;
     if (type === "select-one" && name === "status") {
       setForm({ ...form, [name]: value === "activo" });
+    } else if (name === "IdTeam") {
+      setForm({ ...form, [name]: String(value) });
     } else {
       setForm({ ...form, [name]: value });
     }
@@ -84,14 +93,23 @@ export default function NewEmployeesModal({ onSaved, onClose }) {
       );
     }
 
+    if (!form.IdTeam || form.IdTeam === "") {
+      return Swal.fire(
+        "Equipo requerido",
+        "Debes seleccionar un equipo válido.",
+        "warning"
+      );
+    }
+
     const dataToSend = {
       ...form,
       birthday: toInputDateFormat(form.birthday),
       hireDate: toInputDateFormat(form.hireDate),
+      IdTeam: String(form.IdTeam),
     };
 
     try {
-      await axios.post("http://localhost:4000/api/employees", dataToSend);
+      await axios.post("http://localhost:4000/api/registerEmployees", dataToSend);
       await Swal.fire(
         "¡Guardado!",
         "El empleado ha sido registrado exitosamente.",
@@ -126,6 +144,11 @@ export default function NewEmployeesModal({ onSaved, onClose }) {
       );
     }
   };
+
+  // Filtrar equipos 
+  const filteredTeams = teams.filter(
+    (team) => !targetAreas.includes(team.name)
+  );
 
   return (
     <form className="new-empleado-form" onSubmit={handleSubmit}>
@@ -271,7 +294,7 @@ export default function NewEmployeesModal({ onSaved, onClose }) {
           {loadingTeams ? (
             <option disabled>Cargando equipos...</option>
           ) : (
-            teams.map((team) => (
+            filteredTeams.map((team) => (
               <option key={team._id} value={team._id}>
                 {team.name}
               </option>
