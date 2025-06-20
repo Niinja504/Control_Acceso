@@ -12,6 +12,9 @@ import authRoutes from "./src/routes/authRoutes.js";
 import registerCoordinatorsRoutes from "./src/routes/registerCoordinators.js";
 import teamsRoutes from "./src/routes/teamsRoutes.js";
 import AccessControl from "./src/routes/accessControlRoute.js";
+import swaggerUi from "swagger-ui-express";
+import fs from "fs";
+import path from "path";
 
 const app = express();
 
@@ -26,7 +29,14 @@ app.use(express.json());
 // Que acepte cookies
 app.use(cookieParser());
 
+//Traemos el archivo json
+const swaggerDocument = JSON.parse(
+  fs.readFileSync(path.resolve("./Apis.json"), "utf-8")
+);
+
 // Definir las rutas de las funciones que tendrá la página web
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+//
 app.use("/api/employee", employeeRoutes)
 app.use("/api/login", loginRoutes)
 app.use("/api/logout", logoutRoutes)
