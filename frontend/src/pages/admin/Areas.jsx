@@ -4,31 +4,7 @@ import AreaCard from "../../components/admin/AreaCard.jsx";
 import { CirclePlus } from "lucide-react";
 import ModalNuevaArea from "../../components/admin/NewTeamsModal.jsx";
 import useDataTeams from "../../hooks/admin/useDataTeams.jsx";
-import UpdateTeams from "../../components/admin/UpdateTeams.jsx"; 
-
-const AgruparEnFilas = ({ items, porFila, renderItem }) => {
-  const filas = [];
-  for (let i = 0; i < items.length; i += porFila) {
-    filas.push(items.slice(i, i + porFila));
-  }
-  return (
-    <>
-      {filas.map((fila, idx) => (
-        <div
-          key={idx}
-          style={{
-            display: "flex",
-            gap: "20px",
-            marginBottom: "20px",
-            flexWrap: "wrap",
-          }}
-        >
-          {fila.map(renderItem)}
-        </div>
-      ))}
-    </>
-  );
-};
+import UpdateTeams from "../../components/admin/UpdateTeams.jsx";
 
 const Areas = () => {
   const [showModal, setShowModal] = useState(false);
@@ -48,13 +24,6 @@ const Areas = () => {
           <button
             className="nuevo-empleado-btn"
             onClick={() => setShowModal(true)}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "5px",
-              width: "auto",
-              marginLeft: "3rem",
-            }}
           >
             <CirclePlus size={20} />
             Agregar área
@@ -65,10 +34,8 @@ const Areas = () => {
       <div className="gestion-de-empleados">
         <div className="empleados-list" style={{ minHeight: "200px" }}>
           {teams.length > 0 ? (
-            <AgruparEnFilas
-              items={teams}
-              porFila={4}
-              renderItem={(area) => (
+            <div className="area-row">
+              {teams.map((area) => (
                 <AreaCard
                   key={area._id}
                   name={area.name}
@@ -77,8 +44,8 @@ const Areas = () => {
                     setShowEditModal(true);
                   }}
                 />
-              )}
-            />
+              ))}
+            </div>
           ) : (
             <p style={{ padding: "20px", color: "#888" }}>
               No se encontraron áreas.
@@ -87,10 +54,9 @@ const Areas = () => {
         </div>
       </div>
 
-      {/* Modal para agregar área */}
       {showModal && (
         <div
-          className={`employee-modal-overlay active`}
+          className="employee-modal-overlay active"
           onClick={() => setShowModal(false)}
         >
           <div
@@ -109,10 +75,9 @@ const Areas = () => {
         </div>
       )}
 
-      {/* Modal para editar/eliminar área */}
       {showEditModal && selectedArea && (
         <div
-          className={`employee-modal-overlay active`}
+          className="employee-modal-overlay active"
           onClick={() => {
             setShowEditModal(false);
             setSelectedArea(null);

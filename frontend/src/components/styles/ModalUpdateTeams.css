@@ -1,4 +1,3 @@
-/* Animación suave al abrir */
 @keyframes modalZoomIn {
   0% {
     transform: scale(0.85);
@@ -10,8 +9,7 @@
   }
 }
 
-/* Contenedor principal del modal */
-.cvcard-modal {
+.card-teams-modal {
   position: relative;
   width: 420px;
   max-width: 95vw;
@@ -26,37 +24,36 @@
   animation: modalZoomIn 0.3s ease-in-out;
 }
 
-/* Título del modal */
-.cvcard-nombre {
-  font-size: 24px;
-  font-weight: 600;
-  color: #222;
+.card-teams-header {
+  width: 100%;
   margin-bottom: 20px;
   text-align: center;
 }
 
-/* Formulario */
-.cvcard-info {
+.card-teams-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #222;
+}
+
+.card-teams-form {
   width: 100%;
 }
 
-/* Etiquetas de campos */
-.cvcard-label {
+.card-teams-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-teams-label {
   font-size: 14px;
   color: #555;
   margin-bottom: 6px;
   font-weight: 500;
 }
 
-/* Contenedor de campo */
-.cvcard-info-group {
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Input */
-.cvcard-value {
+.card-teams-input {
   padding: 10px 14px;
   font-size: 15px;
   border-radius: 10px;
@@ -65,20 +62,19 @@
   transition: border 0.3s, box-shadow 0.3s;
 }
 
-.cvcard-value:focus {
+.card-teams-input:focus {
   border-color: #4caf50;
   box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
   outline: none;
 }
 
-/* Botones */
-.cvcard-actions {
+.card-teams-actions {
   display: flex;
   justify-content: space-between;
   gap: 10px;
 }
 
-.cvcard-action-btn {
+.card-teams-btn {
   flex: 1;
   padding: 10px 0;
   font-size: 15px;
@@ -89,41 +85,40 @@
   transition: background 0.3s, transform 0.2s;
 }
 
-.cvcard-action-btn:hover {
+.card-teams-btn:hover {
   transform: scale(1.03);
 }
 
-.cvcard-action-btn:nth-child(1) {
+.card-teams-btn.success {
   background: #4caf50;
-  color: #fff;
+  color: white;
 }
 
-.cvcard-action-btn:nth-child(2) {
+.card-teams-btn.danger {
   background: #f44336;
-  color: #fff;
+  color: white;
 }
 
-.cvcard-action-btn:nth-child(3) {
+.card-teams-btn.neutral {
   background: #e0e0e0;
   color: #333;
 }
 
-/* Responsive para móviles */
 @media (max-width: 500px) {
-  .cvcard-modal {
+  .card-teams-modal {
     width: 94vw;
     padding: 24px 20px;
   }
 
-  .cvcard-nombre {
+  .card-teams-title {
     font-size: 20px;
   }
 
-  .cvcard-value {
+  .card-teams-input {
     font-size: 14px;
   }
 
-  .cvcard-action-btn {
+  .card-teams-btn {
     font-size: 14px;
   }
 }

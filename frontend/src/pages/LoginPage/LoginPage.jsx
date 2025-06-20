@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LogoRedondo from '../../img/logo_redondo.png';
 
-
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -127,7 +126,7 @@ export const LoginPage = () => {
           </b>
           <b>
             <p>
-              del{' '}
+              del{''}
               <a href="https://www.ricaldone.edu.sv/" className="highlight">
                 Instituto Técnico Ricaldone
               </a>

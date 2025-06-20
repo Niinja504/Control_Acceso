@@ -18,47 +18,35 @@ const UpdateTeams = ({ area, onClose }) => {
   };
 
   return (
-    <div className="cvcard-modal">
-      <div className="cvcard-header">
-        <div className="cvcard-nombre">Editar área</div>
+    <div className="card-teams-modal">
+      <div className="card-teams-header">
+        <div className="card-teams-title">Editar área</div>
       </div>
-      <form onSubmit={handleUpdate} className="cvcard-info">
-        <div className="cvcard-info-group">
-          <label className="cvcard-label">Nombre</label>
+      <form onSubmit={handleUpdate} className="card-teams-form">
+        <div className="card-teams-group">
+          <label className="card-teams-label">Nombre</label>
           <input
-            className="cvcard-value"
+            className="card-teams-input"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            style={{
-              fontSize: "16px",
-              padding: "6px 10px",
-              borderRadius: "8px",
-              border: "1px solid #ccc",
-              marginTop: "4px",
-            }}
             required
           />
         </div>
-        <div className="cvcard-actions" style={{ marginTop: "18px" }}>
-          <button
-            type="submit"
-            className="cvcard-action-btn"
-            style={{ background: "#4caf50", color: "#fff" }}
-          >
+        <div className="card-teams-actions">
+          <button type="submit" className="card-teams-btn success">
             Actualizar
           </button>
           <button
             type="button"
-            className="cvcard-action-btn"
-            style={{ background: "#f44336", color: "#fff" }}
+            className="card-teams-btn danger"
             onClick={handleDelete}
           >
             Eliminar
           </button>
           <button
             type="button"
-            className="cvcard-action-btn"
+            className="card-teams-btn neutral"
             onClick={onClose}
           >
             Cancelar
