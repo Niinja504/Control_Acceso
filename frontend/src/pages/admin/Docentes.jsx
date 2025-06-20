@@ -3,6 +3,7 @@ import "../../styles/Admin/Docentes.css";
 import DocenteCard from "../../components/admin/DocenteCard.jsx";
 import { Search, CirclePlus } from "lucide-react";
 import NewPersonalCard from "../../components/admin/NewTeachersModal.jsx";
+import UpdateTeachers from "../../components/admin/UpdateTeachers.jsx";
 import useEmployees from "../../hookS/admin/useDataEmployee.jsx";
 import useTeams from "../../hookS/admin/useDataTeams.jsx";
 
@@ -18,8 +19,9 @@ const Docentes = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showNewDocente, setShowNewDocente] = useState(false);
   const [selectedArea, setSelectedArea] = useState("");
+  const [docenteEdit, setDocenteEdit] = useState(null);
 
-  const { employees, fetchEmployees } = useEmployees();
+  const { employees, fetchEmployees, saveEmployee, deleteEmployee } = useEmployees();
   const { teams, fetchTeams } = useTeams();
 
   useEffect(() => {
@@ -123,12 +125,13 @@ const Docentes = () => {
 
           {filteredDocentes.length > 0 ? (
             filteredDocentes.map((docente) => (
-              <DocenteCard
-                key={docente._id}
-                status={docente.status}
-                name={docente.names}
-                surnames={docente.surnames}
-              />
+              <div key={docente._id} onClick={() => setDocenteEdit(docente)} style={{ cursor: "pointer" }}>
+                <DocenteCard
+                  status={docente.status}
+                  name={docente.names}
+                  surnames={docente.surnames}
+                />
+              </div>
             ))
           ) : (
             <p style={{ padding: "20px", color: "#888" }}>
@@ -156,6 +159,24 @@ const Docentes = () => {
             />
           </div>
         </div>
+      )}
+
+      {}
+      {docenteEdit && (
+        <UpdateTeachers
+          empleado={docenteEdit}
+          onSave={async (data, id) => {
+            await saveEmployee(data, id);
+            setDocenteEdit(null);
+            fetchEmployees();
+          }}
+          onDelete={async (id) => {
+            await deleteEmployee(id);
+            setDocenteEdit(null);
+            fetchEmployees();
+          }}
+          onClose={() => setDocenteEdit(null)}
+        />
       )}
     </>
   );

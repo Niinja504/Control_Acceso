@@ -3,13 +3,20 @@ import "../../styles/Admin/Coordinators.css";
 import DocenteCard from "../../components/admin/DocenteCard.jsx";
 import { Search, CirclePlus } from "lucide-react";
 import ModalCoordinators from "../../components/admin/NewCoordinatorsModal.jsx";
+import UpdateCoordinators from "../../components/admin/UpdateCoordinators.jsx";
 import useCoordinators from "../../hookS/admin/useDataCoordinators.jsx";
 
 const Coordinadores = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showNewCoordinador, setShowNewCoordinador] = useState(false);
+  const [coordinadorEdit, setCoordinadorEdit] = useState(null);
 
-  const { coordinators, fetchCoordinators } = useCoordinators();
+  const {
+    coordinators,
+    fetchCoordinators,
+    saveCoordinator,
+    deleteCoordinator,
+  } = useCoordinators();
 
   useEffect(() => {
     fetchCoordinators();
@@ -74,12 +81,17 @@ const Coordinadores = () => {
         >
           {filteredCoordinadores.length > 0 ? (
             filteredCoordinadores.map((coordinador) => (
-              <DocenteCard
+              <div
                 key={coordinador._id}
-                status={coordinador.status}
-                name={coordinador.names}
-                surnames={coordinador.surnames}
-              />
+                onClick={() => setCoordinadorEdit(coordinador)}
+                style={{ cursor: "pointer" }}
+              >
+                <DocenteCard
+                  status={coordinador.status}
+                  name={coordinador.names}
+                  surnames={coordinador.surnames}
+                />
+              </div>
             ))
           ) : (
             <p style={{ padding: "20px", color: "#888" }}>
@@ -105,6 +117,24 @@ const Coordinadores = () => {
             />
           </div>
         </div>
+      )}
+
+      {/* Modal para editar/eliminar coordinador */}
+      {coordinadorEdit && (
+        <UpdateCoordinators
+          admin={coordinadorEdit}
+          onSave={async (data, id) => {
+            await saveCoordinator(data, id);
+            setCoordinadorEdit(null);
+            fetchCoordinators();
+          }}
+          onDelete={async (id) => {
+            await deleteCoordinator(id);
+            setCoordinadorEdit(null);
+            fetchCoordinators();
+          }}
+          onClose={() => setCoordinadorEdit(null)}
+        />
       )}
     </>
   );

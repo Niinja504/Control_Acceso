@@ -3,13 +3,15 @@ import "../../styles/Admin/Admins.css";
 import DocenteCard from "../../components/admin/DocenteCard.jsx";
 import { Search, CirclePlus } from "lucide-react";
 import ModalAdmin from "../../components/admin/NewAdminModal.jsx";
+import UpdateAdmins from "../../components/admin/UpdateAdmins.jsx";
 import useAdmins from "../../hookS/admin/useDataAdmin.jsx";
 
 const Admins = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showNewAdmin, setShowNewAdmin] = useState(false);
+  const [adminEdit, setAdminEdit] = useState(null);
 
-  const { admins, fetchAdmins } = useAdmins();
+  const { admins, fetchAdmins, saveAdmin, deleteAdmin } = useAdmins();
 
   useEffect(() => {
     fetchAdmins();
@@ -74,12 +76,13 @@ const Admins = () => {
         >
           {filteredAdmins.length > 0 ? (
             filteredAdmins.map((admin) => (
-              <DocenteCard
-                key={admin._id}
-                status={admin.status}
-                name={admin.names}
-                surnames={admin.surnames}
-              />
+              <div key={admin._id} onClick={() => setAdminEdit(admin)} style={{ cursor: "pointer" }}>
+                <DocenteCard
+                  status={admin.status}
+                  name={admin.names}
+                  surnames={admin.surnames}
+                />
+              </div>
             ))
           ) : (
             <p style={{ padding: "20px", color: "#888" }}>
@@ -89,6 +92,7 @@ const Admins = () => {
         </div>
       </div>
 
+      {/* Modal para crear nuevo admin */}
       {showNewAdmin && (
         <div className="modal-overlay active" onClick={() => setShowNewAdmin(false)}>
           <div
@@ -106,6 +110,24 @@ const Admins = () => {
             />
           </div>
         </div>
+      )}
+
+      {/* Modal para editar/eliminar admin */}
+      {adminEdit && (
+        <UpdateAdmins
+          admin={adminEdit}
+          onSave={async (data, id) => {
+            await saveAdmin(data, id);
+            setAdminEdit(null);
+            fetchAdmins();
+          }}
+          onDelete={async (id) => {
+            await deleteAdmin(id);
+            setAdminEdit(null);
+            fetchAdmins();
+          }}
+          onClose={() => setAdminEdit(null)}
+        />
       )}
     </>
   );

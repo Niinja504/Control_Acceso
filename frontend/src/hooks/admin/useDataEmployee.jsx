@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 const useDataEmployee = () => {
   const [employees, setEmployees] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [employeeEdit, setEmployeeEdit] = useState(null);
 
   // Obtener todos los empleados
   const fetchEmployees = async () => {
@@ -19,11 +18,11 @@ const useDataEmployee = () => {
   };
 
   // Crear o actualizar empleado
-  const saveEmployee = async (employeeData) => {
+  const saveEmployee = async (employeeData, idToUpdate = null) => {
     try {
-      if (employeeEdit) {
+      if (idToUpdate) {
         // Actualizar empleado
-        await axios.put(`http://localhost:4000/api/employee/${employeeEdit._id}`, employeeData);
+        await axios.put(`http://localhost:4000/api/employee/${idToUpdate}`, employeeData);
         Swal.fire("¡Actualizado!", "El empleado ha sido actualizado.", "success");
       } else {
         // Crear empleado
@@ -61,10 +60,9 @@ const useDataEmployee = () => {
     }
   };
 
-  // Cerrar formulario y limpiar edición
+  // Cerrar formulario
   const handleCloseForm = () => {
     setShowForm(false);
-    setEmployeeEdit(null);
   };
 
   useEffect(() => {
@@ -75,8 +73,6 @@ const useDataEmployee = () => {
     employees,
     showForm,
     setShowForm,
-    employeeEdit,
-    setEmployeeEdit,
     fetchEmployees,
     saveEmployee,
     deleteEmployee,

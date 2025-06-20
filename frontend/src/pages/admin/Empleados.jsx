@@ -3,6 +3,7 @@ import "../../styles/Admin/Empleados.css";
 import EmpleadoCard from "../../components/admin/DocenteCard.jsx";
 import { Search, CirclePlus } from "lucide-react";
 import ModalEmpleado from "../../components/admin/NewEmpleadosModal.jsx";
+import EditEmpleadoModal from "../../components/admin/UpdateEmpleaods.jsx";
 import useEmployees from "../../hooks/admin/useDataEmployee.jsx";
 import useTeams from "../../hooks/admin/useDataTeams.jsx";
 
@@ -21,8 +22,10 @@ const Empleados = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showNewEmpleado, setShowNewEmpleado] = useState(false);
   const [selectedArea, setSelectedArea] = useState("");
+  const [selectedEmpleado, setSelectedEmpleado] = useState(null);
 
-  const { employees, fetchEmployees } = useEmployees();
+  const { employees, fetchEmployees, saveEmployee, deleteEmployee } =
+    useEmployees();
   const { teams, fetchTeams } = useTeams();
 
   useEffect(() => {
@@ -52,6 +55,20 @@ const Empleados = () => {
     });
   }, [searchTerm, selectedArea, employees]);
 
+  // Guardar (crear o actualizar)
+  const handleSave = async (data, id) => {
+    await saveEmployee(data, id);
+    setSelectedEmpleado(null);
+    fetchEmployees();
+  };
+
+  // Eliminar empleado
+  const handleDelete = async (id) => {
+    await deleteEmployee(id);
+    setSelectedEmpleado(null);
+    fetchEmployees();
+  };
+
   return (
     <>
       <div
@@ -73,7 +90,6 @@ const Empleados = () => {
               style={{ width: "100%" }}
             />
           </div>
-
           <button
             className="nuevo-empleado-btn"
             onClick={() => setShowNewEmpleado(true)}
@@ -131,6 +147,7 @@ const Empleados = () => {
                 status={empleado.status}
                 name={empleado.names}
                 surnames={empleado.surnames}
+                onClick={() => setSelectedEmpleado(empleado)}
               />
             ))
           ) : (
@@ -143,7 +160,9 @@ const Empleados = () => {
 
       {showNewEmpleado && (
         <div
-          className={`employee-modal-overlay ${showNewEmpleado ? "active" : ""}`}
+          className={`employee-modal-overlay ${
+            showNewEmpleado ? "active" : ""
+          }`}
           onClick={() => setShowNewEmpleado(false)}
         >
           <div
@@ -161,6 +180,15 @@ const Empleados = () => {
             />
           </div>
         </div>
+      )}
+
+      {selectedEmpleado && (
+        <EditEmpleadoModal
+          empleado={selectedEmpleado}
+          onSave={handleSave}
+          onDelete={handleDelete}
+          onClose={() => setSelectedEmpleado(null)}
+        />
       )}
     </>
   );
