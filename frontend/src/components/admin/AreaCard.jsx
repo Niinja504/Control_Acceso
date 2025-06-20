@@ -1,6 +1,6 @@
 import React from "react";
 
-const AreaCard = ({ name }) => (
+const AreaCard = ({ name, onClick }) => (
   <div
     style={{
       background: "#f7f7f7",
@@ -17,7 +17,9 @@ const AreaCard = ({ name }) => (
       color: "#222",
       flex: "1 1 0",
       textAlign: "center",
+      cursor: "pointer",
     }}
+    onClick={onClick}
   >
     {name}
   </div>

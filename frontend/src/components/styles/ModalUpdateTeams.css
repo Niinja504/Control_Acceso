@@ -1,0 +1,129 @@
+/* Animación suave al abrir */
+@keyframes modalZoomIn {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Contenedor principal del modal */
+.cvcard-modal {
+  position: relative;
+  width: 420px;
+  max-width: 95vw;
+  background: #fefefe;
+  border-radius: 18px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
+  animation: modalZoomIn 0.3s ease-in-out;
+}
+
+/* Título del modal */
+.cvcard-nombre {
+  font-size: 24px;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Formulario */
+.cvcard-info {
+  width: 100%;
+}
+
+/* Etiquetas de campos */
+.cvcard-label {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+/* Contenedor de campo */
+.cvcard-info-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Input */
+.cvcard-value {
+  padding: 10px 14px;
+  font-size: 15px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+.cvcard-value:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+  outline: none;
+}
+
+/* Botones */
+.cvcard-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.cvcard-action-btn {
+  flex: 1;
+  padding: 10px 0;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.cvcard-action-btn:hover {
+  transform: scale(1.03);
+}
+
+.cvcard-action-btn:nth-child(1) {
+  background: #4caf50;
+  color: #fff;
+}
+
+.cvcard-action-btn:nth-child(2) {
+  background: #f44336;
+  color: #fff;
+}
+
+.cvcard-action-btn:nth-child(3) {
+  background: #e0e0e0;
+  color: #333;
+}
+
+/* Responsive para móviles */
+@media (max-width: 500px) {
+  .cvcard-modal {
+    width: 94vw;
+    padding: 24px 20px;
+  }
+
+  .cvcard-nombre {
+    font-size: 20px;
+  }
+
+  .cvcard-value {
+    font-size: 14px;
+  }
+
+  .cvcard-action-btn {
+    font-size: 14px;
+  }
+}

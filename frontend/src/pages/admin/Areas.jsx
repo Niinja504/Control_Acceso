@@ -4,6 +4,7 @@ import AreaCard from "../../components/admin/AreaCard.jsx";
 import { CirclePlus } from "lucide-react";
 import ModalNuevaArea from "../../components/admin/NewTeamsModal.jsx";
 import useDataTeams from "../../hooks/admin/useDataTeams.jsx";
+import UpdateTeams from "../../components/admin/UpdateTeams.jsx"; 
 
 const AgruparEnFilas = ({ items, porFila, renderItem }) => {
   const filas = [];
@@ -31,6 +32,8 @@ const AgruparEnFilas = ({ items, porFila, renderItem }) => {
 
 const Areas = () => {
   const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedArea, setSelectedArea] = useState(null);
   const { teams, fetchTeams } = useDataTeams();
 
   useEffect(() => {
@@ -50,7 +53,7 @@ const Areas = () => {
               alignItems: "center",
               gap: "5px",
               width: "auto",
-              marginLeft: "3rem", 
+              marginLeft: "3rem",
             }}
           >
             <CirclePlus size={20} />
@@ -66,7 +69,14 @@ const Areas = () => {
               items={teams}
               porFila={4}
               renderItem={(area) => (
-                <AreaCard key={area._id} name={area.name} />
+                <AreaCard
+                  key={area._id}
+                  name={area.name}
+                  onClick={() => {
+                    setSelectedArea(area);
+                    setShowEditModal(true);
+                  }}
+                />
               )}
             />
           ) : (
@@ -77,6 +87,7 @@ const Areas = () => {
         </div>
       </div>
 
+      {/* Modal para agregar área */}
       {showModal && (
         <div
           className={`employee-modal-overlay active`}
@@ -93,6 +104,32 @@ const Areas = () => {
                 setShowModal(false);
               }}
               onClose={() => setShowModal(false)}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Modal para editar/eliminar área */}
+      {showEditModal && selectedArea && (
+        <div
+          className={`employee-modal-overlay active`}
+          onClick={() => {
+            setShowEditModal(false);
+            setSelectedArea(null);
+          }}
+        >
+          <div
+            className="modal-content"
+            onClick={(e) => e.stopPropagation()}
+            style={{ background: "none", boxShadow: "none", padding: 0 }}
+          >
+            <UpdateTeams
+              area={selectedArea}
+              onClose={() => {
+                setShowEditModal(false);
+                setSelectedArea(null);
+                fetchTeams();
+              }}
             />
           </div>
         </div>
