@@ -52,7 +52,7 @@ export default function ModalNuevaArea({ onSaved, onClose }) {
           required
           minLength={3}
           maxLength={100}
-          placeholder="Ej: Laboratorio de Electrónica"
+          placeholder="Área"
         />
       </div>
       <button type="submit" className="btn-guardar" disabled={loading}>

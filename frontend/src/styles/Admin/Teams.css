@@ -186,6 +186,19 @@ select:focus {
   color: #222;
 }
 
+.encabezado-flex {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+.nuevo-empleado-btn {
+  width: auto; 
+  min-width: 120px;
+}
+
 @media (max-width: 982px) {
   .titulo {
     font-size: 28px;

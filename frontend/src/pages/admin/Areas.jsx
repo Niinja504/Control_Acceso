@@ -39,13 +39,19 @@ const Areas = () => {
 
   return (
     <>
-      <div className="encabezado" style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+      <div className="encabezado">
         <h1 className="titulo">Gestión de áreas</h1>
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <div style={{ display: "flex", justifyContent: "flex-start" }}>
           <button
             className="nuevo-empleado-btn"
             onClick={() => setShowModal(true)}
-            style={{ display: "flex", alignItems: "center", gap: "5px", width: "auto" }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "5px",
+              width: "auto",
+              marginLeft: "3rem", 
+            }}
           >
             <CirclePlus size={20} />
             Agregar área
