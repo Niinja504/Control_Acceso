@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import { 
   Home, 
   Users, 
@@ -9,15 +10,17 @@ import {
   Clock, 
   Scan,
   LayoutGrid,
-  UserCog ,
+  UserCog,
   Menu,
-  X
+  X,
+  LogOut
 } from 'lucide-react';
 import '../../components/styles/Sidebar.css'; 
 import logoRical from '../../img/logo_rical.png';
 
 export default function Sidebar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const navigationItems = [
     { name: 'Dashboard', path: '/admin-dashboard/dashboard', icon: Home },
@@ -31,9 +34,87 @@ export default function Sidebar() {
     { name: 'Gestión de áreas', path: '/admin-dashboard/areas', icon: LayoutGrid }
   ];
 
+  const handleLogout = async () => {
+    // Mostrar alerta de confirmación
+    const result = await Swal.fire({
+      title: '¿Cerrar sesión?',
+      text: '¿Estás seguro de que deseas cerrar la sesión?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#dc2626',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Sí, cerrar sesión',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true
+    });
+
+    if (result.isConfirmed) {
+      try {
+        Swal.fire({
+          title: 'Cerrando sesión...',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+
+        const token = localStorage.getItem('authToken');
+
+        await fetch('/api/logout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ token })
+        });
+
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('userData');
+        sessionStorage.clear();
+
+        Swal.close();
+
+        await Swal.fire({
+          title: '¡Sesión cerrada!',
+          text: 'Has cerrado sesión correctamente',
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false
+        });
+
+        navigate('/login', { replace: true });
+
+        window.history.pushState(null, '', window.location.href);
+        window.addEventListener('popstate', function(event) {
+          window.history.pushState(null, '', window.location.href);
+        });
+
+      } catch (error) {
+        console.error('Error al cerrar sesión:', error);
+        Swal.close();
+
+        await Swal.fire({
+          title: 'Error de conexión',
+          text: 'Hubo un problema al cerrar sesión en el servidor, pero se cerrará la sesión local',
+          icon: 'warning',
+          timer: 2000,
+          showConfirmButton: false
+        });
+
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('userData');
+        sessionStorage.clear();
+        navigate('/login', { replace: true });
+      }
+    }
+  };
+
   return (
     <>
-      {}
+      {/* Menú hamburguesa para móviles */}
       <div className="admin-hamburger-menu">
         <img src={logoRical} alt="Logo Ricaldone" className="admin-logo-img" />
         <button
@@ -44,7 +125,7 @@ export default function Sidebar() {
         </button>
       </div>
 
-      {}
+      {/* Overlay para cerrar el menú en móviles */}
       {isMenuOpen && (
         <div 
           className="admin-mobile-overlay"
@@ -52,9 +133,9 @@ export default function Sidebar() {
         />
       )}
 
-      {}
+      {/* Sidebar */}
       <div className={`admin-sidebar ${isMenuOpen ? 'mobile-open' : ''}`}>
-        {}
+        {/* Header del sidebar */}
         <div className="admin-sidebar-header">
           <div className="admin-header-content">
             <div className="admin-logo-container">
@@ -71,7 +152,7 @@ export default function Sidebar() {
           </div>
         </div>
 
-        {}
+        {/* Navegación */}
         <nav className="admin-navigation">
           {navigationItems.map((item, index) => {
             const Icon = item.icon;
@@ -88,6 +169,17 @@ export default function Sidebar() {
               </Link>
             );
           })}
+          
+          {/* Botón de cerrar sesión */}
+          <button
+            onClick={handleLogout}
+            className="admin-nav-item admin-logout-btn"
+          >
+            <LogOut className="admin-nav-icon" />
+            <span className="admin-nav-text">
+              Cerrar sesión
+            </span>
+          </button>
         </nav>
       </div>
     </>
