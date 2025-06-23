@@ -26,7 +26,7 @@ const useDataEmployee = () => {
         Swal.fire("¡Actualizado!", "El empleado ha sido actualizado.", "success");
       } else {
         // Crear empleado
-        await axios.post("http://localhost:4000/api/employee", employeeData);
+        await axios.post("http://localhost:4000/api/registerEmployees", employeeData);
         Swal.fire("¡Guardado!", "El empleado ha sido creado.", "success");
       }
       fetchEmployees();

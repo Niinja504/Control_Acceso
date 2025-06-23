@@ -40,6 +40,7 @@ export default function NewTeacherModal({ onSaved, onClose }) {
           "Área Técnica",
           "Área de Escuela de Idiomas",
           "Área de CFP",
+          "Área de Educación Física y Deportes"
         ];
         const filteredTeams = res.data.filter((team) =>
           targetAreas.includes(team.name)

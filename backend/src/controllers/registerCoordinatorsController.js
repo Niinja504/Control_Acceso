@@ -1,9 +1,17 @@
-const registerCoordinatorsController = {};
-
 import Coordinator from "../models/Coordinators.js";
 import bcryptjs from "bcryptjs";
 import jsonwebtoken from "jsonwebtoken";
 import { config } from "../config.js";
+import { v2 as cloudinary } from "cloudinary";
+
+// Configurar cloudinary
+cloudinary.config({
+  cloud_name: config.cloudinary.cloudinary_name,
+  api_key: config.cloudinary.cloudinary_api_key,
+  api_secret: config.cloudinary.cloudinary_api_secret,
+});
+
+const registerCoordinatorsController = {};
 
 // I N S E R T
 registerCoordinatorsController.register = async (req, res) => {
@@ -31,6 +39,16 @@ registerCoordinatorsController.register = async (req, res) => {
 
     const passwordHash = await bcryptjs.hash(password, 10);
 
+    // Subir foto a cloudinary si existe
+    let photoUrl = "";
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "coordinators",
+        allowed_formats: ["jpg", "png", "jpeg"],
+      });
+      photoUrl = result.secure_url;
+    }
+
     const newCoordinator = new Coordinator({
       numEmpleado,
       names,
@@ -43,10 +61,10 @@ registerCoordinatorsController.register = async (req, res) => {
       hireDate,
       IdTeam,
       status,
-      address
+      address,
+      photo: photoUrl,
     });
     await newCoordinator.save();
-    res.json({ message: "coordinator saved" });
 
     jsonwebtoken.sign(
       { id: newCoordinator._id },
@@ -57,6 +75,7 @@ registerCoordinatorsController.register = async (req, res) => {
         res.cookie("authToken", token);
       }
     );
+     res.json({ message: "coordinator saved" });
   } catch (error) {
     console.log(error);
     res.json({ message: "error register coordinator", error });

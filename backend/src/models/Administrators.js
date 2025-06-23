@@ -53,7 +53,11 @@ const AdministratorSchema = new Schema(
         address: {
             type: String,
             required: true
-        }
+        },
+        photo: {
+        type: String, // Puede ser una URL o el nombre del archivo
+        required: false, // No es obligatorio
+    },
     }
 );
 

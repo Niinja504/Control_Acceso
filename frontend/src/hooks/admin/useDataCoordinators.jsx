@@ -27,7 +27,7 @@ const useDataCoordinators = () => {
         Swal.fire("¡Actualizado!", "El coordinador ha sido actualizado.", "success");
       } else {
         // Crear coordinador
-        await axios.post("http://localhost:4000/api/coordinators", coordinatorData);
+        await axios.post("http://localhost:4000/api/registerCoordinators", coordinatorData);
         Swal.fire("¡Guardado!", "El coordinador ha sido creado.", "success");
       }
       fetchCoordinators();

@@ -2,6 +2,14 @@ import Employee from "../models/Employees.js";
 import bcryptjs from "bcryptjs";
 import jsonwebtoken from "jsonwebtoken";
 import { config } from "../config.js";
+import { v2 as cloudinary } from "cloudinary";
+
+// Configurar cloudinary
+cloudinary.config({
+  cloud_name: config.cloudinary.cloudinary_name,
+  api_key: config.cloudinary.cloudinary_api_key,
+  api_secret: config.cloudinary.cloudinary_api_secret,
+});
 
 const registerEmployeesController = {};
 
@@ -17,7 +25,7 @@ registerEmployeesController.register = async (req, res) => {
     telephone,
     email,
     password,
-    hireDate, 
+    hireDate,
     IdTeam,
     status,
     address,
@@ -33,6 +41,16 @@ registerEmployeesController.register = async (req, res) => {
     // Hashea la contraseña
     const passwordHash = await bcryptjs.hash(password, 10);
 
+    // Subir foto a cloudinary si existe
+    let photoUrl = "";
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "employees",
+        allowed_formats: ["jpg", "png", "jpeg"],
+      });
+      photoUrl = result.secure_url;
+    }
+
     // Crea el nuevo empleado con todos los campos
     const newEmployee = new Employee({
       numEmpleado,
@@ -43,10 +61,11 @@ registerEmployeesController.register = async (req, res) => {
       telephone,
       email,
       password: passwordHash,
-      hireDate, 
+      hireDate,
       IdTeam,
       status,
       address,
+      photo: photoUrl,
     });
 
     // Guarda en base de datos

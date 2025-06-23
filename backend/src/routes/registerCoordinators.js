@@ -1,9 +1,12 @@
-import { Router } from "express";
+import express from "express";
 import registerCoordinatorsController from "../controllers/registerCoordinatorsController.js";
+import multer from "multer";
 
-const router = Router();
+const router = express.Router();
 
-// Ruta para registrar coordinadores
-router.post("/", registerCoordinatorsController.register);
+const upload = multer({dest: "coordinators/"})
+
+router.route("/")
+.post(upload.single("photo"), registerCoordinatorsController.register);
 
 export default router;

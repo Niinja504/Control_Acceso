@@ -17,6 +17,7 @@ const targetAreas = [
   "Área Técnica",
   "Área de Escuela de Idiomas",
   "Área de CFP",
+  "Área de Educación Física y Deportes"
 ];
 
 export default function NewEmployeesModal({ onSaved, onClose }) {

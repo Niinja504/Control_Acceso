@@ -27,7 +27,7 @@ const useDataAdmin = () => {
         Swal.fire("¡Actualizado!", "El administrador ha sido actualizado.", "success");
       } else {
         // Crear administrador
-        await axios.post("http://localhost:4000/api/administrators", adminData);
+        await axios.post("http://localhost:4000/api/registerAdministrators", adminData);
         Swal.fire("¡Guardado!", "El administrador ha sido creado.", "success");
       }
       fetchAdmins();

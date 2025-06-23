@@ -60,6 +60,10 @@ const coordinatorsSchema = new Schema(
       require: true,
       maxLength: 200,
     },
+    photo: {
+      type: String, // Puede ser una URL o el nombre del archivo
+      required: false, // No es obligatorio
+    },
   },
   {
     timestamps: true,

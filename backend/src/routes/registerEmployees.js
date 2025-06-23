@@ -1,10 +1,12 @@
 import express from "express";
 import registerEmployeesController from "../controllers/registerEmployeesController.js";
+import multer from "multer";
 
 const router = express.Router();
 
-router.route("/")
+const upload = multer({dest: "employees/"})
 
-.post(registerEmployeesController.register);
+router.route("/")
+.post(upload.single("photo"), registerEmployeesController.register);
 
 export default router;
