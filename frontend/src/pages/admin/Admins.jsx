@@ -26,15 +26,9 @@ const Admins = () => {
 
   return (
     <>
-      <div
-        className="encabezado"
-        style={{ display: "flex", flexDirection: "column", gap: "15px" }}
-      >
+      <div className="encabezado" style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
         <h1 className="titulo">Gestión de administradores</h1>
-        <div
-          className="busqueda-bar"
-          style={{ display: "flex", gap: "10px", alignItems: "center" }}
-        >
+        <div className="busqueda-bar" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
           <div className="buscador" style={{ flexGrow: 1 }}>
             <Search className="search-icon" size={18} />
             <input
@@ -47,7 +41,7 @@ const Admins = () => {
           </div>
 
           <button
-            className="nuevo-docente-btn"
+            className="nuevo-admin-btn"
             onClick={() => setShowNewAdmin(true)}
             style={{ display: "flex", alignItems: "center", gap: "5px" }}
           >
@@ -57,23 +51,8 @@ const Admins = () => {
         </div>
       </div>
 
-      <div className="gestion-de-docentes">
-        <div
-          className="docentes-list"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-            marginBottom: "10px",
-            justifyContent: "flex-start",
-            boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-            padding: "20px",
-            borderRadius: "10px",
-            maxHeight: "630px",
-            overflowY: "auto",
-            backgroundColor: "#ffffff",
-          }}
-        >
+      <div className="gestion-de-admins">
+        <div className="admins-list">
           {filteredAdmins.length > 0 ? (
             filteredAdmins.map((admin) => (
               <div key={admin._id} onClick={() => setAdminEdit(admin)} style={{ cursor: "pointer" }}>
@@ -92,14 +71,9 @@ const Admins = () => {
         </div>
       </div>
 
-      {/* Modal para crear nuevo admin */}
       {showNewAdmin && (
         <div className="modal-overlay active" onClick={() => setShowNewAdmin(false)}>
-          <div
-            className="modal-content"
-            onClick={(e) => e.stopPropagation()}
-            style={{ background: "none", boxShadow: "none", padding: 0 }}
-          >
+          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ background: "none", boxShadow: "none", padding: 0 }}>
             <ModalAdmin
               tipo="admin"
               onSaved={() => {
@@ -112,7 +86,6 @@ const Admins = () => {
         </div>
       )}
 
-      {/* Modal para editar/eliminar admin */}
       {adminEdit && (
         <UpdateAdmins
           admin={adminEdit}

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import "../../components/styles/ModalNewEmployee.css";
+import "../../components/styles/Modal.css";
 
-// Convertir fechas a formato YYYY-MM-DD
 const toInputDateFormat = (date) => {
   if (!date) return "";
   const d = new Date(date);
@@ -11,14 +10,6 @@ const toInputDateFormat = (date) => {
   const localDate = new Date(d.getTime() - offset * 60 * 1000);
   return localDate.toISOString().split("T")[0];
 };
-
-const targetAreas = [
-  "Área Académica",
-  "Área Técnica",
-  "Área de Escuela de Idiomas",
-  "Área de CFP",
-  "Área de Educación Física y Deportes"
-];
 
 export default function NewEmployeesModal({ onSaved, onClose }) {
   const [form, setForm] = useState({
@@ -133,26 +124,17 @@ export default function NewEmployeesModal({ onSaved, onClose }) {
       onSaved();
       if (onClose) onClose();
     } catch (error) {
-      console.error(
-        "Error al guardar:",
-        error.response?.data || error.message
-      );
+      console.error("Error al guardar:", error.response?.data || error.message);
       await Swal.fire(
         "Error al guardar",
-        error.response?.data?.message ||
-          "Verifica que los campos estén correctos.",
+        error.response?.data?.message || "Verifica que los campos estén correctos.",
         "error"
       );
     }
   };
 
-  // Filtrar equipos 
-  const filteredTeams = teams.filter(
-    (team) => !targetAreas.includes(team.name)
-  );
-
   return (
-    <form className="new-empleado-form" onSubmit={handleSubmit}>
+    <form className="new-coordinador-form" onSubmit={handleSubmit}>
       <button
         type="button"
         className="close-modal"
@@ -161,9 +143,7 @@ export default function NewEmployeesModal({ onSaved, onClose }) {
       >
         ×
       </button>
-      <h2>
-        Crear un nuevo empleado
-      </h2>
+      <h2>Crear un nuevo empleado</h2>
 
       <div className="form-field">
         <label htmlFor="numEmpleado">Código de empleado:</label>
@@ -295,7 +275,7 @@ export default function NewEmployeesModal({ onSaved, onClose }) {
           {loadingTeams ? (
             <option disabled>Cargando equipos...</option>
           ) : (
-            filteredTeams.map((team) => (
+            teams.map((team) => (
               <option key={team._id} value={team._id}>
                 {team.name}
               </option>

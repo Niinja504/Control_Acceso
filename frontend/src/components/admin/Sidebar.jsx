@@ -24,7 +24,6 @@ export default function Sidebar() {
 
   const navigationItems = [
     { name: 'Dashboard', path: '/admin-dashboard/dashboard', icon: Home },
-    { name: 'Gestión de docentes', path: '/admin-dashboard/docentes', icon: Users },
     { name: 'Gestión de personal', path: '/admin-dashboard/personal', icon: UserCheck },
     { name: 'Gestión de coordinadores', path: '/admin-dashboard/coordinadores', icon: UserCog },
     { name: 'Administración de usuarios', path: '/admin-dashboard/usuarios', icon: Settings },

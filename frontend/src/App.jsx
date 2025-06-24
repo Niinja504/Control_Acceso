@@ -6,7 +6,6 @@ import ProtectedRoute from './components/ProtectedRoute';
 //Parte del administrador
 import AdminDashboard from './pages/admin/Dashboard.jsx';
 import Home from './components/admin/home.jsx'; 
-import Docentes from './pages/admin/Docentes.jsx'; 
 import Empleados from './pages/admin/Empleados.jsx';
 import Coordinators from './pages/admin/Coordinadores.jsx';
 import Admins from './pages/admin/Admins.jsx';
@@ -35,7 +34,6 @@ function App() {
           <Route path="" element={<Navigate to="dashboard" />} />
           {/* Todas las Routes del AdminDashboard */}
           <Route path="dashboard" element={<Home/>} />
-          <Route path="docentes" element={<Docentes />} />
           <Route path="personal" element={<Empleados/>} />
           <Route path="coordinadores" element={<Coordinators />} />
           <Route path="usuarios" element={<Admins/>} />
