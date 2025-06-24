@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Camera } from "lucide-react";
 import "../../components/styles/Modal.css";
 
 const toInputDateFormat = (date) => {
@@ -29,6 +30,9 @@ export default function NewEmployeesModal({ onSaved, onClose }) {
 
   const [teams, setTeams] = useState([]);
   const [loadingTeams, setLoadingTeams] = useState(true);
+  const [image, setImage] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -74,6 +78,13 @@ export default function NewEmployeesModal({ onSaved, onClose }) {
     setForm({ ...form, telephone: value });
   };
 
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setImage(e.target.files[0]);
+      setPreviewUrl(URL.createObjectURL(e.target.files[0]));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -93,15 +104,23 @@ export default function NewEmployeesModal({ onSaved, onClose }) {
       );
     }
 
-    const dataToSend = {
+    const dataToSend = new FormData();
+    Object.entries({
       ...form,
       birthday: toInputDateFormat(form.birthday),
       hireDate: toInputDateFormat(form.hireDate),
       IdTeam: String(form.IdTeam),
-    };
+    }).forEach(([key, value]) => dataToSend.append(key, value));
+
+    if (image) {
+      dataToSend.append("photo", image);
+    }
 
     try {
-      await axios.post("http://localhost:4000/api/registerEmployees", dataToSend);
+      setUploading(true);
+      await axios.post("http://localhost:4000/api/registerEmployees", dataToSend, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       await Swal.fire(
         "¡Guardado!",
         "El empleado ha sido registrado exitosamente.",
@@ -121,6 +140,8 @@ export default function NewEmployeesModal({ onSaved, onClose }) {
         status: true,
         address: "",
       });
+      setImage(null);
+      setPreviewUrl(null);
       onSaved();
       if (onClose) onClose();
     } catch (error) {
@@ -130,6 +151,8 @@ export default function NewEmployeesModal({ onSaved, onClose }) {
         error.response?.data?.message || "Verifica que los campos estén correctos.",
         "error"
       );
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -309,8 +332,39 @@ export default function NewEmployeesModal({ onSaved, onClose }) {
         />
       </div>
 
-      <button type="submit" className="btn-guardar">
-        GUARDAR
+      <div className="form-field">
+        <label htmlFor="photo">Imagen:</label>
+        <div className="image-upload-container">
+          <label htmlFor="photo" className="custom-image-upload">
+            <Camera className="camera-icon" />
+            <span>{image ? "Cambiar imagen" : "Agregar imagen"}</span>
+            <input
+              id="photo"
+              name="photo"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              style={{ display: "none" }}
+            />
+          </label>
+          <div className="image-preview-area">
+            {uploading ? (
+              <div className="image-uploading-spinner"></div>
+            ) : previewUrl ? (
+              <img
+                src={previewUrl}
+                alt="preview"
+                className="image-preview"
+              />
+            ) : (
+              <div className="image-placeholder">Sin imagen</div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" className="btn-guardar" disabled={uploading}>
+        {uploading ? "Subiendo..." : "GUARDAR"}
       </button>
     </form>
   );

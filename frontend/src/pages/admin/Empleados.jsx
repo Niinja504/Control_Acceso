@@ -65,19 +65,7 @@ const Empleados = () => {
       <div className="gestion-de-empleados">
         <div
           className="empleados-list"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-            marginBottom: "10px",
-            justifyContent: "flex-start",
-            boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-            padding: "20px",
-            borderRadius: "10px",
-            maxHeight: "630px",
-            overflowY: "auto",
-            backgroundColor: "#ffffff",
-          }}
+         
         >
           {filteredEmpleados.length > 0 ? (
             filteredEmpleados.map((empleado) => (

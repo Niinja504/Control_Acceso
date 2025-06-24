@@ -91,7 +91,7 @@ select:focus {
 }
 
 .gestion-de-empleados {
-  background-color: #ffffff;
+  background-color: #ff0000;
   display: flex;
   flex-direction: column;
   align-items: center;
