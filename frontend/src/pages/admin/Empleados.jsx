@@ -74,6 +74,7 @@ const Empleados = () => {
                 status={empleado.status}
                 name={empleado.names}
                 surnames={empleado.surnames}
+                photo={empleado.photo}
                 onClick={() => setSelectedEmpleado(empleado)}
               />
             ))

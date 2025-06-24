@@ -56,7 +56,7 @@ export default function UpdateAdmins({ admin, onSave, onDelete, onClose }) {
       <div className="cvcard-modal cvcard-modal-scroll">
         <button className="close-modal" onClick={onClose}>×</button>
         <div className="cvcard-header">
-          <img src={Icon} alt="Avatar" className="cvcard-avatar" />
+          <img src={admin.photo} alt="Avatar" className="cvcard-avatar" />
           <div className="cvcard-nombre">{admin.names} {admin.surnames}</div>
         </div>
         <div className="cvcard-info">

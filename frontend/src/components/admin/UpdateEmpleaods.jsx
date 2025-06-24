@@ -56,7 +56,7 @@ export default function UpdateEmpleaods({ empleado, onSave, onDelete, onClose })
       <div className="cvcard-modal cvcard-modal-scroll">
         <button className="close-modal" onClick={onClose}>×</button>
         <div className="cvcard-header">
-          <img src={Icon} alt="Avatar" className="cvcard-avatar" />
+          <img src={empleado.photo} alt="Avatar" className="cvcard-avatar" />
           <div className="cvcard-nombre">{empleado.names} {empleado.surnames}</div>
         </div>
         <div className="cvcard-info">

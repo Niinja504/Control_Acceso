@@ -90,6 +90,7 @@ const Coordinadores = () => {
                   status={coordinador.status}
                   name={coordinador.names}
                   surnames={coordinador.surnames}
+                  photo={coordinador.photo}
                 />
               </div>
             ))

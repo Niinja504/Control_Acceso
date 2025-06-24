@@ -60,6 +60,7 @@ const Admins = () => {
                   status={admin.status}
                   name={admin.names}
                   surnames={admin.surnames}
+                  photo={admin.photo}
                 />
               </div>
             ))
