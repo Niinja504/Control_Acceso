@@ -47,8 +47,8 @@ const ScheduleSchema = new Schema(
   },
   {
     timestamps: true,
-    collection: "horarios"
+    collection: "schedule"
   }
 );
 
-export default model("Horario", ScheduleSchema);
+export default model("schedule", ScheduleSchema);
