@@ -13,6 +13,8 @@ import authRoutes from "./src/routes/authRoutes.js";
 import registerCoordinatorsRoutes from "./src/routes/registerCoordinators.js";
 import teamsRoutes from "./src/routes/teamsRoutes.js";
 import AccessControl from "./src/routes/accessControlRoute.js";
+import ScheduleRoutes from "./src/routes/schedules.js";
+
 import swaggerUi from "swagger-ui-express";
 import fs from "fs";
 import path from "path";
@@ -39,6 +41,7 @@ const swaggerDocument = JSON.parse(
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 //
 app.use("/api/employee", employeeRoutes)
+app.use("/api/schedules", ScheduleRoutes);
 app.use("/api/login", loginRoutes)
 app.use("/api/logout", logoutRoutes)
 app.use("/api/registerEmployees", registerEmployeesRoutes)
