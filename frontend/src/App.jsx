@@ -11,10 +11,13 @@ import Coordinators from './pages/admin/Coordinadores.jsx';
 import Admins from './pages/admin/Admins.jsx';
 import Accesos from './pages/admin/Accesos.jsx'; 
 import Areas from './pages/admin/Areas.jsx';
+import Horarios from './pages/admin/Horarios.jsx'; 
 //Parte del empleado
 import EmployeeDashboard from './pages/employee/EmployeeDashboard.jsx';
 //Parte del coordinador
 import CoordinatorDashboard from './pages/coordinator/CoordinatorDashboard.jsx';
+import './App.css';
+
 
 function App() {
   return (
@@ -35,6 +38,7 @@ function App() {
           {/* Todas las Routes del AdminDashboard */}
           <Route path="dashboard" element={<Home/>} />
           <Route path="personal" element={<Empleados/>} />
+          <Route path="horarios" element={<Horarios />} />
           <Route path="coordinadores" element={<Coordinators />} />
           <Route path="usuarios" element={<Admins/>} />
           <Route path="permisos" element={<h1>Gestión de Permisos</h1>} />

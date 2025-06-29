@@ -13,7 +13,8 @@ import {
   UserCog,
   Menu,
   X,
-  LogOut
+  LogOut,
+  Calendar
 } from 'lucide-react';
 import '../../components/styles/Sidebar.css'; 
 import logoRical from '../../img/logo_rical.png';
@@ -30,7 +31,8 @@ export default function Sidebar() {
     { name: 'Gestión de permisos', path: '/admin-dashboard/permisos', icon: Shield },
     { name: 'Historial de accesos', path: '/admin-dashboard/historial', icon: Clock },
     { name: 'Registros faciales', path: '/admin-dashboard/registros', icon: Scan },
-    { name: 'Gestión de áreas', path: '/admin-dashboard/areas', icon: LayoutGrid }
+    { name: 'Gestión de áreas', path: '/admin-dashboard/areas', icon: LayoutGrid },
+    { name: 'Horarios', path: '/admin-dashboard/horarios', icon: Calendar }
   ];
 
   const handleLogout = async () => {
