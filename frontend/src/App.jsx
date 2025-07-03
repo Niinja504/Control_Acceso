@@ -55,13 +55,20 @@ function App() {
           }
         />
         <Route
-          path="/employee-dashboard"
+          path="/employee-dashboard/*"
           element={
             <ProtectedRoute allowedRoles={['Employee']}>
               <EmployeeDashboard />
             </ProtectedRoute>
           }
-        />
+        >
+          {/* Redirecciona al Dashboard */}
+          <Route path="" element={<Navigate to="dashboard" />} />
+          {/* Rutas del empleado */}
+          <Route path="dashboard" element={<h1>Inicio Empleado</h1>} />
+          <Route path="permisos" element={<h1>Mis Permisos</h1>} />
+          <Route path="historial" element={<h1>Mi Historial de Accesos</h1>} />
+        </Route>
       </Routes>
     </Router>
   );

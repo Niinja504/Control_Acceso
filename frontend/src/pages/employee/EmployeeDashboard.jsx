@@ -1,11 +1,14 @@
-const employee = () => {
-    return (
-        <div className="home-container">
-        <h1 className="home-title">Bienvenido al sistema</h1>
-        <p className="home-subtitle">Esta es la página del EMPLEADO.</p>
-        </div>
-    );
+import { Outlet } from 'react-router-dom';
+import SidebarEmployee from '../../components/employee/SidebarEmployee';
+import '../../styles/Admin/Dashboard.css';
 
+export default function EmployeeDashboard() {
+  return (
+    <div className="admin-dashboard-container">
+      <SidebarEmployee />
+      <div className="admin-main-content">
+        <Outlet />
+      </div>
+    </div>
+  );
 }
-
-export default employee;
