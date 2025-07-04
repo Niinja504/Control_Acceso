@@ -58,7 +58,7 @@ export default function Home() {
 
   return (
     <div className="dashboard-home-container">
-      <h2>{greeting}, Luisa Escalante</h2>
+      <h2>{greeting}, Luis Escalante</h2>
 
       <div className="dashboard-widgets">
         <div className="widget widget-bar-chart">

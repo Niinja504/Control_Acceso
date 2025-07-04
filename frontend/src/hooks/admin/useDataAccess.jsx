@@ -8,7 +8,6 @@ const useAccessControl = () => {
   const [accessRecords, setAccessRecords] = useState([]);
   const [recordEdit, setRecordEdit] = useState(null);
 
-  // Obtener todos los registros de acceso
   const fetchAccessRecords = async () => {
     try {
       const res = await axios.get("http://localhost:4000/api/access");
@@ -19,7 +18,6 @@ const useAccessControl = () => {
     }
   };
 
-  // Crear o actualizar un registro de acceso
   const saveAccessRecord = async (recordData) => {
     try {
       if (recordEdit) {
@@ -42,7 +40,6 @@ const useAccessControl = () => {
     }
   };
 
-  // Eliminar registro con confirmación
   const eliminarAccessRecord = async (id) => {
     const result = await Swal.fire({
       title: "¿Estás seguro?",
@@ -64,8 +61,6 @@ const useAccessControl = () => {
       }
     }
   };
-
-  // Cerrar modal y limpiar edición
   const handleCloseModal = () => {
     setShowRegister(false);
     setRecordEdit(null);

@@ -1,9 +1,10 @@
 .encabezado {
-  background-color: rgb(255, 255, 255);
+  background-color: rgba(255, 255, 255, 0);
   width: 100%;
   max-width: 1000px;
-  padding: 0 6% 0 6%;
+  padding: 0 6%;
   text-align: start;
+  margin-bottom: 20px;
 }
 
 .titulo {
@@ -13,13 +14,7 @@
   margin-bottom: 20px;
 }
 
-.busqueda-bar {
-  display: flex;
-  gap: 16px;
-  width: 100%;
-  flex-wrap: wrap;
-  align-items: center;
-}
+
 
 .buscador {
   position: relative;
@@ -53,26 +48,29 @@
 .nuevo-admin-btn {
   flex-shrink: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
-  width: 30%;
   padding: 8px 16px;
   border-radius: 30px;
   background-color: #ffffff;
   border: 1px solid #2a2f4330;
   box-shadow: 0px 4px 4px #57575740;
-  font-size: 16px;
+  font-size: 14px;
   color: #0000009e;
   cursor: pointer;
   white-space: nowrap;
   transition: background-color 0.2s ease;
 }
 
+.nuevo-admin-btn:hover {
+  background-color: #f4f4f4;
+}
+
 .gestion-de-admins {
-  background-color: #ffffff;
+  background-color: #ffffff00;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
   min-height: 100vh;
   padding: 5% 6% 0 6%;
@@ -126,7 +124,7 @@
 
 .modal-content {
   background: #fff;
-  padding: 30px 30px 30px 30px;
+  padding: 30px;
   border-radius: 16px;
   position: relative;
   min-width: 320px;
@@ -156,28 +154,26 @@
   color: #222;
 }
 
-@media (max-width: 982px) {
-  .titulo {
-    font-size: 28px;
-    margin-bottom: 16px;
-  }
-
+/* RESPONSIVE */
+@media (max-width: 992px) {
   .encabezado {
-    padding: 0 4% 0 4%;
+    padding: 0 4%;
   }
 
-  .busqueda-bar {
-    flex-direction: column;
-    align-items: stretch;
+ 
+
+  .buscador {
+    width: 100%;
   }
 
   .nuevo-admin-btn {
     width: 100%;
-    justify-content: center;
+    justify-content: flex-start;
   }
 
-  .buscador {
-    width: 100%;
+  .titulo {
+    font-size: 28px;
+    margin-bottom: 16px;
   }
 
   .admins-list {
@@ -187,10 +183,10 @@
 
 @media (max-width: 600px) {
   .modal-content {
-    min-width: unset;
     max-width: 98vw;
-    padding: 18px 8px 18px 8px;
+    padding: 18px 12px;
   }
+
   .close-modal {
     top: 10px;
     right: 10px;

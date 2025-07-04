@@ -1,14 +1,9 @@
-.admin-dashboard-container {
-  min-height: 100vh;
-  background-color: #ffffff;
-  display: flex;
-  position: relative;
-}
+
 
 
 .admin-main-content {
   flex: 1;
-  background-color: #ffffff;
+  background-color: #ffffff00;
   transition: margin-left 0.3s ease;
 }
 

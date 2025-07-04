@@ -5,5 +5,16 @@
 }
 
 .admin-main-content{
-  padding: 40px 0 0 0;
+  padding: 40px 0 40px 0;
+}
+
+.admin-dashboard-container {
+  min-height: 100vh;
+  display: flex;
+  position: relative;
+}
+
+/* Background Global */
+.admin-dashboard-container,admin-main-content {
+  background-color: rgb(249, 245, 245);
 }

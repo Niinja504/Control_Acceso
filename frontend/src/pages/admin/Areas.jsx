@@ -19,20 +19,24 @@ const Areas = () => {
   return (
     <>
       <div className="encabezado">
-        <h1 className="titulo">Gestión de áreas</h1>
+        <h1 className="titulo">Gestión de Áreas</h1>
         <div style={{ display: "flex", justifyContent: "flex-start" }}>
           <button
             className="nuevo-empleado-btn"
+            style={{ width: "200px" }}
             onClick={() => setShowModal(true)}
           >
             <CirclePlus size={20} />
-            Agregar área
+            Agregar Área
           </button>
         </div>
       </div>
 
-      <div className="gestion-de-empleados">
-        <div className="empleados-list" style={{ minHeight: "200px" }}>
+      <div className="gestion-de-empleadoss" style={{ padding: "4% 6% 5% 6%" }}>
+        <div
+          className="empleados-list"
+          style={{ minHeight: "200px", padding: "3% 6% 3% 5%" }}
+        >
           {teams.length > 0 ? (
             <div className="area-row">
               {teams.map((area) => (

@@ -1,32 +1,39 @@
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  font-family: sans-serif;
-}
-
 .access-history-container {
-  padding: 2rem;
-  background: #fff;
-  border-radius: 10px;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding: 0 6%  6%;
+  box-sizing: border-box;
+  align-items: flex-start;
+  background-color: #ffffff00;
 }
 
-.access-history-container h1 {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
+.encabezado-accesos {
+  background-color: transparent;
+  width: 100%;
+  align-items: flex-start;
+  max-width: 1000px;
+  padding: 0 6% 2% 0;
+  text-align: start;
+  margin-bottom: 20px;
+}
+
+.titulo {
+  font-size: 32px;
+  font-weight: 600;
+  color: #000000;
+  margin-bottom: 20px;
 }
 
 .search-bar {
   display: flex;
   align-items: center;
-  background: #f4f4f4;
+  background: #ffffff;
   padding: 0.75rem 1rem;
-  border-radius: 10px;
+  border-radius: 15px;
   margin-bottom: 1rem;
+  box-shadow: 0px 4px 4px #57575740;
+  max-width: 1000px;
 }
 
 .search-bar input {
@@ -44,11 +51,12 @@ html, body {
 
 .filters {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: 16px;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1000px;
 }
 
-/* Base para todos los botones */
 .filter-button {
   padding: 0.5rem 1rem;
   border-radius: 8px;
@@ -61,41 +69,34 @@ html, body {
   cursor: pointer;
   position: relative;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-/* Botón más ancho para Docentes */
 .filter-button.docentes {
   width: 320px;
 }
 
-/* Botón más estrecho para Entrada/Salida */
 .filter-button.salidas {
   width: 110px;
 }
 
-/* Posicionamiento del dropdown */
 .dropdown {
   position: relative;
   display: inline-block;
 }
 
-/* Menú desplegable */
 .dropdown-menu {
   position: absolute;
   top: 110%;
   left: 0;
   background: #fff;
-  border: 1px solid #ddd;
+  border: 1px solid #ffffff;
   z-index: 10;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   padding: 0.25rem 0;
   animation: fadeIn 0.15s;
 }
 
-/* Anchos específicos */
 .dropdown-menu.docentes {
   width: 210px;
 }
@@ -121,20 +122,33 @@ html, body {
 
 .dropdown-menu button.selected,
 .dropdown-menu button:hover {
-  background: #f0f0f0;
+  background: #ffffff;
 }
 
-/* Scroll solo dentro de access-list */
+.access-list-container {
+  width: 90%;
+  max-width: 1450px;
+  background-color: #ffffff;
+  padding: 20px;
+  padding-bottom: 60px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;
+  max-height: calc(100vh - 320px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
 .access-list {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  max-height: 60vh; /* Puedes ajustar este valor */
   overflow-y: auto;
   padding-right: 0.5rem;
+  max-height: 100%;
 }
 
-/* Estilo para tarjetas de acceso */
 .access-card {
   display: flex;
   justify-content: space-between;

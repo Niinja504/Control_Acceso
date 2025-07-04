@@ -35,7 +35,7 @@ const Coordinadores = () => {
         className="encabezado"
         style={{ display: "flex", flexDirection: "column", gap: "15px" }}
       >
-        <h1 className="titulo">Gestión de coordinadores</h1>
+        <h1 className="titulo">Gestión de Coordinadores</h1>
         <div
           className="busqueda-bar"
           style={{ display: "flex", gap: "10px", alignItems: "center" }}
@@ -57,7 +57,7 @@ const Coordinadores = () => {
             style={{ display: "flex", alignItems: "center", gap: "5px" }}
           >
             <CirclePlus size={20} />
-            Nuevo coordinador
+            Nuevo Coordinador
           </button>
         </div>
       </div>
@@ -120,7 +120,6 @@ const Coordinadores = () => {
         </div>
       )}
 
-      {/* Modal para editar/eliminar coordinador */}
       {coordinadorEdit && (
         <UpdateCoordinators
           admin={coordinadorEdit}

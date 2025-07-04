@@ -34,7 +34,7 @@ const Schedule = () => {
   return (
     <>
       <div className="encabezadoschedule">
-        <h1 className="titulo">Gestión de horarios</h1>
+        <h1 className="titulo">Gestión de Horarios</h1>
 
         <div className="busqueda-schedule">
           <div className="buscadora">
@@ -49,12 +49,12 @@ const Schedule = () => {
 
           <button className="nuevo-horario-btn" onClick={() => setShowForm(true)}>
             <CirclePlus size={18} />
-            Crear un nuevo horario
+            Nuevo Horario
           </button>
         </div>
       </div>
 
-      <div className="gestion-de-coordinadores">
+      <div className="gestion-de-coordinadoress">
         <div className="coordinadores-list">
           {filteredSchedules.length > 0 ? (
             filteredSchedules.map((schedule) => (

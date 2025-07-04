@@ -39,34 +39,31 @@ const Empleados = () => {
   return (
     <>
       <div className="encabezado" style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
-        <h1 className="titulo">Gestión de empleados</h1>
-        <div className="busqueda-bar" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-          <div className="buscador" style={{ flexGrow: 1 }}>
+        <h1 className="titulo">Gestión de Empleados</h1>
+        <div className="busqueda-bar-G" style={{}}>
+          <div className="buscador-G" style={{ }}>
             <Search className="search-icon" size={18} />
             <input
               type="text"
               placeholder="Buscar por nombres y apellidos"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              style={{ width: "100%" }}
+              style={{}}
             />
           </div>
           <button
-            className="nuevo-empleado-btn"
+            className="nuevo-empleado-btn-G"
             onClick={() => setShowNewEmpleado(true)}
-            style={{ display: "flex", alignItems: "center", gap: "5px" }}
+            style={{ }}
           >
             <CirclePlus size={20} />
-            Nuevo empleado
+            Nuevo Empleado
           </button>
         </div>
       </div>
 
       <div className="gestion-de-empleados">
-        <div
-          className="empleados-list"
-         
-        >
+        <div className="empleados-lists">
           {filteredEmpleados.length > 0 ? (
             filteredEmpleados.map((empleado) => (
               <EmpleadoCard

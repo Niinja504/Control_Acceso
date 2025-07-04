@@ -49,6 +49,14 @@
   color: #000;
 }
 
+.docente-info {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* 👈 Espacio entre ícono, imagen y texto */
+  width: 100%;
+}
+
+
 @media (max-width: 600px) {
   .docente-card {
     flex-direction: column;
