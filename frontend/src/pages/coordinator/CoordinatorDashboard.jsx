@@ -1,11 +1,14 @@
-const coordinator = () => {
-    return (
-        <div className="home-container">
-        <h1 className="home-title">Bienvenido al sistema</h1>
-        <p className="home-subtitle">Esta es la página del COORDINADOR.</p>
-        </div>
-    );
+import { Outlet } from 'react-router-dom';
+import SidebarCoordinator from '../../components/coordinator/SidebarCoordinator';
+import '../../styles/Admin/Dashboard.css';
 
+export default function EmployeeDashboard() {
+  return (
+    <div className="admin-dashboard-container">
+      <SidebarCoordinator />
+      <div className="admin-main-content">
+        <Outlet />
+      </div>
+    </div>
+  );
 }
-
-export default coordinator;

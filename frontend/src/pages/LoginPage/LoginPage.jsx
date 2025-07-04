@@ -75,8 +75,8 @@ export const LoginPage = () => {
             className="logo"
           />
           <h1 className="title">
-            Bienvenido al<br />
-            marcador de acceso ITR
+            Bienvenido al Sistema de Control<br />
+            de Acceso ITR
           </h1>
         </div>
 
@@ -125,9 +125,8 @@ export const LoginPage = () => {
             <p>Desarrollado por el departamento de Desarrollo de Software</p>
           </b>
           <b>
-            <p>
-              del{''}
-              <a href="https://www.ricaldone.edu.sv/" className="highlight">
+           <p>
+              del <a href="https://www.ricaldone.edu.sv/" className="highlight">
                 Instituto Técnico Ricaldone
               </a>
             </p>

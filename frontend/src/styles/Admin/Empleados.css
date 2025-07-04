@@ -134,18 +134,19 @@ select:focus {
 }
 
 .empleados-lists {
-  width: 100%;
+    width: 100%;
   max-width: 1500px;
   background-color: #ffffff;
   box-sizing: border-box;
   padding: 30px;
-  max-height: 1%;
+  max-height: 630px;
   overflow-y: auto;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  margin-top: 15px;
 }
 
 .empleados-lists::-webkit-scrollbar {
