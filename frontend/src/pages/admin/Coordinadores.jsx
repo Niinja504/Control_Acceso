@@ -37,10 +37,9 @@ const Coordinadores = () => {
       >
         <h1 className="titulo">Gestión de Coordinadores</h1>
         <div
-          className="busqueda-bar"
-          style={{ display: "flex", gap: "10px", alignItems: "center" }}
+          className="busqueda-bar-G"
         >
-          <div className="buscador" style={{ flexGrow: 1 }}>
+          <div className="buscador-G" style={{ flexGrow: 1 }}>
             <Search className="search-icon" size={18} />
             <input
               type="text"
@@ -52,9 +51,9 @@ const Coordinadores = () => {
           </div>
 
           <button
-            className="nuevo-coordinador-btn"
+            className="nuevo-empleado-btn-G" style={{ maxWidth: "250px" }}
             onClick={() => setShowNewCoordinador(true)}
-            style={{ display: "flex", alignItems: "center", gap: "5px" }}
+            
           >
             <CirclePlus size={20} />
             Nuevo Coordinador

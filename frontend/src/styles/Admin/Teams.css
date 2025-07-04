@@ -16,9 +16,9 @@
 .nuevo-empleado-btn {
   flex-shrink: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
-  width: auto;
+  width: 2%;
   min-width: 120px;
   padding: 8px 16px;
   border-radius: 30px;
@@ -39,7 +39,6 @@
   background-color: #ffffff;
   box-sizing: border-box;
   padding: 30px;
-  max-height: 630px;
   overflow-y: auto;
   border-radius: 10px;
   display: flex;

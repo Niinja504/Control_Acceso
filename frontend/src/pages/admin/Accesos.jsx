@@ -80,7 +80,7 @@ export default function Accesos() {
       <div className="encabezado-accesos">
         <h1 className="titulo">Historial de accesos</h1>
 
-        <div className="search-bar">
+        <div className="buscador">
           <Search className="search-icon" />
           <input type="text" placeholder="Buscar por nombre o apellido" />
         </div>

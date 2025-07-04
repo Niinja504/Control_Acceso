@@ -32,10 +32,9 @@ const Admins = () => {
       >
         <h1 className="titulo">Gestión de Administradores</h1>
         <div
-          className="busqueda-bar"
-          style={{ display: "flex", gap: "10px", alignItems: "center" }}
+          className="busqueda-bar-G"
         >
-          <div className="buscador" style={{ flexGrow: 1 }}>
+          <div className="buscador-G" >
             <Search className="search-icon" size={18} />
             <input
               type="text"
@@ -49,7 +48,7 @@ const Admins = () => {
           <button
             className="nuevo-admin-btn"
             onClick={() => setShowNewAdmin(true)}
-            style={{ display: "flex", alignItems: "center", gap: "5px" }}
+            style={{ maxWidth: "300px", minWidth: "300px" }}
           >
             <CirclePlus size={20} />
             Nuevo Administrador

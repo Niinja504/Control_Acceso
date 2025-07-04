@@ -19,15 +19,14 @@
   display: flex;
   gap: 16px;
   width: 80%;
-  flex-wrap: wrap;
   align-items: flex-start;
 }
 
 .buscador,
 .buscador-G {
-  position: relative;
   flex-grow: 1;
   display: flex;
+  position: relative;
   align-items: flex-start;
   max-width: 500px;
   width: 100%;
@@ -59,7 +58,7 @@
 .nuevo-empleado-btn-G {
   flex-shrink: 0;
   display: flex;
-  align-items: center;
+  align-items: start;
   gap: 8px;
   padding: 8px 16px;
   border-radius: 30px;
@@ -88,12 +87,14 @@
 
   .buscador,
   .buscador-G {
-    width: 100%;
+    width: 60%;
+    min-width: 300px;
   }
 
   .nuevo-empleado-btn,
   .nuevo-empleado-btn-G {
-    width: 100%;
+    width: 60%;
+    min-width: 200px;
     justify-content: flex-start;
   }
 }

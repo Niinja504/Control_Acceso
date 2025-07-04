@@ -53,6 +53,7 @@
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
+  padding: 3% 0 0 0;
   width: 100%;
   max-width: 1000px;
 }
