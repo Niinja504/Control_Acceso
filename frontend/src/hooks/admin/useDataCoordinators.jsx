@@ -10,7 +10,7 @@ const useDataCoordinators = () => {
   // Obtener todos los coordinadores
   const fetchCoordinators = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/api/coordinators"); 
+      const res = await axios.get("http://localhost:4000/api/coordinators");
       setCoordinators(res.data);
     } catch (error) {
       console.error("Error al obtener coordinador:", error);
@@ -30,7 +30,7 @@ const useDataCoordinators = () => {
         await axios.post("http://localhost:4000/api/registerCoordinators", coordinatorData);
         Swal.fire("¡Guardado!", "El coordinador ha sido creado.", "success");
       }
-      fetchCoordinators();
+      await fetchCoordinators(); // <-- Espera a que termine antes de cerrar el formulario
       handleCloseForm();
     } catch (error) {
       console.error("Error al guardar/actualizar coordinador:", error);
@@ -53,7 +53,7 @@ const useDataCoordinators = () => {
       try {
         await axios.delete(`http://localhost:4000/api/coordinators/${id}`);
         Swal.fire("¡Eliminado!", "El coordinador ha sido eliminado.", "success");
-        fetchCoordinators();
+        await fetchCoordinators();
       } catch (error) {
         console.error("Error al eliminar coordinador:", error);
         Swal.fire("Error", "No se pudo eliminar el coordinador.", "error");
