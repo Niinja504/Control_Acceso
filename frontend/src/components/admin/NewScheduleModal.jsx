@@ -153,7 +153,7 @@ const NewScheduleModal = ({ onSave, onClose }) => {
 
   return (
     <div className="modal-overlay active">
-      <div className="modal-content new-schedule animate">
+      <div className="cardH animate">
         <button className="close-modal" onClick={onClose}>×</button>
 
         <div className="schedule-header">

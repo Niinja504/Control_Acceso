@@ -3,6 +3,10 @@
   overflow-y: auto;
 }
 
+.schedule-header{
+  padding: 6% 0 0 0;
+}
+
 .schedule-name-row {
   display: flex;
   align-items: center;

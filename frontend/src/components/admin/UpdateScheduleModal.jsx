@@ -112,7 +112,7 @@ const UpdateScheduleModal = ({ onClose, onUpdate, schedule }) => {
 
   return (
     <div className="modal-overlay active">
-      <div className="modal-content update-schedule-modal">
+      <div className="cardH">
         <div className="modal-header">
   <X className="close-icon" onClick={onClose} />
 </div>
