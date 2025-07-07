@@ -8,3 +8,4 @@ pymongo
 flask
 flask_cors
 dlib
+flask-cors

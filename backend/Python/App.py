@@ -5,7 +5,6 @@ from Reconocimiento import iniciar_api_reconocimiento
 
 def main():
     print("Iniciando APIs...")
-
     p1 = Process(target=iniciar_api_mapeo)
     p2 = Process(target=iniciar_api_reconocimiento)
     p1.start()

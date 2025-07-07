@@ -11,10 +11,9 @@ const useDataTeams = () => {
   const fetchTeams = async () => {
     try {
       const res = await axios.get("http://localhost:4000/api/teams");
-      console.log("Equipos obtenidos:", res.data);
       setTeams(res.data);
     } catch (err) {
-      console.error("Error al obtener equipos:", err);
+      Swal.fire("Error", "No se pudo obtener la lista de equipos.", "error");
     }
   };
 
@@ -34,7 +33,6 @@ const useDataTeams = () => {
       fetchTeams();
       handleCloseModal();
     } catch (err) {
-      console.error("Error al guardar/actualizar equipo:", err);
       Swal.fire("Error", "No se pudo guardar el equipo.", "error");
     }
   };
@@ -56,7 +54,6 @@ const useDataTeams = () => {
         Swal.fire("¡Eliminado!", "El equipo ha sido eliminado.", "success");
         fetchTeams();
       } catch (err) {
-        console.error("Error al eliminar equipo:", err);
         Swal.fire("Error", "No se pudo eliminar el equipo.", "error");
       }
     }

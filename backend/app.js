@@ -14,6 +14,8 @@ import registerCoordinatorsRoutes from "./src/routes/registerCoordinators.js";
 import teamsRoutes from "./src/routes/teamsRoutes.js";
 import AccessControl from "./src/routes/accessControlRoute.js";
 import ScheduleRoutes from "./src/routes/schedules.js";
+import blog from "./src/routes/blogRoutes.js";
+import mapRoute from "./src/routes/mapRoute.js";
 
 import swaggerUi from "swagger-ui-express";
 import fs from "fs";
@@ -52,6 +54,8 @@ app.use("/api/registerCoordinators", registerCoordinatorsRoutes); // Ruta para r
 app.use("/api/administrators", administratorsRoutes); // Ruta para administradores
 app.use("/api/teams", teamsRoutes); // Ruta para las areas o departamentos
 app.use("/api/access", AccessControl);
+app.use("/api/blog", blog)
+app.use("/api/map", mapRoute);
 
 // Exporto la constante para poder usar express en otros archivos
 export default app;

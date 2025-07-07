@@ -12,6 +12,7 @@ import Admins from './pages/admin/Admins.jsx';
 import Accesos from './pages/admin/Accesos.jsx'; 
 import Areas from './pages/admin/Areas.jsx';
 import Horarios from './pages/admin/Horarios.jsx'; 
+import Rostros from './pages/admin/Rostros.jsx';
 //Parte del empleado
 import EmployeeDashboard from './pages/employee/EmployeeDashboard.jsx';
 //Parte del coordinador
@@ -43,7 +44,7 @@ function App() {
           <Route path="usuarios" element={<Admins/>} />
           <Route path="permisos" element={<h1>Gestión de Permisos</h1>} />
           <Route path="historial" element={<Accesos/>} />
-          <Route path="registros" element={<h1>Registros Faciales</h1>} />
+          <Route path="registros" element={<Rostros/>} />
           <Route path="areas" element={<Areas />} />
         </Route>
         <Route
