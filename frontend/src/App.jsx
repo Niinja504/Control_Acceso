@@ -16,6 +16,7 @@ import Rostros from './pages/admin/Rostros.jsx';
 //Parte del empleado
 import EmployeeDashboard from './pages/employee/EmployeeDashboard.jsx';
 //Parte del coordinador
+import EmpleadosC from './pages/coordinator/Empleados.jsx';
 import CoordinatorDashboard from './pages/coordinator/CoordinatorDashboard.jsx';
 import './App.css';
 
@@ -61,6 +62,7 @@ function App() {
           <Route path="personal" element={<h1>Gestión de Empleados</h1>} />
           <Route path="permisos" element={<h1>Gestión de permisos</h1>} />
           <Route path="historial" element={<h1>Historial de Accesos</h1>} />
+          <Route path="empleado" element={<EmpleadosC/>} />
         </Route>
         <Route
           path="/employee-dashboard/*"
