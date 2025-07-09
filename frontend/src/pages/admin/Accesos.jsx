@@ -1,44 +1,30 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
 import { Search, ChevronDown } from 'lucide-react';
 import '../../styles/Admin/Accesos.css';
 import icon from '../../img/salida_acceso.png';
+import useAccessControl from '../../hooks/admin/useDataAccess';
 
 const HorarioOptions = ['Entrada', 'Salida'];
 
-export default function Accesos() {
+const Accesos = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
-  const [docentesOptions, setDocentesOptions] = useState(['Todos']);
   const [selectedDocente, setSelectedDocente] = useState('Todos');
   const [selectedSalida, setSelectedSalida] = useState(HorarioOptions[0]);
-  const [accessData, setAccessData] = useState([]);
   const docentesRef = useRef(null);
   const salidasRef = useRef(null);
 
-  useEffect(() => {
-    const fetchTeams = async () => {
-      try {
-        const res = await axios.get('http://localhost:4000/api/teams');
-        const teamNames = res.data.map(team => team.name);
-        setDocentesOptions(['Todos', ...teamNames]);
-      } catch (error) {
-        console.error('Error al cargar los equipos:', error);
-      }
-    };
-    fetchTeams();
-  }, []);
+  const {
+    accessRecords,
+    fetchAccessRecords,
+    fetchTeams,
+    teams: docentesOptions
+  } = useAccessControl();
 
-  useEffect(() => {
-    const fetchAccessData = async () => {
-      try {
-        const res = await axios.get('http://localhost:4000/api/access');
-        setAccessData(res.data);
-      } catch (error) {
-        console.error('Error al cargar los registros de acceso:', error);
-      }
-    };
-    fetchAccessData();
-  }, []);
+ useEffect(() => {
+  fetchTeams();
+  fetchAccessRecords();
+}, []); 
+
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -128,10 +114,10 @@ export default function Accesos() {
 
       <div className="access-list-container">
         <div className="access-list">
-          {accessData.length === 0 ? (
+          {accessRecords.length === 0 ? (
             <p>No hay registros de acceso para mostrar.</p>
           ) : (
-            accessData.map((person, index) => (
+            accessRecords.map((person, index) => (
               <div className="access-card" key={index}>
                 <div className="user-info">
                   <span className="status-dot" />
@@ -151,4 +137,6 @@ export default function Accesos() {
       </div>
     </div>
   );
-}
+};
+
+export default Accesos;

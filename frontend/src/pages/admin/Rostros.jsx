@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import "../../styles/Admin/Rostros.css";
-import UserFaceCard from "../../components/admin/UserFaceCard.jsx";
+import UserFaceCard from "../../components/admin/Cards/UserFaceCard.jsx";
 import { Search, CirclePlus } from "lucide-react";
 import useDataFace from "../../hooks/admin/useDataFaces.jsx";
 import ModalFace from "../../components/admin/ModalRostro.jsx";

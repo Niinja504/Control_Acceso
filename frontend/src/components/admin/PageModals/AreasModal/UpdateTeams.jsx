@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import useDataTeams from "../../hooks/admin/useDataTeams.jsx";
-import "../../components/styles/ModalUpdateTeams.css";
+import useDataTeams from "../../../../hooks/admin/useDataTeams.jsx";
+import "../../../../components/styles/ModalUpdateTeams.css";
 
 const UpdateTeams = ({ area, onClose }) => {
   const [name, setName] = useState(area.name);

@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Camera } from "lucide-react";
-import "../styles/Modal.css";
+import "../../../../components/styles/Modal.css";
 
-// Convertir fechas a formato YYYY-MM-DD
 const toInputDateFormat = (date) => {
   if (!date) return "";
   const d = new Date(date);
@@ -13,7 +12,7 @@ const toInputDateFormat = (date) => {
   return localDate.toISOString().split("T")[0];
 };
 
-export default function NewCoordinatorsModal({ onSaved, onClose }) {
+export default function NewEmployeesModal({ onSaved, onClose }) {
   const [form, setForm] = useState({
     numEmpleado: "",
     names: "",
@@ -119,12 +118,12 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
 
     try {
       setUploading(true);
-      await axios.post("http://localhost:4000/api/registerCoordinators", dataToSend, {
+      await axios.post("http://localhost:4000/api/registerEmployees", dataToSend, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       await Swal.fire(
         "¡Guardado!",
-        "El coordinador ha sido registrado exitosamente.",
+        "El empleado ha sido registrado exitosamente.",
         "success"
       );
       setForm({
@@ -143,13 +142,7 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
       });
       setImage(null);
       setPreviewUrl(null);
-      // Cambios aquí: espera a que onSaved termine si es una promesa
-      if (onSaved) {
-        const result = onSaved();
-        if (result instanceof Promise) {
-          await result;
-        }
-      }
+      onSaved();
       if (onClose) onClose();
     } catch (error) {
       console.error("Error al guardar:", error.response?.data || error.message);
@@ -173,7 +166,7 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
       >
         ×
       </button>
-      <h2>Crear un nuevo coordinador</h2>
+      <h2>Crear un nuevo empleado</h2>
 
       <div className="form-field">
         <label htmlFor="numEmpleado">Código de empleado:</label>

@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useEffect } from "react";
 import "../../styles/Admin/Coordinators.css";
-import DocenteCard from "../../components/admin/DocenteCard.jsx";
+import DocenteCard from "../../components/admin/Cards/DocenteCard.jsx";
 import { Search, CirclePlus } from "lucide-react";
-import ModalCoordinators from "../../components/admin/NewCoordinatorsModal.jsx";
-import UpdateCoordinators from "../../components/admin/UpdateCoordinators.jsx";
+import ModalCoordinators from "../../components/admin/PageModals/CoordinadoresModal/NewCoordinatorsModal.jsx";
+import UpdateCoordinators from "../../components/admin/PageModals/CoordinadoresModal/UpdateCoordinators.jsx";
 import useCoordinators from "../../hookS/admin/useDataCoordinators.jsx";
 
 const Coordinadores = () => {

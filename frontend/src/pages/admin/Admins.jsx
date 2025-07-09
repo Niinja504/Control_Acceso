@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useEffect } from "react";
 import "../../styles/Admin/Admins.css";
-import DocenteCard from "../../components/admin/DocenteCard.jsx";
+import DocenteCard from "../../components/admin/Cards/DocenteCard.jsx";
 import { Search, CirclePlus } from "lucide-react";
-import ModalAdmin from "../../components/admin/NewAdminModal.jsx";
-import UpdateAdmins from "../../components/admin/UpdateAdmins.jsx";
+import ModalAdmin from "../../components/admin/PageModals/AdminsModal/NewAdminModal.jsx";
+import UpdateAdmins from "../../components/admin/PageModals/AdminsModal/UpdateAdmins.jsx";
 import useAdmins from "../../hookS/admin/useDataAdmin.jsx";
 
 const Admins = () => {

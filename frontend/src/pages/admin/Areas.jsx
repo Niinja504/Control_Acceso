@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/Admin/Teams.css";
-import AreaCard from "../../components/admin/AreaCard.jsx";
+import AreaCard from "../../components/admin/Cards/AreaCard.jsx";
 import { CirclePlus } from "lucide-react";
-import ModalNuevaArea from "../../components/admin/NewTeamsModal.jsx";
+import ModalNuevaArea from "../../components/admin/PageModals/AreasModal/NewTeamsModal.jsx";
 import useDataTeams from "../../hooks/admin/useDataTeams.jsx";
-import UpdateTeams from "../../components/admin/UpdateTeams.jsx";
+import UpdateTeams from "../../components/admin/PageModals/AreasModal/UpdateTeams.jsx";
 
 const Areas = () => {
   const [showModal, setShowModal] = useState(false);

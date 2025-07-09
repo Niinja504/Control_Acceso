@@ -1,5 +1,5 @@
 import React from "react";
-import "../../components/styles/UserFaceCard.css";
+import "../../../components/styles/UserFaceCard.css";
 import { Pencil, Trash2 } from "lucide-react";
 
 const UserFaceCard = ({ name, photo, onDelete, onEdit }) => {

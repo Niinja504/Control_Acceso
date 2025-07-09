@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import "../styles/Modal.css";
+import "../../../styles/Modal.css";
 
 // Convertir fechas a formato YYYY-MM-DD
 const toInputDateFormat = (date) => {

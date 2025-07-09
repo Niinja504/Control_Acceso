@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import { Eraser } from "lucide-react";
-import "../../components/styles/NewScheduleModal.css";
+import "../../../../components/styles/NewScheduleModal.css";
 
 const initialDayState = {
   matutino: { entrada: "", salida: "" },

@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/HorarioCard.css"; 
+import "../../styles/HorarioCard.css"; 
 
 const ScheduleCard = ({ name, onClick }) => {
   return (

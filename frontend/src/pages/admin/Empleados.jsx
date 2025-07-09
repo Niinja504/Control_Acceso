@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useEffect } from "react";
 import "../../styles/Admin/Empleados.css";
-import EmpleadoCard from "../../components/admin/DocenteCard.jsx";
+import EmpleadoCard from "../../components/admin/Cards/DocenteCard.jsx";
 import { Search, CirclePlus } from "lucide-react";
-import ModalEmpleado from "../../components/admin/NewEmpleadosModal.jsx";
-import EditEmpleadoModal from "../../components/admin/UpdateEmpleaods.jsx";
+import ModalEmpleado from "../../components/admin/PageModals/EmpleadosModal/NewEmpleadosModal.jsx";
+import EditEmpleadoModal from "../../components/admin/PageModals/EmpleadosModal/UpdateEmpleaods.jsx";
 import useEmployees from "../../hooks/admin/useDataEmployee.jsx";
 
 const Empleados = () => {

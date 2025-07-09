@@ -1,5 +1,5 @@
 import React from "react";
-import "../../components/styles/ViewScheduleModal.css";
+import "../../../../components/styles/ViewScheduleModal.css";
 import { Trash2, Pencil } from "lucide-react";
 import Swal from "sweetalert2";
 

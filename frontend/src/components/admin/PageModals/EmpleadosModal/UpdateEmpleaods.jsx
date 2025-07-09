@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import "../../components/styles/ModalUpdate.css";
-import Icon from "../../assets/icon.jpg";
+import "../../../../styles/Admin/Empleados.css";
+import Icon from "../../../../assets/icon.jpg";
 import { Pencil, Trash2 } from "lucide-react";
 
 const toInputDateFormat = (date) => {

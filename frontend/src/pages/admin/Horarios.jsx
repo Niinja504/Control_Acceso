@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useEffect } from "react";
 import "../../styles/admin/Horarios.css";
 import useDataSchedules from "../../hooks/admin/useDataSchedule";
-import ScheduleCard from "../../components/admin/HorarioCard";
-import NewScheduleModal from "../../components/admin/NewScheduleModal";
-import ScheduleEditModal from "../../components/admin/UpdateScheduleModal";
-import ScheduleDetailsModal from "../../components/admin/ScheduleDetailsModal";
+import ScheduleCard from "../../components/admin/Cards/HorarioCard.jsx";
+import NewScheduleModal from "../../components/admin/PageModals/ScheduleModals/NewScheduleModal.jsx";
+import ScheduleEditModal from "../../components/admin/PageModals/ScheduleModals/UpdateScheduleModal.jsx";
+import ScheduleDetailsModal from "../../components/admin/PageModals/ScheduleModals/ScheduleDetailsModal.jsx";
 import { Search, CirclePlus } from "lucide-react";
 
 const Schedule = () => {

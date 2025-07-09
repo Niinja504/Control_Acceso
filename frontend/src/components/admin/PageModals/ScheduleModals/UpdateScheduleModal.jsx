@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../../components/styles/ScheduleFormModal.css";
+import "../../../../components/styles/ScheduleFormModal.css";
 import { X, Eraser } from "lucide-react";
 import Swal from "sweetalert2";
 
