@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import "../../../../styles/Admin/Empleados.css";
 import Icon from "../../../../assets/icon.jpg";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Camera } from "lucide-react";
 
 const toInputDateFormat = (date) => {
   if (!date) return "";
@@ -47,6 +47,18 @@ export default function UpdateEmpleaods({ empleado, onSave, onDelete, onClose })
         onDelete(form._id);
       }
     });
+  };
+
+  // Manejar cambio de imagen
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setForm({ ...form, photo: reader.result }); // Guarda la imagen en base64
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   if (!empleado) return null;
@@ -137,6 +149,49 @@ export default function UpdateEmpleaods({ empleado, onSave, onDelete, onClose })
               <div className="form-field">
                 <label>Fecha de nacimiento:</label>
                 <input name="birthday" type="date" value={toInputDateFormat(form.birthday)} onChange={handleChange} required />
+              </div>
+              <div className="form-field">
+                <label htmlFor="status">Estado:</label>
+                <select
+                  id="status"
+                  name="status"
+                  value={form.status ? "activo" : "inactivo"}
+                  onChange={e =>
+                    setForm({ ...form, status: e.target.value === "activo" })
+                  }
+                  required
+                >
+                  <option value="activo">Activo</option>
+                  <option value="inactivo">Inactivo</option>
+                </select>
+              </div>
+              <div className="form-field">
+                <label htmlFor="photo">Imagen de perfil:</label>
+                <div className="image-upload-container">
+                  <label htmlFor="photo" className="custom-image-upload">
+                    <Camera className="camera-icon" />
+                    <span>{form.photo ? "Cambiar imagen" : "Agregar imagen"}</span>
+                    <input
+                      id="photo"
+                      name="photo"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      style={{ display: "none" }}
+                    />
+                  </label>
+                  <div className="image-preview-area">
+                    {(form.photo || empleado.photo) ? (
+                      <img
+                        src={form.photo || empleado.photo}
+                        alt="Preview"
+                        className="image-preview"
+                      />
+                    ) : (
+                      <div className="image-placeholder">Sin imagen</div>
+                    )}
+                  </div>
+                </div>
               </div>
               <button type="submit" className="btn-guardar">ACTUALIZAR</button>
             </form>

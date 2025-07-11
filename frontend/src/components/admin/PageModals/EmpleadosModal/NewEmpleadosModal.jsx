@@ -335,24 +335,9 @@ export default function NewEmployeesModal({ onSaved, onClose }) {
       <div className="form-field">
         <label htmlFor="photo">Imagen:</label>
         <div className="image-upload-container">
-          <label htmlFor="photo" className="custom-image-upload" style={{ cursor: "pointer", padding: "0", border: "none", background: "none" }}>
-            <div style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-              background: "#f5f6fa",
-              border: "1.5px dashed #bfc2cc",
-              borderRadius: "12px",
-              padding: "10px 18px",
-              transition: "border-color 0.2s",
-              fontSize: "15px",
-              color: "#4a4a4a",
-              fontWeight: 500,
-              width: "fit-content"
-            }}>
-              <Camera className="camera-icon" style={{ fontSize: 26, color: "#4a90e2" }} />
-              <span>{image ? "Cambiar imagen" : "Agregar imagen"}</span>
-            </div>
+          <label htmlFor="photo" className="custom-image-upload">
+            <Camera className="camera-icon" />
+            <span>{image ? "Cambiar imagen" : "Agregar imagen"}</span>
             <input
               id="photo"
               name="photo"

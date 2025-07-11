@@ -79,6 +79,7 @@ employeesController.deleteEmployees = async (req, res) => {
 // U P D A T E
 employeesController.updateEmployees = async (req, res) => {
   try {
+    console.log("PHOTO RECIBIDA:", req.body.photo); // <-- Verifica aquí
     const {
       numEmpleado,
       names,
@@ -92,6 +93,7 @@ employeesController.updateEmployees = async (req, res) => {
       IdTeam,
       status,
       address,
+      photo, // <-- Agrega este campo
     } = req.body;
 
     // Preparar datos a actualizar
@@ -107,6 +109,7 @@ employeesController.updateEmployees = async (req, res) => {
       IdTeam,
       status,
       address,
+      photo, // <-- Agrega este campo
     };
 
     // Si se incluye nueva contraseña, hashearla

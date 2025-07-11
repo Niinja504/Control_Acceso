@@ -1,5 +1,6 @@
 // Importo todo lo de la libreria de Express
 import express from "express";
+import bodyParser from "body-parser";
 import employeeRoutes from "./src/routes/employees.js"
 import coordinatorsRoutes from "./src/routes/coordinatorsRoutes.js"
 import administratorsRoutes from "./src/routes/administratorsRoutes.js";
@@ -22,6 +23,10 @@ import fs from "fs";
 import path from "path";
 
 const app = express();
+
+// Aumenta el límite a 10mb (puedes ajustar según lo que necesites)
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 // Configurar CORS
 app.use(cors({
