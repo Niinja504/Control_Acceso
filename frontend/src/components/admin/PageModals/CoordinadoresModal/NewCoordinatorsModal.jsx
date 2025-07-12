@@ -139,20 +139,17 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
   };
 
   const onSubmit = async (data) => {
+    data.status = true; // Siempre activo
+
     const formData = new FormData();
-    
-    // Agregar campos al FormData
     Object.entries(data).forEach(([key, value]) => {
       if (key === "birthday" || key === "hireDate") {
         formData.append(key, toInputDateFormat(value));
-      } else if (key === "status") {
-        formData.append(key, value === "activo");
       } else {
         formData.append(key, value);
       }
     });
 
-    // Agregar imagen si existe
     if (image) {
       formData.append("photo", image);
     }
@@ -169,12 +166,10 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
         timer: 2000
       });
 
-      // Resetear formulario
       reset();
       setImage(null);
       setPreviewUrl(null);
 
-      // Ejecutar callback
       if (onSaved) {
         const result = onSaved();
         if (result instanceof Promise) await result;
@@ -361,17 +356,6 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
         options={teams}
         loading={loadingTeams}
         validation={{ required: "Debes seleccionar un equipo" }}
-      />
-
-      <FormSelect
-        label="Estado:"
-        name="status"
-        register={register}
-        errors={errors}
-        options={[
-          { value: "activo", label: "Activo" },
-          { value: "inactivo", label: "Inactivo" }
-        ]}
       />
 
       <FormField
