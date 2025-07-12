@@ -48,6 +48,9 @@ const ViewScheduleModal = ({ schedule, onClose, onEdit, onDelete }) => {
     <div className="modal-overlay active">
       
       <div className="cardH">
+
+        <button className="close-icon" onClick={onClose}>×</button>
+
         
         <div className="view-header">
           <h2>{schedule?.name || "Horario sin nombre"}</h2>
