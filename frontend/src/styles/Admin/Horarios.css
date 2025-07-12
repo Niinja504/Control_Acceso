@@ -78,7 +78,7 @@
   align-items: flex-start;
   width: 100%;
   min-height: 100vh;
-  padding: 3% 6% 0 6%;
+  padding: 3% 6% 0px 6%;
   box-sizing: border-box;
 }
 

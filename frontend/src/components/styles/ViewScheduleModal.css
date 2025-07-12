@@ -1,6 +1,7 @@
 .cardH{
   max-height: 90vh;
   overflow-y: auto;
+  position: relative; 
   background-color: #ffffff;
   border-radius: 16px;
   padding: 30px;
@@ -10,6 +11,28 @@
   max-width: 500px;
 }
 
+.close-icon {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 30px;
+  background: transparent;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  z-index: 10;
+
+  outline: none; 
+  box-shadow: none; 
+}
+
+.close-icon:hover,
+.close-icon:focus {
+  background: transparent; 
+  outline: none;
+  box-shadow: none;
+}
 
 @keyframes fadeInScale {
   from {
