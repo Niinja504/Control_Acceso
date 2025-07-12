@@ -18,25 +18,25 @@ const useDataAdmin = () => {
     }
   };
 
-  // Crear o actualizar administrador
-  const saveAdmin = async (adminData) => {
-    try {
-      if (adminEdit) {
-        // Actualizar administrador
-        await axios.put(`http://localhost:4000/api/administrators/${adminEdit._id}`, adminData);
-        Swal.fire("¡Actualizado!", "El administrador ha sido actualizado.", "success");
-      } else {
-        // Crear administrador
-        await axios.post("http://localhost:4000/api/registerAdministrators", adminData);
-        Swal.fire("¡Guardado!", "El administrador ha sido creado.", "success");
-      }
-      fetchAdmins();
-      handleCloseForm();
-    } catch (error) {
-      console.error("Error al guardar/actualizar administrador:", error);
-      Swal.fire("Error", "No se pudo guardar el administrador.", "error");
+ // Crear o actualizar administrador
+const saveAdmin = async (adminData, id = null) => {
+  try {
+    if (id) {
+      // Actualizar administrador
+      await axios.put(`http://localhost:4000/api/administrators/${id}`, adminData);
+      Swal.fire("¡Actualizado!", "El administrador ha sido actualizado.", "success");
+    } else {
+      // Crear administrador
+      await axios.post("http://localhost:4000/api/registerAdministrators", adminData);
+      Swal.fire("¡Guardado!", "El administrador ha sido creado.", "success");
     }
-  };
+    await fetchAdmins();
+    handleCloseForm();
+  } catch (error) {
+    console.error("Error al guardar/actualizar administrador:", error);
+    Swal.fire("Error", "No se pudo guardar el administrador.", "error");
+  }
+};
 
   // Eliminar administrador con confirmación
   const deleteAdmin = async (id) => {

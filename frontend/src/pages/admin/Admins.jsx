@@ -11,7 +11,7 @@ const Admins = () => {
   const [showNewAdmin, setShowNewAdmin] = useState(false);
   const [adminEdit, setAdminEdit] = useState(null);
 
-  const { admins, fetchAdmins, saveAdmin, deleteAdmin } = useAdmins();
+const { admins, fetchAdmins, saveAdmin, deleteAdmin } = useAdmins();
 
   useEffect(() => {
     fetchAdmins();
@@ -62,7 +62,10 @@ const Admins = () => {
             filteredAdmins.map((admin) => (
               <div
                 key={admin._id}
-                onClick={() => setAdminEdit(admin)}
+                onClick={() => {
+                setAdminEdit(admin);
+                setShowForm(true);
+              }}
                 style={{ cursor: "pointer" }}
               >
                 <DocenteCard

@@ -1,3 +1,4 @@
+// UpdateCoordinators.jsx
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
@@ -12,7 +13,7 @@ const toInputDateFormat = (date) => {
   return localDate.toISOString().split("T")[0];
 };
 
-export default function UpdateAdmins({ admin, onSave, onDelete, onClose }) {
+export default function UpdateCoordinators({ coordinator, onSave, onDelete, onClose }) {
   const [editMode, setEditMode] = useState(false);
 
   const {
@@ -23,25 +24,25 @@ export default function UpdateAdmins({ admin, onSave, onDelete, onClose }) {
   } = useForm();
 
   useEffect(() => {
-    if (admin) {
+    if (coordinator) {
       reset({
-        ...admin,
-        birthday: toInputDateFormat(admin.birthday),
+        ...coordinator,
+        birthday: toInputDateFormat(coordinator.birthday),
       });
       setEditMode(false);
     }
-  }, [admin, reset]);
+  }, [coordinator, reset]);
 
   const onSubmit = async (data) => {
-    await onSave(data, admin._id);
-    await Swal.fire("Actualizado", "El administrador ha sido actualizado exitosamente.", "success");
+    await onSave(data, coordinator._id);
+    await Swal.fire("Actualizado", "El coordinador ha sido actualizado exitosamente.", "success");
     setEditMode(false);
     onClose();
   };
 
   const handleDelete = () => {
     Swal.fire({
-      title: "¿Eliminar administrador?",
+      title: "¿Eliminar coordinador?",
       text: "Esta acción no se puede deshacer.",
       icon: "warning",
       showCancelButton: true,
@@ -49,20 +50,20 @@ export default function UpdateAdmins({ admin, onSave, onDelete, onClose }) {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        onDelete(admin._id);
+        onDelete(coordinator._id);
       }
     });
   };
 
-  if (!admin) return null;
+  if (!coordinator) return null;
 
   return (
     <div className="modal-overlay active">
       <div className="cvcard-modal cvcard-modal-scroll">
         <button className="close-modal" onClick={onClose}>×</button>
         <div className="cvcard-header">
-          <img src={admin.photo} alt="Avatar" className="cvcard-avatar" />
-          <div className="cvcard-nombre">{admin.names} {admin.surnames}</div>
+          <img src={coordinator.photo} alt="Avatar" className="cvcard-avatar" />
+          <div className="cvcard-nombre">{coordinator.names} {coordinator.surnames}</div>
         </div>
         <div className="cvcard-info">
           <div className="cvcard-info-title-row">
@@ -83,37 +84,37 @@ export default function UpdateAdmins({ admin, onSave, onDelete, onClose }) {
             <>
               <div className="cvcard-info-group">
                 <span className="cvcard-label">Nombres y apellidos</span>
-                <span className="cvcard-value">{admin.names} {admin.surnames}</span>
+                <span className="cvcard-value">{coordinator.names} {coordinator.surnames}</span>
               </div>
               <div className="cvcard-info-group">
                 <span className="cvcard-label">Correo electrónico:</span>
-                <span className="cvcard-value">{admin.email}</span>
+                <span className="cvcard-value">{coordinator.email}</span>
               </div>
               <div className="cvcard-info-group">
                 <span className="cvcard-label">Número telefónico:</span>
-                <span className="cvcard-value">{admin.telephone}</span>
+                <span className="cvcard-value">{coordinator.telephone}</span>
               </div>
               <div className="cvcard-info-group">
                 <span className="cvcard-label">Dirección de residencia:</span>
-                <span className="cvcard-value">{admin.address}</span>
+                <span className="cvcard-value">{coordinator.address}</span>
               </div>
               <div className="cvcard-info-group">
-                <span className="cvcard-label">Código de administrador:</span>
-                <span className="cvcard-value">{admin.numEmpleado}</span>
+                <span className="cvcard-label">Código de coordinador:</span>
+                <span className="cvcard-value">{coordinator.numEmpleado}</span>
               </div>
               <div className="cvcard-info-group">
                 <span className="cvcard-label">DUI:</span>
-                <span className="cvcard-value">{admin.DUI}</span>
+                <span className="cvcard-value">{coordinator.DUI}</span>
               </div>
               <div className="cvcard-info-group">
                 <span className="cvcard-label">Fecha de nacimiento:</span>
-                <span className="cvcard-value">{toInputDateFormat(admin.birthday)}</span>
+                <span className="cvcard-value">{toInputDateFormat(coordinator.birthday)}</span>
               </div>
             </>
           ) : (
             <form className="cvcard-form" onSubmit={handleSubmit(onSubmit)} style={{ width: "100%", marginTop: 10 }}>
               <div className="form-field">
-                <label>Código de administrador:</label>
+                <label>Código de coordinador:</label>
                 <input {...register("numEmpleado", { required: true })} />
               </div>
               <div className="form-field">

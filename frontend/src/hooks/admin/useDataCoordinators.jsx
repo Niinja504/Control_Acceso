@@ -19,24 +19,22 @@ const useDataCoordinators = () => {
   };
 
   // Crear o actualizar coordinador
-  const saveCoordinator = async (coordinatorData) => {
-    try {
-      if (coordinatorEdit) {
-        // Actualizar coordinador
-        await axios.put(`http://localhost:4000/api/coordinators/${coordinatorEdit._id}`, coordinatorData);
-        Swal.fire("¡Actualizado!", "El coordinador ha sido actualizado.", "success");
-      } else {
-        // Crear coordinador
-        await axios.post("http://localhost:4000/api/registerCoordinators", coordinatorData);
-        Swal.fire("¡Guardado!", "El coordinador ha sido creado.", "success");
-      }
-      await fetchCoordinators(); // <-- Espera a que termine antes de cerrar el formulario
-      handleCloseForm();
-    } catch (error) {
-      console.error("Error al guardar/actualizar coordinador:", error);
-      Swal.fire("Error", "No se pudo guardar el coordinador.", "error");
+  const saveCoordinator = async (coordinatorData, id) => {
+  try {
+    if (id) {
+      await axios.put(`http://localhost:4000/api/coordinators/${id}`, coordinatorData);
+      Swal.fire("¡Actualizado!", "El coordinador ha sido actualizado.", "success");
+    } else {
+      await axios.post("http://localhost:4000/api/registerCoordinators", coordinatorData);
+      Swal.fire("¡Guardado!", "El coordinador ha sido creado.", "success");
     }
-  };
+    await fetchCoordinators();
+    handleCloseForm();
+  } catch (error) {
+    console.error("Error al guardar/actualizar coordinador:", error);
+    Swal.fire("Error", "No se pudo guardar el coordinador.", "error");
+  }
+};
 
   // Eliminar coordinador con confirmación
   const deleteCoordinator = async (id) => {

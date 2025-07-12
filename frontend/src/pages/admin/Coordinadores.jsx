@@ -4,7 +4,7 @@ import DocenteCard from "../../components/admin/Cards/DocenteCard.jsx";
 import { Search, CirclePlus } from "lucide-react";
 import ModalCoordinators from "../../components/admin/PageModals/CoordinadoresModal/NewCoordinatorsModal.jsx";
 import UpdateCoordinators from "../../components/admin/PageModals/CoordinadoresModal/UpdateCoordinators.jsx";
-import useCoordinators from "../../hookS/admin/useDataCoordinators.jsx";
+import useCoordinators from "../../hooks/admin/useDataCoordinators.jsx";
 
 const Coordinadores = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -121,7 +121,7 @@ const Coordinadores = () => {
 
       {coordinadorEdit && (
         <UpdateCoordinators
-          admin={coordinadorEdit}
+          coordinator={coordinadorEdit}
           onSave={async (data, id) => {
             await saveCoordinator(data, id);
             setCoordinadorEdit(null);
