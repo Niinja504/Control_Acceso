@@ -1,41 +1,84 @@
 import React, { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 import Swal from "sweetalert2";
 import "../../../styles/Modal.css";
 
-// Convertir fechas a formato YYYY-MM-DD
-const toInputDateFormat = (date) => {
-  if (!date) return "";
-  const d = new Date(date);
-  const offset = d.getTimezoneOffset();
-  const localDate = new Date(d.getTime() - offset * 60 * 1000);
-  return localDate.toISOString().split("T")[0];
-};
+// Componente reutilizable para inputs
+const FormInput = ({ label, id, register, errors, validation, required, ...props }) => (
+  <div className="form-field">
+    <label htmlFor={id}>
+      {label} 
+      {validation.required && <span className="required-asterisk">*</span>}
+    </label>
+    <input 
+      id={id} 
+      aria-invalid={errors[id] ? "true" : "false"}
+      {...register(id, validation)} 
+      {...props} 
+    />
+    {errors[id] && (
+      <span className="error-message" role="alert">
+        {errors[id].message}
+      </span>
+    )}
+  </div>
+);
+
+// Componente para selects
+const FormSelect = ({ label, id, register, errors, options, loading, validation, required }) => (
+  <div className="form-field">
+    <label htmlFor={id}>
+      {label}
+      {required}
+    </label>
+    <select 
+      id={id} 
+      aria-invalid={errors[id] ? "true" : "false"}
+      {...register(id, validation)}
+    >
+      <option value="">Seleccione una opción</option>
+      {loading ? (
+        <option disabled>Cargando...</option>
+      ) : (
+        options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))
+      )}
+    </select>
+    {errors[id] && (
+      <span className="error-message" role="alert">
+        {errors[id].message}
+      </span>
+    )}
+  </div>
+);
 
 export default function NewCoordinatorsModal({ onSaved, onClose }) {
-  const [form, setForm] = useState({
-    numEmpleado: "",
-    names: "",
-    surnames: "",
-    DUI: "",
-    birthday: "",
-    telephone: "",
-    email: "",
-    password: "",
-    hireDate: "",
-    IdTeam: "",
-    status: true,
-    address: "",
-  });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm();
 
   const [teams, setTeams] = useState([]);
   const [loadingTeams, setLoadingTeams] = useState(true);
+  const [isSubmittingForm, setIsSubmittingForm] = useState(false);
 
+  // Cargar equipos al montar el componente
   useEffect(() => {
     const fetchTeams = async () => {
       try {
         const res = await axios.get("http://localhost:4000/api/teams");
-        setTeams(res.data); 
+        setTeams(res.data.map(team => ({
+          value: team._id,
+          label: team.name
+        })));
       } catch (error) {
         console.error("Error al cargar equipos:", error);
         setTeams([]);
@@ -46,269 +89,264 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
     fetchTeams();
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value, type } = e.target;
-    if (type === "select-one" && name === "status") {
-      setForm({ ...form, [name]: value === "activo" });
-    } else {
-      setForm({ ...form, [name]: value });
-    }
+  // Formateadores de inputs
+  const formatDUI = (value) => {
+    value = value.replace(/\D/g, "").slice(0, 9);
+    if (value.length > 8) value = value.slice(0, 8) + "-" + value.slice(8);
+    return value;
   };
 
-  const handleDUIChange = (e) => {
-    let value = e.target.value.replace(/\D/g, ""); // Solo números
-    if (value.length > 9) value = value.slice(0, 9); // Máximo 9 dígitos
-    if (value.length > 8) {
-      value = value.slice(0, 8) + "-" + value.slice(8);
-    }
-    setForm({ ...form, DUI: value });
+  const formatTelephone = (value) => {
+    value = value.replace(/\D/g, "").slice(0, 8);
+    if (value.length > 4) value = value.slice(0, 4) + "-" + value.slice(4);
+    return value;
   };
 
-  // Nuevo handler para el teléfono
-  const handleTelephoneChange = (e) => {
-    let value = e.target.value.replace(/\D/g, ""); // Solo números
-    if (value.length > 8) value = value.slice(0, 8); // Máximo 8 dígitos
-    if (value.length > 4) {
-      value = value.slice(0, 4) + "-" + value.slice(4);
-    }
-    setForm({ ...form, telephone: value });
+  // Watchers para campos con formato
+  const DUI = watch("DUI") || "";
+  const telephone = watch("telephone") || "";
+  const password = watch("password");
+
+  // Aplicar formatos
+  useEffect(() => {
+    setValue("DUI", formatDUI(DUI));
+  }, [DUI]);
+
+  useEffect(() => {
+    setValue("telephone", formatTelephone(telephone));
+  }, [telephone]);
+
+  // Validación de fechas
+  const validateHireDate = (hireDate) => {
+    const birthday = watch("birthday");
+    if (!birthday || !hireDate) return true;
+    return new Date(birthday) < new Date(hireDate) || 
+      "La fecha de contratación debe ser posterior a la de nacimiento";
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Validación extra opcional (correo termina en @ricaldone.edu.sv)
-    if (!form.email.toLowerCase().endsWith("@ricaldone.edu.sv")) {
-      return Swal.fire(
-        "Correo inválido",
-        "El correo debe terminar en @ricaldone.edu.sv",
-        "warning"
-      );
-    }
-
-    const dataToSend = {
-      ...form,
-      birthday: toInputDateFormat(form.birthday),
-      hireDate: toInputDateFormat(form.hireDate),
-    };
-
+  // Envío del formulario
+  const onSubmit = async (data) => {
     try {
-      await axios.post("http://localhost:4000/api/administrators", dataToSend);
-      await Swal.fire(
-        "¡Guardado!",
-        "El Administrador ha sido registrado exitosamente.",
-        "success"
-      );
-      setForm({
-        numEmpleado: "",
-        names: "",
-        surnames: "",
-        DUI: "",
-        birthday: "",
-        telephone: "",
-        email: "",
-        password: "",
-        hireDate: "",
-        IdTeam: "",
-        status: true,
-        address: "",
+      setIsSubmittingForm(true);
+      
+      if (!data.email.toLowerCase().endsWith("@ricaldone.edu.sv")) {
+        throw new Error("El correo debe terminar en @ricaldone.edu.sv");
+      }
+
+      const dataToSend = {
+        ...data,
+        birthday: new Date(data.birthday).toISOString(),
+        hireDate: new Date(data.hireDate).toISOString(),
+        status: data.status === "activo",
+      };
+
+      await axios.post("http://localhost:4000/api/registerAdministrators", dataToSend);
+      
+      await Swal.fire({
+        icon: 'success',
+        title: '¡Guardado!',
+        text: 'El Administrador ha sido registrado exitosamente.',
+        timer: 2000
       });
-      onSaved(); 
-      if (onClose) onClose();
+      
+      reset();
+      onSaved();
+      onClose?.();
+      
     } catch (error) {
-      console.error(
-        "Error al guardar:",
-        error.response?.data || error.message
-      );
-      await Swal.fire(
-        "Error al guardar",
-        error.response?.data?.message ||
-          "Verifica que los campos estén correctos.",
-        "error"
-      );
+      await Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error.response?.data?.message || error.message,
+      });
+    } finally {
+      setIsSubmittingForm(false);
     }
   };
 
   return (
-    <form className="new-coordinador-form" onSubmit={handleSubmit}>
-      <button
-        type="button"
-        className="close-modal"
-        onClick={onClose}
-        aria-label="Cerrar"
+    <form 
+      className="new-coordinador-form" 
+      onSubmit={handleSubmit(onSubmit)}
+      aria-label="Formulario de nuevo administrador"
+    >
+      <button 
+        type="button" 
+        className="close-modal" 
+        onClick={onClose} 
+        aria-label="Cerrar modal"
+        onKeyDown={(e) => e.key === 'Enter' && onClose()}
       >
         ×
       </button>
-      <h2>
-        Crear un nuevo administrador
-      </h2>
+      
+      <h2>Crear un nuevo administrador</h2>
 
-      <div className="form-field">
-        <label htmlFor="numEmpleado">Código de empleado:</label>
-        <input
-          id="numEmpleado"
-          name="numEmpleado"
-          type="text"
-          value={form.numEmpleado}
-          onChange={handleChange}
-          required
-        />
-      </div>
+      <FormInput
+        label="Código de empleado:"
+        id="numEmpleado"
+        register={register}
+        errors={errors}
+        validation={{ required: "El código de empleado es obligatorio" }}
+        required
+      />
 
-      <div className="form-field">
-        <label htmlFor="names">Nombres:</label>
-        <input
-          id="names"
-          name="names"
-          type="text"
-          value={form.names}
-          onChange={handleChange}
-          required
-        />
-      </div>
+      <FormInput
+        label="Nombres:"
+        id="names"
+        register={register}
+        errors={errors}
+        validation={{ required: "Los nombres son obligatorios" }}
+        required
+      />
 
-      <div className="form-field">
-        <label htmlFor="surnames">Apellidos:</label>
-        <input
-          id="surnames"
-          name="surnames"
-          type="text"
-          value={form.surnames}
-          onChange={handleChange}
-          required
-        />
-      </div>
+      <FormInput
+        label="Apellidos:"
+        id="surnames"
+        register={register}
+        errors={errors}
+        validation={{ required: "Los apellidos son obligatorios" }}
+        required
+      />
 
-      <div className="form-field">
-        <label htmlFor="DUI">DUI:</label>
-        <input
-          id="DUI"
-          name="DUI"
-          type="text"
-          value={form.DUI}
-          onChange={handleDUIChange}
-          required
-          maxLength={10}
-          pattern="\d{8}-\d{1}"
-          title="El formato debe ser 12345678-9"
-          placeholder="12345678-9"
-        />
-      </div>
+      <FormInput
+        label="DUI:"
+        id="DUI"
+        register={register}
+        errors={errors}
+        validation={{
+          required: "El DUI es obligatorio",
+          pattern: {
+            value: /^\d{8}-\d{1}$/,
+          }
+        }}
+        placeholder="12345678-9"
+        maxLength={10}
+        required
+      />
 
-      <div className="form-field">
-        <label htmlFor="birthday">Fecha de nacimiento:</label>
-        <input
-          id="birthday"
-          name="birthday"
-          type="date"
-          value={toInputDateFormat(form.birthday)}
-          onChange={handleChange}
-          required
-        />
-      </div>
+      <FormInput
+        label="Fecha de nacimiento:"
+        id="birthday"
+        type="date"
+        register={register}
+        errors={errors}
+        validation={{ 
+          required: "La fecha de nacimiento es obligatoria",
+          max: {
+            value: new Date().toISOString().split('T')[0],
+            message: "La fecha no puede ser futura"
+          }
+        }}
+        required
+      />
 
-      <div className="form-field">
-        <label htmlFor="telephone">Número telefónico:</label>
-        <input
-          id="telephone"
-          name="telephone"
-          type="text"
-          value={form.telephone}
-          onChange={handleTelephoneChange}
-          required
-          maxLength={9}
-          pattern="\d{4}-\d{4}"
-          title="El formato debe ser 1234-5678"
-          placeholder="1234-5678"
-        />
-      </div>
+      <FormInput
+        label="Número telefónico:"
+        id="telephone"
+        register={register}
+        errors={errors}
+        validation={{
+          required: "El teléfono es obligatorio",
+          pattern: {
+            value: /^\d{4}-\d{4}$/,
+            message: "Formato inválido (1234-5678)"
+          }
+        }}
+        placeholder="1234-5678"
+        maxLength={9}
+        required
+      />
 
-      <div className="form-field">
-        <label htmlFor="email">Correo electrónico:</label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          value={form.email}
-          onChange={handleChange}
-          required
-          placeholder="usuario@ricaldone.edu.sv"
-        />
-      </div>
+      <FormInput
+        label="Correo electrónico:"
+        id="email"
+        type="email"
+        register={register}
+        errors={errors}
+        validation={{
+          required: "El correo electrónico es obligatorio",
+          pattern: {
+            value: /^[a-zA-Z0-9._%+-]+@ricaldone\.edu\.sv$/,
+            message: "Debe usar un correo institucional @ricaldone.edu.sv"
+          }
+        }}
+        placeholder="usuario@ricaldone.edu.sv"
+        required
+      />
 
-      <div className="form-field">
-        <label htmlFor="password">Contraseña:</label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          value={form.password}
-          onChange={handleChange}
-          required
-        />
-      </div>
+      <FormInput
+        label="Contraseña:"
+        id="password"
+        type="password"
+        register={register}
+        errors={errors}
+        validation={{
+          required: "La contraseña es obligatoria",
+          minLength: {
+            value: 8,
+            message: "Mínimo 8 caracteres"
+          },
+          pattern: {
+            value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
+            message: "Debe incluir mayúsculas, minúsculas y números"
+          }
+        }}
+        required
+      />
 
-      <div className="form-field">
-        <label htmlFor="hireDate">Fecha de contratación:</label>
-        <input
-          id="hireDate"
-          name="hireDate"
-          type="date"
-          value={toInputDateFormat(form.hireDate)}
-          onChange={handleChange}
-          required
-        />
-      </div>
+      <FormInput
+        label="Fecha de contratación:"
+        id="hireDate"
+        type="date"
+        register={register}
+        errors={errors}
+        validation={{ 
+          required: "La fecha de contratación es obligatoria",
+          validate: validateHireDate
+        }}
+        required
+      />
 
-      <div className="form-field">
-        <label htmlFor="IdTeam">Equipo:</label>
-        <select
-          id="IdTeam"
-          name="IdTeam"
-          value={form.IdTeam}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Selecciona un equipo</option>
-          {loadingTeams ? (
-            <option disabled>Cargando equipos...</option>
-          ) : (
-            teams.map((team) => (
-              <option key={team._id} value={team._id}>
-                {team.name}
-              </option>
-            ))
-          )}
-        </select>
-      </div>
+      <FormSelect
+        label="Equipo:"
+        id="IdTeam"
+        register={register}
+        errors={errors}
+        options={teams}
+        loading={loadingTeams}
+        validation={{ required: "Debe seleccionar un equipo" }}
+        required
+      />
 
-      <div className="form-field">
-        <label htmlFor="status">Estado:</label>
-        <select
-          id="status"
-          name="status"
-          value={form.status ? "activo" : "inactivo"}
-          onChange={handleChange}
-        >
-          <option value="activo">Activo</option>
-          <option value="inactivo">Inactivo</option>
-        </select>
-      </div>
+      <FormSelect
+        label="Estado:"
+        id="status"
+        register={register}
+        errors={errors}
+        options={[
+          { value: "activo", label: "Activo" },
+          { value: "inactivo", label: "Inactivo" }
+        ]}
+        validation={{ required: "Debe seleccionar un estado" }}
+        required
+      />
 
-      <div className="form-field">
-        <label htmlFor="address">Dirección de residencia:</label>
-        <input
-          id="address"
-          name="address"
-          type="text"
-          value={form.address}
-          onChange={handleChange}
-          required
-        />
-      </div>
+      <FormInput
+        label="Dirección de residencia:"
+        id="address"
+        register={register}
+        errors={errors}
+        validation={{ required: "La dirección es obligatoria" }}
+        required
+      />
 
-      <button type="submit" className="btn-guardar">
-        GUARDAR
+      <button 
+        type="submit" 
+        className="btn-guardar"
+        disabled={isSubmittingForm}
+      >
+        {isSubmittingForm ? "GUARDANDO..." : "GUARDAR"}
       </button>
     </form>
   );

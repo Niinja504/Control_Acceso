@@ -1,14 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import useDataTeams from "../../../../hooks/admin/useDataTeams.jsx";
 import "../../../../components/styles/ModalUpdateTeams.css";
 
 const UpdateTeams = ({ area, onClose }) => {
-  const [name, setName] = useState(area.name);
   const { saveTeam, eliminarTeam } = useDataTeams();
 
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    await saveTeam({ name, _id: area._id });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = useForm();
+
+  useEffect(() => {
+    if (area) {
+      reset({ name: area.name });
+    }
+  }, [area, reset]);
+
+  const onSubmit = async (data) => {
+    await saveTeam({ ...data, _id: area._id });
     onClose();
   };
 
@@ -22,20 +34,18 @@ const UpdateTeams = ({ area, onClose }) => {
       <div className="card-teams-header">
         <div className="card-teams-title">Editar área</div>
       </div>
-      <form onSubmit={handleUpdate} className="card-teams-form">
+      <form onSubmit={handleSubmit(onSubmit)} className="card-teams-form">
         <div className="card-teams-group">
           <label className="card-teams-label">Nombre</label>
           <input
             className="card-teams-input"
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
+            {...register("name", { required: true })}
           />
         </div>
         <div className="card-teams-actions">
-          <button type="submit" className="card-teams-btn success">
-            Actualizar
+          <button type="submit" className="card-teams-btn success" disabled={isSubmitting}>
+            {isSubmitting ? "Actualizando..." : "Actualizar"}
           </button>
           <button
             type="button"

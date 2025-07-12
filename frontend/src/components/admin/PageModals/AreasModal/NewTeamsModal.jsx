@@ -1,22 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 import Swal from "sweetalert2";
 import "../../../../components/styles/ModalNewTeams.css";
 
 export default function ModalNuevaArea({ onSaved, onClose }) {
-  const [name, setName] = useState("");
-  const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (name.trim().length < 3) {
+  const onSubmit = async (data) => {
+    if (data.name.trim().length < 3) {
       return Swal.fire("Nombre inválido", "El nombre debe tener al menos 3 caracteres.", "warning");
     }
-    setLoading(true);
+
     try {
-      await axios.post("http://localhost:4000/api/teams", { name });
+      await axios.post("http://localhost:4000/api/teams", { name: data.name });
       await Swal.fire("¡Guardado!", "El área ha sido registrada exitosamente.", "success");
-      setName("");
+      reset();
       if (onSaved) onSaved();
       if (onClose) onClose();
     } catch (error) {
@@ -25,13 +29,11 @@ export default function ModalNuevaArea({ onSaved, onClose }) {
         error.response?.data?.message || "Verifica que los campos estén correctos.",
         "error"
       );
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
-    <form className="new-coordinador-form" onSubmit={handleSubmit}>
+    <form className="new-coordinador-form" onSubmit={handleSubmit(onSubmit)}>
       <button
         type="button"
         className="close-modal"
@@ -45,18 +47,18 @@ export default function ModalNuevaArea({ onSaved, onClose }) {
         <label htmlFor="area-name">Nombre del área:</label>
         <input
           id="area-name"
-          name="name"
           type="text"
-          value={name}
-          onChange={e => setName(e.target.value)}
-          required
-          minLength={3}
-          maxLength={100}
           placeholder="Área"
+          {...register("name", {
+            required: true,
+            minLength: 3,
+            maxLength: 100,
+          })}
         />
       </div>
-      <button type="submit" className="btn-guardar" disabled={loading}>
-        {loading ? "Guardando..." : "GUARDAR"}
+
+      <button type="submit" className="btn-guardar" disabled={isSubmitting}>
+        {isSubmitting ? "Guardando..." : "GUARDAR"}
       </button>
     </form>
   );

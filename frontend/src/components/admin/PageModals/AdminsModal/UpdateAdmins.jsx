@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import "../../../../components/styles/ModalUpdate.css";
-import Icon from "../../../../assets/icon.jpg";
 import { Pencil, Trash2 } from "lucide-react";
 
 const toInputDateFormat = (date) => {
@@ -13,23 +13,25 @@ const toInputDateFormat = (date) => {
 };
 
 export default function UpdateAdmins({ admin, onSave, onDelete, onClose }) {
-  const [form, setForm] = useState({ ...admin });
   const [editMode, setEditMode] = useState(false);
 
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = useForm();
+
   useEffect(() => {
-    setForm({ ...admin });
-    setEditMode(false);
-  }, [admin]);
+    if (admin) {
+      reset({ ...admin, birthday: toInputDateFormat(admin.birthday) });
+      setEditMode(false);
+    }
+  }, [admin, reset]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await onSave(form, admin._id); 
-    Swal.fire("Actualizado", "El administrador ha sido actualizado exitosamente.", "success");
+  const onSubmit = async (data) => {
+    await onSave(data, admin._id);
+    await Swal.fire("Actualizado", "El administrador ha sido actualizado exitosamente.", "success");
     setEditMode(false);
     onClose();
   };
@@ -44,7 +46,7 @@ export default function UpdateAdmins({ admin, onSave, onDelete, onClose }) {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        onDelete(form._id);
+        onDelete(admin._id);
       }
     });
   };
@@ -59,6 +61,7 @@ export default function UpdateAdmins({ admin, onSave, onDelete, onClose }) {
           <img src={admin.photo} alt="Avatar" className="cvcard-avatar" />
           <div className="cvcard-nombre">{admin.names} {admin.surnames}</div>
         </div>
+
         <div className="cvcard-info">
           <div className="cvcard-info-title-row">
             <span className="cvcard-info-title">Información personal</span>
@@ -73,6 +76,7 @@ export default function UpdateAdmins({ admin, onSave, onDelete, onClose }) {
               </span>
             )}
           </div>
+
           {!editMode ? (
             <>
               <div className="cvcard-info-group">
@@ -105,40 +109,42 @@ export default function UpdateAdmins({ admin, onSave, onDelete, onClose }) {
               </div>
             </>
           ) : (
-            <form className="cvcard-form" onSubmit={handleSubmit} style={{ width: "100%", marginTop: 10 }}>
+            <form className="cvcard-form" onSubmit={handleSubmit(onSubmit)} style={{ width: "100%", marginTop: 10 }}>
               <div className="form-field">
                 <label>Código de administrador:</label>
-                <input name="numEmpleado" value={form.numEmpleado || ""} onChange={handleChange} required />
+                <input {...register("numEmpleado", { required: true })} />
               </div>
               <div className="form-field">
                 <label>Nombres:</label>
-                <input name="names" value={form.names || ""} onChange={handleChange} required />
+                <input {...register("names", { required: true })} />
               </div>
               <div className="form-field">
                 <label>Apellidos:</label>
-                <input name="surnames" value={form.surnames || ""} onChange={handleChange} required />
+                <input {...register("surnames", { required: true })} />
               </div>
               <div className="form-field">
                 <label>Correo electrónico:</label>
-                <input name="email" value={form.email || ""} onChange={handleChange} required />
+                <input type="email" {...register("email", { required: true })} />
               </div>
               <div className="form-field">
                 <label>Número telefónico:</label>
-                <input name="telephone" value={form.telephone || ""} onChange={handleChange} required />
+                <input {...register("telephone", { required: true })} />
               </div>
               <div className="form-field">
                 <label>Dirección de residencia:</label>
-                <input name="address" value={form.address || ""} onChange={handleChange} required />
+                <input {...register("address", { required: true })} />
               </div>
               <div className="form-field">
                 <label>DUI:</label>
-                <input name="DUI" value={form.DUI || ""} onChange={handleChange} required />
+                <input {...register("DUI", { required: true })} />
               </div>
               <div className="form-field">
                 <label>Fecha de nacimiento:</label>
-                <input name="birthday" type="date" value={toInputDateFormat(form.birthday)} onChange={handleChange} required />
+                <input type="date" {...register("birthday", { required: true })} />
               </div>
-              <button type="submit" className="btn-guardar">ACTUALIZAR</button>
+              <button type="submit" className="btn-guardar" disabled={isSubmitting}>
+                {isSubmitting ? "Actualizando..." : "ACTUALIZAR"}
+              </button>
             </form>
           )}
         </div>
