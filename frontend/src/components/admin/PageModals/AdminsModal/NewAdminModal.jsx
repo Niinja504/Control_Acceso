@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Camera } from "lucide-react";
 import "../../../styles/Modal.css";
 
 // Componente reutilizable para inputs
@@ -9,7 +10,7 @@ const FormInput = ({ label, id, register, errors, validation, required, ...props
   <div className="form-field">
     <label htmlFor={id}>
       {label} 
-      {validation.required && <span className="required-asterisk">*</span>}
+      {validation?.required && <span className="required-asterisk">*</span>}
     </label>
     <input 
       id={id} 
@@ -30,7 +31,7 @@ const FormSelect = ({ label, id, register, errors, options, loading, validation,
   <div className="form-field">
     <label htmlFor={id}>
       {label}
-      {required}
+      {validation?.required && <span className="required-asterisk">*</span>}
     </label>
     <select 
       id={id} 
@@ -63,12 +64,20 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
     reset,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm();
 
   const [teams, setTeams] = useState([]);
   const [loadingTeams, setLoadingTeams] = useState(true);
-  const [isSubmittingForm, setIsSubmittingForm] = useState(false);
+  const [image, setImage] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  // Watchers para campos con formato
+  const DUI = watch("DUI") || "";
+  const telephone = watch("telephone") || "";
+  const password = watch("password");
+  const hireDate = watch("hireDate");
+  const birthday = watch("birthday");
 
   // Cargar equipos al montar el componente
   useEffect(() => {
@@ -90,6 +99,21 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
   }, []);
 
   // Formateadores de inputs
+  useEffect(() => {
+    setValue("DUI", formatDUI(DUI));
+  }, [DUI]);
+
+  useEffect(() => {
+    setValue("telephone", formatTelephone(telephone));
+  }, [telephone]);
+
+  // Validación de fechas
+  useEffect(() => {
+    if (hireDate && birthday && new Date(hireDate) <= new Date(birthday)) {
+      setValue("hireDate", "", { shouldValidate: true });
+    }
+  }, [hireDate, birthday, setValue]);
+
   const formatDUI = (value) => {
     value = value.replace(/\D/g, "").slice(0, 9);
     if (value.length > 8) value = value.slice(0, 8) + "-" + value.slice(8);
@@ -102,45 +126,55 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
     return value;
   };
 
-  // Watchers para campos con formato
-  const DUI = watch("DUI") || "";
-  const telephone = watch("telephone") || "";
-  const password = watch("password");
-
-  // Aplicar formatos
-  useEffect(() => {
-    setValue("DUI", formatDUI(DUI));
-  }, [DUI]);
-
-  useEffect(() => {
-    setValue("telephone", formatTelephone(telephone));
-  }, [telephone]);
-
-  // Validación de fechas
-  const validateHireDate = (hireDate) => {
-    const birthday = watch("birthday");
-    if (!birthday || !hireDate) return true;
-    return new Date(birthday) < new Date(hireDate) || 
-      "La fecha de contratación debe ser posterior a la de nacimiento";
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      
+      // Validar tipo de imagen
+      if (!file.type.match("image.*")) {
+        Swal.fire("Error", "Por favor selecciona un archivo de imagen válido", "error");
+        return;
+      }
+      
+      // Validar tamaño de imagen (2MB máximo)
+      if (file.size > 2 * 1024 * 1024) {
+        Swal.fire("Error", "La imagen no debe exceder los 2MB", "error");
+        return;
+      }
+      
+      setImage(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
   };
 
   // Envío del formulario
   const onSubmit = async (data) => {
     try {
-      setIsSubmittingForm(true);
-      
       if (!data.email.toLowerCase().endsWith("@ricaldone.edu.sv")) {
         throw new Error("El correo debe terminar en @ricaldone.edu.sv");
       }
 
-      const dataToSend = {
-        ...data,
-        birthday: new Date(data.birthday).toISOString(),
-        hireDate: new Date(data.hireDate).toISOString(),
-        status: data.status === "activo",
-      };
+      const formData = new FormData();
+      
+      // Agregar campos al FormData
+      Object.entries(data).forEach(([key, value]) => {
+        if (key === "birthday" || key === "hireDate") {
+          formData.append(key, new Date(value).toISOString());
+        } else if (key === "status") {
+          formData.append(key, value === "activo");
+        } else {
+          formData.append(key, value);
+        }
+      });
 
-      await axios.post("http://localhost:4000/api/registerAdministrators", dataToSend);
+      // Agregar imagen si existe
+      if (image) {
+        formData.append("photo", image);
+      }
+
+      await axios.post("http://localhost:4000/api/registerAdministrators", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       
       await Swal.fire({
         icon: 'success',
@@ -149,18 +183,27 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
         timer: 2000
       });
       
+      // Resetear formulario
       reset();
-      onSaved();
-      onClose?.();
+      setImage(null);
+      setPreviewUrl(null);
+      
+      if (onSaved) onSaved();
+      if (onClose) onClose();
       
     } catch (error) {
+      let errorMessage = "Error al registrar el administrador";
+      if (error.response) {
+        errorMessage = error.response.data.message || errorMessage;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
       await Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: error.response?.data?.message || error.message,
+        text: errorMessage,
       });
-    } finally {
-      setIsSubmittingForm(false);
     }
   };
 
@@ -169,6 +212,7 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
       className="new-coordinador-form" 
       onSubmit={handleSubmit(onSubmit)}
       aria-label="Formulario de nuevo administrador"
+      noValidate
     >
       <button 
         type="button" 
@@ -176,6 +220,7 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
         onClick={onClose} 
         aria-label="Cerrar modal"
         onKeyDown={(e) => e.key === 'Enter' && onClose()}
+        disabled={isSubmitting}
       >
         ×
       </button>
@@ -196,7 +241,13 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
         id="names"
         register={register}
         errors={errors}
-        validation={{ required: "Los nombres son obligatorios" }}
+        validation={{ 
+          required: "Los nombres son obligatorios",
+          pattern: {
+            value: /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/,
+            message: "Solo se permiten letras"
+          }
+        }}
         required
       />
 
@@ -205,7 +256,13 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
         id="surnames"
         register={register}
         errors={errors}
-        validation={{ required: "Los apellidos son obligatorios" }}
+        validation={{ 
+          required: "Los apellidos son obligatorios",
+          pattern: {
+            value: /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]+$/,
+            message: "Solo se permiten letras"
+          }
+        }}
         required
       />
 
@@ -218,6 +275,7 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
           required: "El DUI es obligatorio",
           pattern: {
             value: /^\d{8}-\d{1}$/,
+            message: "Formato inválido (12345678-9)"
           }
         }}
         placeholder="12345678-9"
@@ -303,7 +361,11 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
         errors={errors}
         validation={{ 
           required: "La fecha de contratación es obligatoria",
-          validate: validateHireDate
+          validate: value => {
+            if (!birthday) return true;
+            return new Date(value) > new Date(birthday) || 
+              "Debe ser posterior a la fecha de nacimiento";
+          }
         }}
         required
       />
@@ -337,16 +399,60 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
         id="address"
         register={register}
         errors={errors}
-        validation={{ required: "La dirección es obligatoria" }}
+        validation={{ 
+          required: "La dirección es obligatoria",
+          minLength: {
+            value: 5,
+            message: "Mínimo 5 caracteres"
+          }
+        }}
         required
       />
+
+      <div className="form-field">
+        <label>Imagen:</label>
+        <div className="image-upload-container">
+          <label htmlFor="photo" className="custom-image-upload">
+            <div className="image-upload-label">
+              <Camera className="camera-icon" />
+              <span>{image ? "Cambiar imagen" : "Agregar imagen"}</span>
+            </div>
+            <input
+              id="photo"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              style={{ display: "none" }}
+            />
+          </label>
+          <div className="image-preview-area">
+            {isSubmitting ? (
+              <div className="image-uploading-spinner"></div>
+            ) : previewUrl ? (
+              <img
+                src={previewUrl}
+                alt="Vista previa"
+                className="image-preview"
+              />
+            ) : (
+              <div className="image-placeholder">Sin imagen</div>
+            )}
+          </div>
+        </div>
+      </div>
 
       <button 
         type="submit" 
         className="btn-guardar"
-        disabled={isSubmittingForm}
+        disabled={isSubmitting}
+        aria-busy={isSubmitting}
       >
-        {isSubmittingForm ? "GUARDANDO..." : "GUARDAR"}
+        {isSubmitting ? (
+          <>
+            <span className="spinner" aria-hidden="true"></span>
+            <span className="sr-only">Guardando...</span>
+          </>
+        ) : "GUARDAR"}
       </button>
     </form>
   );
