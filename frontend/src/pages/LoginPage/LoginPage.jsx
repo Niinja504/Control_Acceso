@@ -1,17 +1,21 @@
-import '../../styles/LoginPage.css';
+import React from 'react';
+import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LogoRedondo from '../../img/logo_redondo.png';
+import '../../styles/LoginPage.css';
 
 export const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
+  
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
     setLoading(true);
     try {
       const response = await fetch(`http://localhost:4000/api/login`, {
@@ -19,7 +23,7 @@ export const LoginPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(data),
         credentials: 'include',
       });
 
@@ -27,23 +31,23 @@ export const LoginPage = () => {
         throw new Error('Error en la solicitud. Verifica tus credenciales.');
       }
 
-      const data = await response.json();
+      const result = await response.json();
 
-      if (data.message === 'login successful') {
+      if (result.message === 'login successful') {
         Swal.fire({
           icon: 'success',
           title: '¡Inicio de sesión exitoso!',
-          text: `Bienvenido, ${data.userType}`,
+          text: `Bienvenido, ${result.userType}`,
           timer: 1500,
           showConfirmButton: false,
         });
 
         // Redirigir según el rol
-        if (data.userType === 'Admin') {
+        if (result.userType === 'Admin') {
           navigate('/admin-dashboard');
-        } else if (data.userType === 'Coordinator') {
+        } else if (result.userType === 'Coordinator') {
           navigate('/coordinator-dashboard');
-        } else if (data.userType === 'Employee') {
+        } else if (result.userType === 'Employee') {
           navigate('/employee-dashboard');
         }
       } else {
@@ -84,7 +88,7 @@ export const LoginPage = () => {
           Ingresa tus credenciales para acceder al sistema
         </p>
 
-        <form className="login-form" onSubmit={handleSubmit}>
+        <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="input-group">
             <label htmlFor="email" className="input-label">
               Correo electrónico institucional
@@ -92,11 +96,12 @@ export const LoginPage = () => {
             <input
               id="email"
               type="email"
-              name="email"
-              placeholder="Email"
               className="input-field"
-              required
-              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              {...register("email", { 
+                required: true,
+                pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+              })}
             />
           </div>
 
@@ -107,11 +112,9 @@ export const LoginPage = () => {
             <input
               id="password"
               type="password"
-              name="password"
-              placeholder="Contraseña"
               className="input-field"
-              required
-              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Contraseña"
+              {...register("password", { required: true })}
             />
           </div>
 
@@ -125,7 +128,7 @@ export const LoginPage = () => {
             <p>Desarrollado por el departamento de Desarrollo de Software</p>
           </b>
           <b>
-           <p>
+            <p>
               del <a href="https://www.ricaldone.edu.sv/" className="highlight">
                 Instituto Técnico Ricaldone
               </a>
