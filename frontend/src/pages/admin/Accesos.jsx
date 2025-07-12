@@ -21,7 +21,6 @@ const Accesos = () => {
   } = useAccessControl();
 
  useEffect(() => {
-  fetchTeams();
   fetchAccessRecords();
 }, []); 
 
