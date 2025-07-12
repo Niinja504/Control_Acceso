@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import "../../../../components/styles/ModalUpdate.css";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Camera } from "lucide-react";
 
 const toInputDateFormat = (date) => {
   if (!date) return "";
@@ -15,12 +15,13 @@ const toInputDateFormat = (date) => {
 
 export default function UpdateCoordinators({ coordinator, onSave, onDelete, onClose }) {
   const [editMode, setEditMode] = useState(false);
+  const [photoPreview, setPhotoPreview] = useState("");
 
   const {
     register,
     handleSubmit,
     reset,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
   } = useForm();
 
   useEffect(() => {
@@ -28,12 +29,21 @@ export default function UpdateCoordinators({ coordinator, onSave, onDelete, onCl
       reset({
         ...coordinator,
         birthday: toInputDateFormat(coordinator.birthday),
+        password: "" // <-- Esto asegura que el campo esté vacío siempre
       });
       setEditMode(false);
+      setPhotoPreview(coordinator.photo);
     }
   }, [coordinator, reset]);
 
   const onSubmit = async (data) => {
+    // Convierte el estado a booleano
+    data.status = data.status === "activo";
+    // Si hay una nueva foto, envíala; si no, envía la original
+    data.photo = photoPreview || coordinator.photo;
+    // Si la contraseña está vacía, elimínala para no sobreescribir
+    if (!data.password) delete data.password;
+
     await onSave(data, coordinator._id);
     await Swal.fire("Actualizado", "El coordinador ha sido actualizado exitosamente.", "success");
     setEditMode(false);
@@ -53,6 +63,19 @@ export default function UpdateCoordinators({ coordinator, onSave, onDelete, onCl
         onDelete(coordinator._id);
       }
     });
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhotoPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setPhotoPreview("");
+    }
   };
 
   if (!coordinator) return null;
@@ -130,6 +153,25 @@ export default function UpdateCoordinators({ coordinator, onSave, onDelete, onCl
                 <input type="email" {...register("email", { required: true })} />
               </div>
               <div className="form-field">
+                <label>Nueva contraseña:</label>
+                <input
+                  type="password"
+                  {...register("password", {
+                    minLength: {
+                      value: 8,
+                      message: "La contraseña debe tener al menos 8 caracteres.",
+                    },
+                  })}
+                  placeholder="Dejar vacío para no cambiar"
+                  autoComplete="new-password"
+                />
+              </div>
+              {errors.password && (
+                <span className="error-message" role="alert">
+                  {errors.password.message}
+                </span>
+              )}
+              <div className="form-field">
                 <label>Número telefónico:</label>
                 <input {...register("telephone", { required: true })} />
               </div>
@@ -144,6 +186,39 @@ export default function UpdateCoordinators({ coordinator, onSave, onDelete, onCl
               <div className="form-field">
                 <label>Fecha de nacimiento:</label>
                 <input type="date" {...register("birthday", { required: true })} />
+              </div>
+              <div className="form-field">
+                <label htmlFor="status">Estado:</label>
+                <select id="status" {...register("status", { required: true })}>
+                  <option value="activo">Activo</option>
+                  <option value="inactivo">Inactivo</option>
+                </select>
+              </div>
+              <div className="form-field">
+                <label htmlFor="photo">Imagen de perfil:</label>
+                <div className="image-upload-container">
+                  <label htmlFor="photo" className="custom-image-upload">
+                    <span className="image-upload-label">
+                      <Camera className="camera-icon" />
+                      <span>{photoPreview ? "Cambiar imagen" : "Agregar imagen"}</span>
+                    </span>
+                    <input
+                      id="photo"
+                      name="photo"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      style={{ display: "none" }}
+                    />
+                  </label>
+                  <div className="image-preview-area">
+                    {photoPreview ? (
+                      <img src={photoPreview} alt="Preview" className="image-preview" />
+                    ) : (
+                      <div className="image-placeholder">Sin imagen</div>
+                    )}
+                  </div>
+                </div>
               </div>
               <button type="submit" className="btn-guardar" disabled={isSubmitting}>
                 {isSubmitting ? "Actualizando..." : "ACTUALIZAR"}

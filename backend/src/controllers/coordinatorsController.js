@@ -30,18 +30,59 @@ coordinatorsController.deleteCoordinator = async (req, res) => {
 
 // U P D A T E
 coordinatorsController.updateCoordinator = async (req, res) => {
-  const {numEmpleado, names, surnames, DUI, birthday, telephone, email, password, IdTeam, status, address} = req.body;
+  try {
+    // Desestructura los campos del body
+    const {
+      numEmpleado,
+      names,
+      surnames,
+      DUI,
+      birthday,
+      telephone,
+      email,
+      password,
+      hireDate,
+      IdTeam,
+      status,
+      address,
+      photo, // <-- Agrega este campo
+    } = req.body;
 
-  const updateCoordinator = await coordinatorsModel.findByIdAndUpdate(
-    req.params.id,
-    {numEmpleado, names, surnames, DUI, birthday, telephone, email, password, IdTeam, status, address},
-    { new: true }
-  );
+    // Prepara los datos a actualizar
+    const updatedData = {
+      numEmpleado,
+      names,
+      surnames,
+      DUI,
+      birthday,
+      telephone,
+      email,
+      hireDate,
+      IdTeam,
+      status,
+      address,
+      photo, // <-- Agrega este campo
+    };
 
-  if (!updateCoordinator) {
-    res.json({ message: "coordinator not found" });
-  } else {
-    res.json({ message: "coordinator updated" });
+    // Si se incluye nueva contraseña, hashearla
+    if (password) {
+      const salt = await bcryptjs.genSalt(10);
+      updatedData.password = await bcryptjs.hash(password, salt);
+    }
+
+    const updatedCoordinator = await coordinatorsModel.findByIdAndUpdate(
+      req.params.id,
+      updatedData,
+      { new: true }
+    );
+
+    if (!updatedCoordinator) {
+      return res.status(404).json({ message: "Coordinator not found" });
+    }
+
+    res.json({ message: "Coordinator updated", coordinator: updatedCoordinator });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating coordinator", error });
   }
 };
 
