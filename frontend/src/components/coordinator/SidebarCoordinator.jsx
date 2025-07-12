@@ -19,10 +19,9 @@ export default function Sidebar() {
 
   const navigationItems = [
   { name: 'Dashboard', path: '/coordinator-dashboard/dashboard', icon: Home },
-    { name: 'Gestión de personal', path: '/coordinator-dashboard/personal', icon: UserCheck },
+    { name: 'Gestión de personal', path: '/coordinator-dashboard/empleado', icon: UserCheck },
   { name: 'Gestión de permisos', path: '/coordinator-dashboard/permisos', icon: FileCheck },
-  { name: 'Historial de accesos', path: '/coordinator-dashboard/historial', icon: Clock},
-  { name: 'Gestiòn de Empleados', path: '/coordinator-dashboard/empleado', icon: UserCheck}
+  { name: 'Historial de accesos', path: '/coordinator-dashboard/historial', icon: Clock}
 ];
 
   const handleLogout = async () => {
