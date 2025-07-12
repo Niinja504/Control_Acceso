@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import "../../../../components/styles/ModalUpdate.css";
-import { Pencil, Trash2 } from "lucide-react";
+import "../../../../styles/Admin/Empleados.css";
+import { Pencil, Trash2, Camera } from "lucide-react";
 
 const toInputDateFormat = (date) => {
   if (!date) return "";
@@ -14,24 +14,35 @@ const toInputDateFormat = (date) => {
 
 export default function UpdateAdmins({ admin, onSave, onDelete, onClose }) {
   const [editMode, setEditMode] = useState(false);
+  const [photoPreview, setPhotoPreview] = useState(admin?.photo || "");
 
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     reset,
-    formState: { isSubmitting },
+    formState: { errors },
   } = useForm();
 
   useEffect(() => {
     if (admin) {
-      reset({ ...admin, birthday: toInputDateFormat(admin.birthday) });
+      reset({
+        ...admin,
+        birthday: toInputDateFormat(admin.birthday),
+        status: admin.status ? "activo" : "inactivo",
+        password: "" // <-- Esto asegura que el campo esté vacío siempre
+      });
+      setPhotoPreview(admin.photo || "");
       setEditMode(false);
     }
   }, [admin, reset]);
 
   const onSubmit = async (data) => {
+    data.status = data.status === "activo";
+    data.photo = photoPreview;
     await onSave(data, admin._id);
-    await Swal.fire("Actualizado", "El administrador ha sido actualizado exitosamente.", "success");
+    Swal.fire("Actualizado", "El administrador ha sido actualizado exitosamente.", "success");
     setEditMode(false);
     onClose();
   };
@@ -51,6 +62,17 @@ export default function UpdateAdmins({ admin, onSave, onDelete, onClose }) {
     });
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhotoPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   if (!admin) return null;
 
   return (
@@ -58,10 +80,9 @@ export default function UpdateAdmins({ admin, onSave, onDelete, onClose }) {
       <div className="cvcard-modal cvcard-modal-scroll">
         <button className="close-modal" onClick={onClose}>×</button>
         <div className="cvcard-header">
-          <img src={admin.photo} alt="Avatar" className="cvcard-avatar" />
+          <img src={photoPreview} alt="Avatar" className="cvcard-avatar" />
           <div className="cvcard-nombre">{admin.names} {admin.surnames}</div>
         </div>
-
         <div className="cvcard-info">
           <div className="cvcard-info-title-row">
             <span className="cvcard-info-title">Información personal</span>
@@ -76,7 +97,6 @@ export default function UpdateAdmins({ admin, onSave, onDelete, onClose }) {
               </span>
             )}
           </div>
-
           {!editMode ? (
             <>
               <div className="cvcard-info-group">
@@ -124,7 +144,16 @@ export default function UpdateAdmins({ admin, onSave, onDelete, onClose }) {
               </div>
               <div className="form-field">
                 <label>Correo electrónico:</label>
-                <input type="email" {...register("email", { required: true })} />
+                <input {...register("email", { required: true })} />
+              </div>
+              <div className="form-field">
+                <label>Nueva contraseña:</label>
+                <input
+                  type="password"
+                  {...register("password")}
+                  placeholder="Dejar vacío para no cambiar"
+                  autoComplete="new-password"
+                />
               </div>
               <div className="form-field">
                 <label>Número telefónico:</label>
@@ -142,9 +171,38 @@ export default function UpdateAdmins({ admin, onSave, onDelete, onClose }) {
                 <label>Fecha de nacimiento:</label>
                 <input type="date" {...register("birthday", { required: true })} />
               </div>
-              <button type="submit" className="btn-guardar" disabled={isSubmitting}>
-                {isSubmitting ? "Actualizando..." : "ACTUALIZAR"}
-              </button>
+              <div className="form-field">
+                <label htmlFor="status">Estado:</label>
+                <select id="status" {...register("status", { required: true })}>
+                  <option value="activo">Activo</option>
+                  <option value="inactivo">Inactivo</option>
+                </select>
+              </div>
+              <div className="form-field">
+                <label htmlFor="photo">Imagen de perfil:</label>
+                <div className="image-upload-container">
+                  <label htmlFor="photo" className="custom-image-upload">
+                    <Camera className="camera-icon" />
+                    <span>{photoPreview ? "Cambiar imagen" : "Agregar imagen"}</span>
+                    <input
+                      id="photo"
+                      name="photo"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      style={{ display: "none" }}
+                    />
+                  </label>
+                  <div className="image-preview-area">
+                    {photoPreview ? (
+                      <img src={photoPreview} alt="Preview" className="image-preview" />
+                    ) : (
+                      <div className="image-placeholder">Sin imagen</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <button type="submit" className="btn-guardar">ACTUALIZAR</button>
             </form>
           )}
         </div>
