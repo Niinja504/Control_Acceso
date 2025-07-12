@@ -152,6 +152,15 @@ export default function NewEmployeesModal({ onSaved, onClose }) {
   };
 
   const onSubmit = async (data) => {
+    if (data.password && data.password.length < 8) {
+      await Swal.fire({
+        icon: "warning",
+        title: "Contraseña muy corta",
+        text: "La contraseña debe tener al menos 8 caracteres.",
+      });
+      return;
+    }
+
     const formData = new FormData();
     
     // Agregar campos al FormData

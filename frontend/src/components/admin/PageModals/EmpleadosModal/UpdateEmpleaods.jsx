@@ -162,6 +162,25 @@ export default function UpdateEmpleaods({ empleado, onSave, onDelete, onClose })
                 <input type="date" {...register("birthday", { required: true })} />
               </div>
               <div className="form-field">
+                <label>Nueva contraseña:</label>
+                <input
+                  type="password"
+                  {...register("password", {
+                    minLength: {
+                      value: 8,
+                      message: "La contraseña debe tener al menos 8 caracteres.",
+                    },
+                  })}
+                  placeholder="Dejar vacío para no cambiar"
+                  autoComplete="new-password"
+                />
+              </div>
+              {errors.password && (
+                <span className="error-message" role="alert">
+                  {errors.password.message}
+                </span>
+              )}
+              <div className="form-field">
                 <label htmlFor="status">Estado:</label>
                 <select id="status" {...register("status", { required: true })}>
                   <option value="activo">Activo</option>
