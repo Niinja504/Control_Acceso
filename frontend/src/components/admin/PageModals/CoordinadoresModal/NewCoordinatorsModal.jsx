@@ -98,13 +98,6 @@ export default function NewCoordinatorsModal({ onSaved, onClose }) {
     setValue("telephone", value);
   }, [telephone, setValue]);
 
-  // Validar dominio de correo
-  useEffect(() => {
-    if (email && !email.toLowerCase().endsWith("@ricaldone.edu.sv")) {
-      setValue("email", "", { shouldValidate: true });
-    }
-  }, [email, setValue]);
-
   // Cargar equipos
   useEffect(() => {
     const fetchTeams = async () => {

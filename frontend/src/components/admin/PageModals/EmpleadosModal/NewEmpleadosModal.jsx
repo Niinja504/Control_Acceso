@@ -100,13 +100,6 @@ export default function NewEmployeesModal({ onSaved, onClose }) {
     setValue("telephone", value);
   }, [telephone, setValue]);
 
-  // Validar dominio de correo
-  useEffect(() => {
-    if (email && !email.toLowerCase().endsWith("@ricaldone.edu.sv")) {
-      setValue("email", "", { shouldValidate: true });
-    }
-  }, [email, setValue]);
-
   // Validar fecha de contratación
   useEffect(() => {
     if (hireDate && birthday && new Date(hireDate) <= new Date(birthday)) {
