@@ -59,10 +59,10 @@ function App() {
           <Route path="" element={<Navigate to="dashboard" />} />
           {/* Rutas del empleado */}
           <Route path="dashboard" element={<h1>Inicio Empleado</h1>} />
-          <Route path="personal" element={<h1>Gestión de Empleados</h1>} />
+          <Route path="empleado" element={<EmpleadosC/>} />
           <Route path="permisos" element={<h1>Gestión de permisos</h1>} />
           <Route path="historial" element={<h1>Historial de Accesos</h1>} />
-          <Route path="empleado" element={<EmpleadosC/>} />
+          
         </Route>
         <Route
           path="/employee-dashboard/*"
