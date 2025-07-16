@@ -6,16 +6,19 @@
 - **Alan Alberto Rivas León** — *Secretario*
 - **Daniel Oswaldo Brizuela Alberto** — *Tesorero*
 - **Robbie Fernando Larios Orellana** — *Vocal*
+
 ---
+
 ## Descripción del Proyecto
-**Sistema de Registro Ricaldone** es una solución empresarial de control de acceso que utiliza reconocimiento facial tipo **Face ID**.
+**Sistema de Registro Ricaldone** es una solución empresarial de control de acceso que utiliza reconocimiento facial tipo **Face ID**.  
 El objetivo principal es registrar de manera automatizada:
 - La **hora de entrada** del personal.
 - La **hora de salida**.
 - Las **justificaciones** por llegadas tardías.
 - Las **solicitudes de permiso** por ausencias o salidas anticipadas.
-  
+
 Este sistema busca optimizar la gestión del recurso humano y ofrecer mayor precisión en el control de asistencia.
+
 ---
 
 ## Tecnologías Utilizadas
@@ -24,7 +27,7 @@ El sistema está desarrollado con el stack **MERN**, el cual permite una integra
 - **Express.js** — Framework para la creación de APIs.
 - **React.js** — Interfaz de usuario web.
 - **Node.js** — Servidor y lógica del back-end.
-  
+
 ### Librerías y herramientas adicionales:
 - **React Native** — Para el desarrollo móvil.
 - **Tailwind CSS** — Estilización moderna y responsiva.
@@ -35,28 +38,17 @@ El sistema está desarrollado con el stack **MERN**, el cual permite una integra
 - **AceternityUI**  
 - **MagicUI**  
 - **OriginUI**
----
 
+---
 
 ## Comandos para el proyecto
 Este proyecto se divide en dos partes principales: el **backend (Python)** y backend **frontend (MERN Stack)**. A continuación se detallan los pasos para instalar y ejecutar cada parte.
+
 ---
+
 ### 1. **Backend (Python)**
 #### Instalar dependencias
-Para instalar todas las dependencias del **backend** en Python, asegúrate de estar en el directorio donde se encuentra el archivo `requirements.txt`, y luego ejecuta el siguiente comando en tu terminal:
+***Nota:***  
+Para que todo funcione correctamente es necesario usar la versión de python 3.11  
+[Descargar Python 3.11.13](https://www.python.org/downloads/release/python-31113/)
 
-```bash
-pip install -r requirements.txt
-````
-Para poder ejecutar el backend de python con las dos apis se debe de ejecutar el app.py ya sea por comando o con la extesion de python
-```bash
-python App.py
-````
-
-### 2. **Backend (MERN)**:
-   **Instalar depedencias:**
-   ```bash
-   npm i
-   ````
-
-> Proyecto desarrollado con fines académicos para el Instituto Ricaldone.
