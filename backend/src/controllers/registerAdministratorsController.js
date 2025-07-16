@@ -3,6 +3,7 @@ import bcryptjs from "bcryptjs";
 import jsonwebtoken from "jsonwebtoken";
 import { config } from "../config.js";
 import { v2 as cloudinary } from "cloudinary";
+import validator from "validator"; 
 
 // Configurar cloudinary
 cloudinary.config({
@@ -15,30 +16,83 @@ const registerAdministratorsController = {};
 
 // I N S E R T
 registerAdministratorsController.register = async (req, res) => {
-  const {
-    numEmpleado,
-    names,
-    surnames,
-    DUI,
-    birthday,
-    telephone,
-    email,
-    password,
-    hireDate,
-    status,
-    address
-  } = req.body;
-
   try {
-    // Verifica si existe el administrador
-    const existAdministrator = await Administrator.findOne({ email });
-    if (existAdministrator) {
-      return res.json({ message: "administrator already exist" });
+    const {
+      numEmpleado,
+      names,
+      surnames,
+      DUI,
+      birthday,
+      telephone,
+      email,
+      password,
+      hireDate,
+      status,
+      address,
+    } = req.body;
+
+    // Validar campos requeridos
+    if (
+      !numEmpleado ||
+      !names ||
+      !surnames ||
+      !DUI ||
+      !birthday ||
+      !telephone ||
+      !email ||
+      !password ||
+      !hireDate ||
+      !status ||
+      !address
+    ) {
+      return res.status(400).json({ message: "All fields are required." });
     }
+
+    // Validar formato de email
+    if (!validator.isEmail(email)) {
+      return res.status(400).json({ message: "Invalid email format." });
+    }
+
+    // Validar formato de teléfono (1234-5678)
+    const phoneRegex = /^\d{4}-\d{4}$/;
+    if (!phoneRegex.test(telephone)) {
+      return res.status(400).json({ message: "Invalid telephone format." });
+    }
+
+
+    // Validar formato de DUI (12345678-9)
+    const duiRegex = /^\d{8}-\d$/;
+    if (!duiRegex.test(DUI)) {
+      return res.status(400).json({ message: "Invalid DUI format." });
+    }
+
+    // Verificar unicidad de email
+    const existEmail = await Administrator.findOne({ email });
+    if (existEmail) {
+      return res.status(400).json({ message: "Email already exists." });
+    }
+
+    // Verificar unicidad de teléfono
+    const existPhone = await Administrator.findOne({ telephone });
+    if (existPhone) {
+      return res.status(400).json({ message: "Telephone already exists." });
+    }
+
+    // Verificar unicidad de DUI
+    const existDUI = await Administrator.findOne({ DUI });
+    if (existDUI) {
+      return res.status(400).json({ message: "DUI already exists." });
+    }
+
+     // Verifica si existe el administrador con ese email
+     const existAdmin = await Administrator.findOne({ email });
+     if (existAdmin) {
+       return res.status(400).json({ message: "coordinator already exists" });
+     }
 
     const passwordHash = await bcryptjs.hash(password, 10);
 
-    // Subir foto a cloudinary si existe
+    // Subir foto a Cloudinary si existe
     let photoUrl = "";
     if (req.file) {
       const result = await cloudinary.uploader.upload(req.file.path, {
@@ -62,6 +116,7 @@ registerAdministratorsController.register = async (req, res) => {
       address,
       photo: photoUrl,
     });
+
     await newAdministrator.save();
 
     jsonwebtoken.sign(
@@ -73,10 +128,17 @@ registerAdministratorsController.register = async (req, res) => {
         res.cookie("authToken", token);
       }
     );
-    res.json({ message: "administrator saved" });
+
+    res.status(201).json({
+      message: "Administrator registered successfully.",
+      administrator: newAdministrator,
+    });
   } catch (error) {
-    console.log(error);
-    res.json({ message: "error register administrator", error });
+    console.error(error);
+    res.status(500).json({
+      message: "An error occurred while registering",
+      error: error.message,
+    });
   }
 };
 

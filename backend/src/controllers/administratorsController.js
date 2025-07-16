@@ -4,39 +4,23 @@ import bcryptjs from "bcryptjs";
 
 // S E L E C T
 administratorsController.getAdministrators = async (req, res) => {
-  const administrators = await administratorsModel.find();
-  res.json(administrators);
-};
-
-// I N S E R T
-administratorsController.insertAdministrator = async (req, res) => {
-  const { numEmpleado, names, surnames, DUI, birthday, telephone, email, password, hireDate, IdTeam, status, address } = req.body;
-
-  const salt = await bcryptjs.genSalt(10);
-  const hashedPassword = await bcryptjs.hash(password, salt);
-
-  const newAdministrator = new administratorsModel({
-    numEmpleado,
-    names,
-    surnames,
-    DUI,
-    birthday,
-    telephone,
-    email,
-    password: hashedPassword,
-    hireDate,
-    IdTeam,
-    status,
-    address
-  });
-  await newAdministrator.save();
-  res.json({ message: "administrator saved" });
+  try {
+    const administrators = await administratorsModel.find();
+    res.status(200).json(administrators);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching administrators", error });
+  }
 };
 
 // D E L E T E
 administratorsController.deleteAdministrator = async (req, res) => {
-  await administratorsModel.findByIdAndDelete(req.params.id);
-  res.json({ message: "administrator deleted" });
+  try {
+    await administratorsModel.findById(req.params.id);
+    res.status(200).json(administrator);
+  }
+  catch (error) {
+    return res.status(500).json({ message: "Error deleted administrator", error });
+  }
 };
 
 // U P D A T E
@@ -88,7 +72,7 @@ administratorsController.updateAdministrator = async (req, res) => {
       return res.status(404).json({ message: "Administrator not found" });
     }
 
-    res.json({ message: "Administrator updated", administrator: updatedAdministrator });
+    res.status(200).json({ message: "Administrator updated", administrator: updatedAdministrator });
   } catch (error) {
     res.status(500).json({ message: "Error updating administrator", error });
   }

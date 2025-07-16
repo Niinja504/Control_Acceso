@@ -4,7 +4,7 @@ import { config } from "../config.js";
 
 const router = express.Router();
 
-router.get('/check-auth', (req, res) => {
+router.get( (req, res) => {
   const token = req.cookies.authToken;
 
   if (!token) {

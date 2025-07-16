@@ -4,28 +4,23 @@ import bcryptjs from "bcryptjs";
 
 // S E L E C T
 coordinatorsController.getCoordinators = async (req, res) => {
-  const coordinators = await coordinatorsModel.find();
-  res.json(coordinators);
-};
-
-// I N S E R T
-coordinatorsController.insertCoordinator = async (req, res) => {
-  const { numEmpleado, names, surnames, DUI, birthday, telephone, email, password, IdTeam, status, address} = req.body;
-
-  const salt = await bcryptjs.genSalt(10);
-  const hashedPassword = await bcryptjs.hash(password, salt);
-
-  const newCoordinator = new coordinatorsModel({
-    numEmpleado, names, surnames, DUI, birthday, telephone, email, password: hashedPassword, IdTeam, status, address
-  });
-  await newCoordinator.save();
-  res.json({ message: "coordinator saved" });
+  try {
+    const coordinators = await coordinatorsModel.find();
+    res.status(200).json(coordinators);
+  }
+  catch (error) {
+    res.status(500).json({ message: "Error fetching coordinators", error });
+  }
 };
 
 // D E L E T E
 coordinatorsController.deleteCoordinator = async (req, res) => {
-  await coordinatorsModel.findByIdAndDelete(req.params.id);
-  res.json({ message: "coordinator deleted" });
+  try{
+    await coordinatorsModel.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: "Coordinator deleted" });
+  }catch (error) {
+    res.status(500).json({ message: "Error deleting coordinator", error });
+  }
 };
 
 // U P D A T E

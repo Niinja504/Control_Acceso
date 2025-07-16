@@ -6,7 +6,7 @@ const schedulesController = {};
 schedulesController.getSchedules = async (req, res) => {
   try {
     const schedules = await ScheduleModel.find();
-    res.json(schedules);
+    res.status(200).json(schedules);
   } catch (error) {
     res.status(500).json({ message: "Error fetching schedules", error });
   }
@@ -39,7 +39,7 @@ schedulesController.insertSchedule = async (req, res) => {
 schedulesController.deleteSchedule = async (req, res) => {
   try {
     await ScheduleModel.findByIdAndDelete(req.params.id);
-    res.json({ message: "Horario eliminado correctamente" });
+    res.status(200).json({ message: "Horario eliminado correctamente" });
   } catch (error) {
     res.status(500).json({ message: "Error al eliminar el horario", error });
   }
@@ -69,7 +69,7 @@ schedulesController.updateSchedule = async (req, res) => {
       return res.status(404).json({ message: "Horario no encontrado" });
     }
 
-    res.json({ message: "Horario actualizado correctamente" });
+    res.status(200).json({ message: "Horario actualizado correctamente", schedule: updatedSchedule });
   } catch (error) {
     res.status(500).json({ message: "Error al actualizar el horario", error });
   }
