@@ -6,6 +6,7 @@ import coordinatorsRoutes from "./src/routes/coordinatorsRoutes.js"
 import administratorsRoutes from "./src/routes/administratorsRoutes.js";
 import registerAdministratorsRoutes from "./src/routes/registerAdministrators.js";
 import loginRoutes from "./src/routes/login.js"
+import permissionsRoutes from "./src/routes/permissionsRoute.js";
 import cookieParser from "cookie-parser"
 import logoutRoutes from "./src/routes/logout.js"
 import registerEmployeesRoutes from "./src/routes/registerEmployees.js";
@@ -47,6 +48,7 @@ const swaggerDocument = JSON.parse(
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Definir las rutas de la API
+app.use("/api/permissions", permissionsRoutes); // Ruta para permisos
 app.use("/api/employee", employeeRoutes)
 app.use("/api/schedules", ScheduleRoutes);
 app.use("/api/login", loginRoutes)
