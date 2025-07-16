@@ -53,7 +53,7 @@ Para que todo funcione correctamente es necesario usar la versión de python 3.1
 [Descargar Python 3.11.13](https://www.python.org/downloads/release/python-31113/)
 
 ***Software adicional:***
-[CMake:](https://cmake.org/)
+[CMake]:(https://cmake.org/)
 
 Para instalar todas las dependencias de la api en Python, asegúrate de estar en el directorio donde se encuentra el archivo `requirements.txt`, y luego ejecuta el siguiente comando en tu terminal:
 ```bash
