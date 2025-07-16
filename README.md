@@ -52,6 +52,14 @@ Este proyecto se divide en dos partes principales: el **backend (Python)** y bac
 Para que todo funcione correctamente es necesario usar la versión de python 3.11  
 [Descargar Python 3.11.13](https://www.python.org/downloads/release/python-31113/)
 
+Para instalar todas las dependencias de la api en Python, asegúrate de estar en el directorio donde se encuentra el archivo `requirements.txt`, y luego ejecuta el siguiente comando en tu terminal:
+```bash
+pip install -r requirements.txt
+````
+Para poder ejecutar el backend de python con las dos apis se debe de ejecutar el app.py ya sea por comando o con la extesion de python
+```bash
+python App.py
+
 ### 2. **Backend (MERN)**:
    **Instalar depedencias:**
    ```bash
