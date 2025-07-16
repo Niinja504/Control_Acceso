@@ -56,7 +56,7 @@ Para instalar todas las dependencias de la api en Python, asegúrate de estar en
 ```bash
 pip install -r requirements.txt
 ````
-Para poder ejecutar el backend de python con las dos apis se debe de ejecutar el app.py ya sea por comando o con la extesion de python
+Para poder ejecutar el backend de python con la api se debe de ejecutar el app.py ya sea por comando o con la extesion de python
 ```bash
 python App.py
 ````
