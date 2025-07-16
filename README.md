@@ -47,7 +47,18 @@ Este proyecto se divide en dos partes principales: el **backend (Python)** y bac
 ---
 
 ### 1. **Backend (Python)**
-#### Instalar dependencias
+### Dependencias utilizadas:
+- opencv-python
+- numpy
+- pillow
+- face_recognition
+- pymongo
+- flask
+- flask_cors
+- dlib
+- flask-cors
+  
+
 ***Nota:***  
 Para que todo funcione correctamente es necesario usar la versión de python 3.11  
 [Descargar Python 3.11.13](https://www.python.org/downloads/release/python-31113/)
@@ -57,7 +68,7 @@ Para que todo funcione correctamente es necesario usar la versión de python 3.1
 [CMake](https://cmake.org/)
 [Visual Studio IDE](https://visualstudio.microsoft.com/es/vs/features/cplusplus/)
 
-
+#### Instalar dependencias
 Para instalar todas las dependencias de la api en Python, asegúrate de estar en el directorio donde se encuentra el archivo `requirements.txt`, y luego ejecuta el siguiente comando en tu terminal:
 ```bash
 pip install -r requirements.txt
@@ -68,14 +79,81 @@ python App.py
 ````
 
 ### 2. **Backend (MERN)**:
-   **Instalar depedencias:**
-   ```bash
-   npm i
-   ````
-***Desplegar el proyecto tanto en backend como frontend
+
+### Dependencias utilizadas:
+- bcryptjs ^3.0.2
+- cloudinary ^1.30.0
+- cookie-parser ^1.4.7
+- cors ^2.8.5
+- crypto ^1.0.1
+- dotenv ^16.5.0
+- express ^5.1.0
+- jsonwebtoken ^9.0.2
+- mongoose ^7.8.7
+- multer ^2.0.1
+- multer-storage-cloudinary ^4.0.0
+- node-fetch ^3.3.2
+- nodemailer ^6.10.1
+- swagger-ui-express ^5.0.1
+- validator ^13.15.15
+  
+**DevDependencies:**
+- nodemon ^3.1.10
+
+***Interpretador de javascript en el visual***
+[Nodemon](https://nodejs.org/en)
+
+**Instalar depedencias:**
+```bash
+npm i
+````
+
+**Ejecutar consola:**
+````bash
+node index.js
+````
+
+### 3. **Frontend (React)**:
+
+**Dependencias utilizadas:**
+- axios ^1.9.0
+- dotenv ^16.6.1
+- install ^0.13.0
+- lucide-react ^0.511.0
+- npm ^11.4.2
+- react ^19.0.0
+- react-chartjs-2 ^5.3.0
+- react-dom ^19.0.0
+- react-hook-form ^7.60.0
+- react-icons ^5.5.0
+- react-router-dom ^7.6.0
+- react-select ^5.10.1
+- sweetalert2 ^11.21.0
+  
+**DevDependencies:**
+- @eslint/js ^9.22.0
+- @types/react ^19.0.10
+- @types/react-dom ^19.0.4
+- @vitejs/plugin-react ^4.3.4
+- autoprefixer ^10.4.21
+- eslint ^9.22.0
+- eslint-plugin-react-hooks ^5.2.0
+- eslint-plugin-react-refresh ^0.4.19
+- globals ^16.0.0
+- postcss ^8.5.3
+- tailwindcss ^4.1.6
+- vite ^6.3.1
+
+**Instalar depedencias:**
+```bash
+npm i
+````
+**Ejecutar consola:**
 ````bash
 npm run dev
 ````
 
-> Proyecto desarrollado con fines académicos para el Instituto Ricaldone.
+### 4. **Data Base (Mongo)**:
+[MongoDB](https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-8.0.11-signed.msi)
 
+> Proyecto desarrollado con fines académicos para el Instituto Ricaldone.
