@@ -52,3 +52,15 @@ Este proyecto se divide en dos partes principales: el **backend (Python)** y bac
 Para que todo funcione correctamente es necesario usar la versión de python 3.11  
 [Descargar Python 3.11.13](https://www.python.org/downloads/release/python-31113/)
 
+### 2. **Backend (MERN)**:
+   **Instalar depedencias:**
+   ```bash
+   npm i
+   ````
+**Desplegar el proyecto tanto en backend como frontend
+````bash
+npm run dev
+````
+
+> Proyecto desarrollado con fines académicos para el Instituto Ricaldone.
+
