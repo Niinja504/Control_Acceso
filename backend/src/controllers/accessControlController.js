@@ -6,7 +6,7 @@ const accessControlController = {};
 accessControlController.getAllAccessRecords = async (req, res) => {
   try {
     const records = await AccessControlModel.find().populate("id_Employee");
-    res.json(records);
+    res.status(200).json(records);
   } catch (error) {
     console.error("Error retrieving access records:", error);
     res.status(500).json({
@@ -21,7 +21,7 @@ accessControlController.getAccessRecordById = async (req, res) => {
   try {
     const record = await AccessControlModel.findById(req.params.id).populate("id_Employee");
     if (!record) return res.status(404).json({ message: "Access record not found" });
-    res.json(record);
+    res.status(200).json(record);
   } catch (error) {
     console.error("Error retrieving access record by ID:", error);
     res.status(500).json({
@@ -72,7 +72,7 @@ accessControlController.updateAccessRecord = async (req, res) => {
   try {
     const updated = await AccessControlModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!updated) return res.status(404).json({ message: "Access record not found" });
-    res.json({ message: "Access record updated successfully", updated });
+    res.status(200).json({ message: "Access record updated successfully", updated });
   } catch (error) {
     console.error("Error updating access record:", error);
     res.status(500).json({
@@ -87,7 +87,7 @@ accessControlController.deleteAccessRecord = async (req, res) => {
   try {
     const deleted = await AccessControlModel.findByIdAndDelete(req.params.id);
     if (!deleted) return res.status(404).json({ message: "Access record not found" });
-    res.json({ message: "Access record deleted successfully" });
+    res.status(200).json({ message: "Access record deleted successfully" });
   } catch (error) {
     console.error("Error deleting access record:", error);
     res.status(500).json({

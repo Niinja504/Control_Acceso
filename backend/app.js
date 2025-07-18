@@ -6,6 +6,7 @@ import coordinatorsRoutes from "./src/routes/coordinatorsRoutes.js"
 import administratorsRoutes from "./src/routes/administratorsRoutes.js";
 import registerAdministratorsRoutes from "./src/routes/registerAdministrators.js";
 import loginRoutes from "./src/routes/login.js"
+import permissionsRoutes from "./src/routes/permissionsRoute.js";
 import cookieParser from "cookie-parser"
 import logoutRoutes from "./src/routes/logout.js"
 import registerEmployeesRoutes from "./src/routes/registerEmployees.js";
@@ -15,9 +16,7 @@ import registerCoordinatorsRoutes from "./src/routes/registerCoordinators.js";
 import teamsRoutes from "./src/routes/teamsRoutes.js";
 import AccessControl from "./src/routes/accessControlRoute.js";
 import ScheduleRoutes from "./src/routes/schedules.js";
-import blog from "./src/routes/blogRoutes.js";
 import mapRoute from "./src/routes/mapRoute.js";
-
 import swaggerUi from "swagger-ui-express";
 import fs from "fs";
 import path from "path";
@@ -47,21 +46,22 @@ const swaggerDocument = JSON.parse(
 
 // Definir las rutas de las funciones que tendrá la página web
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-//
+
+// Definir las rutas de la API
+app.use("/api/permissions", permissionsRoutes); // Ruta para permisos
 app.use("/api/employee", employeeRoutes)
 app.use("/api/schedules", ScheduleRoutes);
 app.use("/api/login", loginRoutes)
 app.use("/api/logout", logoutRoutes)
 app.use("/api/registerEmployees", registerEmployeesRoutes)
 app.use("/api/registerAdministrators", registerAdministratorsRoutes); // Ruta para registrar administradores
-app.use("/api", authRoutes); // Agregar las rutas de autenticación
+app.use("/api/checkAuth", authRoutes); // Agregar las rutas de autenticación
 app.use("/api/coordinators", coordinatorsRoutes); // Ruta para coordinadores
 app.use("/api/registerCoordinators", registerCoordinatorsRoutes); // Ruta para registrar coordinadores
 app.use("/api/administrators", administratorsRoutes); // Ruta para administradores
 app.use("/api/teams", teamsRoutes); // Ruta para las areas o departamentos
-app.use("/api/access", AccessControl);
-app.use("/api/blog", blog)
-app.use("/api/map", mapRoute);
+app.use("/api/access", AccessControl); // Ruta para el control de acceso
+app.use("/api/mapFaces", mapRoute); // Ruta para el mapeo de rostros
 
 // Exporto la constante para poder usar express en otros archivos
 export default app;

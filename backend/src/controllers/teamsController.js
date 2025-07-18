@@ -7,7 +7,7 @@ const teamsController = {};
 teamsController.getTeam = async (req, res) => {
   try {
     const teams = await TeamsModel.find();
-    res.json(teams);
+    res.status(200).json(teams);
   } catch (error) {
     res.status(500).json({ message: "Error al obtener los equipos", error });
   }
@@ -21,7 +21,7 @@ teamsController.insertTeam = async (req, res) => {
     const newTeam = new TeamsModel({ name });
     await newTeam.save();
 
-    res.json({ message: "Equipo guardado correctamente" });
+    res.status(201).json({ message: "Equipo creado correctamente", newTeam });
   } catch (error) {
     res.status(500).json({ message: "Error al guardar el equipo", error });
   }
@@ -31,7 +31,7 @@ teamsController.insertTeam = async (req, res) => {
 teamsController.deleteTeam = async (req, res) => {
   try {
     await TeamsModel.findByIdAndDelete(req.params.id);
-    res.json({ message: "Equipo eliminado correctamente" });
+    res.status(200).json({ message: "Equipo eliminado correctamente" });
   } catch (error) {
     res.status(500).json({ message: "Error al eliminar el equipo", error });
   }
@@ -52,7 +52,10 @@ teamsController.updateTeam = async (req, res) => {
       return res.status(404).json({ message: "Equipo no encontrado" });
     }
 
-    res.json({ message: "Equipo actualizado correctamente", updatedTeam });
+    res.status(200).json({
+      message: "Equipo actualizado correctamente",
+      updatedTeam,
+    });
   } catch (error) {
     res.status(500).json({ message: "Error al actualizar el equipo", error });
   }

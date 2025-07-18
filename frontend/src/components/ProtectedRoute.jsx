@@ -7,7 +7,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/check-auth', {
+        const response = await fetch('http://localhost:4000/api/checkAuth', {
           method: 'GET',
           credentials: 'include',
         });

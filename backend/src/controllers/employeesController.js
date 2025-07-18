@@ -6,70 +6,17 @@ const employeesController = {};
 // S E L E C T
 employeesController.getEmployees = async (req, res) => {
   try {
-    const employees = await employeesModel.find().populate("IdTeam");
-    res.json(employees);
+    const employees = await employeesModel.find();
+    res.status(200).json(employees);
   } catch (error) {
     res.status(500).json({ message: "Error fetching employees", error });
-  }
-};
-
-// I N S E R T
-employeesController.insertEmployees = async (req, res) => {
-  try {
-    const {
-      numEmpleado,
-      names,
-      surnames,
-      DUI,
-      birthday,
-      telephone,
-      email,
-      password,
-      hireDate,
-      IdTeam,
-      status,
-      address,
-    } = req.body;
-
-    // Validar que no se repita el email
-    const existing = await employeesModel.findOne({ email });
-    if (existing) {
-      return res.status(400).json({ message: "Email ya registrado" });
-    }
-
-    // Hash de contraseña
-    const salt = await bcryptjs.genSalt(10);
-    const hashedPassword = await bcryptjs.hash(password, salt);
-
-    const newEmployee = new employeesModel({
-      numEmpleado,
-      names,
-      surnames,
-      DUI,
-      birthday,
-      telephone,
-      email,
-      password: hashedPassword,
-      hireDate,
-      IdTeam,
-      status,
-      address,
-    });
-
-    await newEmployee.save();
-    res.json({ message: "Employee saved" });
-  } catch (error) {
-    res.status(500).json({ message: "Error saving employee", error });
   }
 };
 
 // D E L E T E
 employeesController.deleteEmployees = async (req, res) => {
   try {
-    const deleted = await employeesModel.findByIdAndDelete(req.params.id);
-    if (!deleted) {
-      return res.status(404).json({ message: "Employee not found" });
-    }
+    await employeesModel.findByIdAndDelete(req.params.id);
     res.json({ message: "Employee deleted" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting employee", error });
@@ -128,7 +75,10 @@ employeesController.updateEmployees = async (req, res) => {
       return res.status(404).json({ message: "Employee not found" });
     }
 
-    res.json({ message: "Employee updated", employee: updatedEmployee });
+    res.status(200).json({
+      message: "Employee updated successfully",
+      employee: updatedEmployee,
+    });
   } catch (error) {
     res.status(500).json({ message: "Error updating employee", error });
   }

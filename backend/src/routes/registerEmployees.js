@@ -4,7 +4,7 @@ import multer from "multer";
 
 const router = express.Router();
 
-const upload = multer({dest: "employees/"})
+const upload = multer({dest: "public/employees/"})
 
 router.route("/")
 .post(upload.single("photo"), registerEmployeesController.register);
