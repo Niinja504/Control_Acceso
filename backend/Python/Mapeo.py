@@ -130,7 +130,7 @@ def mapeo():
 # Ruta para actualizar rostro con URL de imagen
 @app.route('/faces/<id>', methods=['PUT'])
 @require_api_key(MAPEO_API_KEY)
-def actualizar_face(id):
+def actualizar_face(id):    
     data = request.get_json()
     if not data:
         return jsonify({'status': 'error', 'message': 'No se recibieron datos JSON'}), 400
@@ -189,7 +189,7 @@ def eliminar_face(id):
 def serve_image(filename):
     return send_from_directory('static/faces', filename)
 
-# Iniciar servidor
+# Iniciar servidor 
 def iniciar_api_mapeo():
     port = int(os.getenv('PORT_MAPEO', 4500))
     app.run(debug=True, use_reloader=False, host='0.0.0.0', port=port)

@@ -27,13 +27,9 @@ export const LoginPage = () => {
         credentials: 'include',
       });
 
-      if (!response.ok) {
-        throw new Error('Error en la solicitud. Verifica tus credenciales.');
-      }
-
       const result = await response.json();
 
-      if (result.message === 'login successful') {
+      if (response.ok && result.message === 'login successful') {
         Swal.fire({
           icon: 'success',
           title: '¡Inicio de sesión exitoso!',
@@ -51,10 +47,11 @@ export const LoginPage = () => {
           navigate('/employee-dashboard');
         }
       } else {
+        // Mostrar el mensaje específico del backend
         Swal.fire({
           icon: 'error',
-          title: 'Credenciales incorrectas',
-          text: 'Por favor, verifica tu correo y contraseña.',
+          title: 'Error al iniciar sesión',
+          text: result.message || 'Ocurrió un error. Inténtalo de nuevo más tarde.',
         });
       }
     } catch (error) {
